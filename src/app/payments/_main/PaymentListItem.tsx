@@ -10,7 +10,11 @@ type Props = {
   limitPrice: number;
 };
 
-const ListItem: React.FC<Props> = ({ title, currentPrice, limitPrice }) => {
+const PaymentListItem: React.FC<Props> = ({
+  title,
+  currentPrice,
+  limitPrice,
+}) => {
   return (
     <>
       <Box
@@ -35,4 +39,4 @@ const ListItem: React.FC<Props> = ({ title, currentPrice, limitPrice }) => {
   );
 };
 
-export default ListItem;
+export default PaymentListItem;

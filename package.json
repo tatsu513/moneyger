@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && prisma db push && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dev.migrate": "dotenv -e .env.development.local -- yarn prisma migrate dev"
   },
   "dependencies": {
     "@date-io/core": "^2.16.0",
@@ -16,17 +17,24 @@
     "@mui/material": "^5.14.0",
     "@mui/styled-engine-sc": "^5.12.0",
     "@mui/x-date-pickers": "^6.9.2",
+    "@prisma/client": "^5.0.0",
     "@types/luxon": "^3.3.0",
     "@types/node": "20.4.1",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
+    "@vercel/postgres": "^0.4.0",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
     "luxon": "^3.3.0",
     "next": "13.4.9",
+    "prisma": "^5.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "styled-components": "^6.0.3",
     "typescript": "5.1.6"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^7.2.1",
+    "prettier": "^3.0.0"
   }
 }
