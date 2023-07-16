@@ -1,2 +1,0 @@
-# moneyger
-maneyger frontend
