@@ -1,18 +1,26 @@
 type Query {
   " 作業日誌一覧 "
   listPayments(userId: String!): [Payment!]!
+  " 項目1つを取得 "
+  payment(paymentId: Int!): Payment
 }
 
 " 作業日誌情報 "
 type Payment {
-  " 機械的に判別するためのID。アプリケーションは利用しない "
+  " ID "
   id: ID!
-  " 作業日誌ID "
-  paymentId: String!
   " 項目名 "
   name: String!
   " 上限金額 "
   maxAmount: Int!
   " 現状の金額 "
   currentAmount: Int!
+}
+
+type mutation {
+  updatePayment(id: Int!, name: String!, maxAmount: Int!): updatePaymentResponse
+}
+
+type updatePaymentResponse {
+  id: Int!
 }

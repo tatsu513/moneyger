@@ -1,7 +1,6 @@
 query listPayments($userId: String!) {
   listPayments(userId: $userId) {
     id
-    paymentId
     name
     maxAmount
     currentAmount

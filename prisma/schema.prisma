@@ -2,8 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["jsonProtocol"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -15,6 +14,7 @@ datasource db {
 
 model Payment {
   id          Int    @id @default(autoincrement())
-  title       String
-  limitPrice  Int
+  name       String
+  maxAmount  Int
+  currentAmount Int
 }

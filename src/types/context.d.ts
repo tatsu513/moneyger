@@ -1,10 +1,8 @@
 import ISiteMessageRepository from 'src/graphql-v2/interfaces/ISiteMessageRepository'
 
-export type Context = {
+export type ContextIds = {
   workmanUserId: string
   workmanClientId: string
 }
 
-export type ContextV2 = {
-  siteMessageRepository: ISiteMessageRepository
-}
+export type Context = {}
