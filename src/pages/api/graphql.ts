@@ -1,7 +1,6 @@
 import { ApolloServer, ApolloServerOptions } from '@apollo/server'
 import { startServerAndCreateNextHandler } from '@as-integrations/next'
-import fs, { readFileSync } from 'fs'
-import { globSync } from 'glob'
+import { readFileSync } from 'fs'
 import { Context } from 'src/types/context'
 import { ClientOptions } from '@grpc/grpc-js'
 import { Resolvers } from '@/dao/generated/graphql'
@@ -41,16 +40,5 @@ const serverConfig: ApolloServerOptions<Context> = {
   resolvers,
 }
 const server = new ApolloServer(serverConfig)
-// const startServer = async () => {
-//   const { url } = await startStandaloneServer(server, {
-//     context: async ({ req }) => ({
-//       ...req,
-//       prisma,
-//       userId: req && req.headers.authorization ? '1' : null,
-//     }),
-//     listen: { port: 4000 },
-//   })
-//   console.log(`🚀  Server ready at: ${url}`)
-// }
 
 export default startServerAndCreateNextHandler(server)
