@@ -1,0 +1,26 @@
+import { codegenV1, codegenV2 } from './configs/graphql/codegen'
+import { IGraphQLProjects } from 'graphql-config'
+
+const config: IGraphQLProjects = {
+  projects: {
+    v2: {
+      schema: ['graphql/v2/schema/**/*.graphql'],
+      documents: [
+        'graphql/v2/queries/**/*.graphql',
+        'graphql/v2/mutations/**/*.graphql',
+        'graphql/v2/fragments/**/*.graphql',
+        'src/**/*.graphql',
+        'src/app/**/*.{ts,tsx}',
+        'src/components/**/*.{ts,tsx}',
+        'src/hooks/**/*.{ts,tsx}',
+        'src/pages/**/*.{ts,tsx}',
+      ],
+      include: ['src/dao/generated/v2/graphql.ts'],
+      extensions: {
+        codegen: codegenV2,
+      },
+    },
+  },
+}
+
+export default config
