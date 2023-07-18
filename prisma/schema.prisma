@@ -13,8 +13,18 @@ datasource db {
 }
 
 model Payment {
-  id          Int    @id @default(autoincrement())
-  name       String
-  maxAmount  Int
-  currentAmount Int
+  id             Int              @id @default(autoincrement())
+  name           String
+  maxAmount      Int
+  currentAmount  Int
+  PaymentHistory PaymentHistory[]
+}
+
+model PaymentHistory {
+  id        Int     @id @default(autoincrement())
+  note      String?
+  price     Int
+  paymentDate DateTime
+  payment   Payment @relation(fields: [paymentId], references: [id])
+  paymentId Int
 }

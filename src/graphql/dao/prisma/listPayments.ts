@@ -1,3 +1,4 @@
+import { prisma } from '@/util/prisma'
 import { Payment, Prisma, PrismaClient } from '@prisma/client'
 import { DefaultArgs } from '@prisma/client/runtime/library'
 
