@@ -1,10 +1,10 @@
-'use client'
+"use client"
 
-import { LOCALIZATION_FORMATS } from '@/constants/localizationProviderFormats'
-import { LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
-import { Settings } from 'luxon'
-import React, { PropsWithChildren, Provider } from 'react'
+import { LOCALIZATION_FORMATS } from "@/constants/localizationProviderFormats"
+import { LocalizationProvider } from "@mui/x-date-pickers"
+import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon"
+import { Settings } from "luxon"
+import React, { PropsWithChildren, Provider } from "react"
 import {
   UrqlProvider,
   cacheExchange,
@@ -12,22 +12,24 @@ import {
   debugExchange,
   fetchExchange,
   ssrExchange,
-} from '@urql/next'
-import { devtoolsExchange } from '@urql/devtools'
-import { refocusExchange } from '@urql/exchange-refocus'
-import { retryExchange } from '@urql/exchange-retry'
+} from "@urql/next"
+import { devtoolsExchange } from "@urql/devtools"
+import { refocusExchange } from "@urql/exchange-refocus"
+import { retryExchange } from "@urql/exchange-retry"
 
-Settings.defaultLocale = 'ja-JP'
-Settings.defaultZone = 'Asia/Tokyo'
+Settings.defaultLocale = "ja-JP"
+Settings.defaultZone = "Asia/Tokyo"
 
-const isServerSide = typeof window === 'undefined'
+const isServerSide = typeof window === "undefined"
+
+console.log({ isServerSide })
 
 const ssr = ssrExchange({
   isClient: !isServerSide,
 })
 
 const client = createClient({
-  url: '/api/graphql',
+  url: "/api/graphql-mock",
   exchanges: [
     devtoolsExchange,
     refocusExchange(),
@@ -35,25 +37,26 @@ const client = createClient({
     retryExchange({}),
     debugExchange,
     fetchExchange,
+    ssr,
   ],
-  requestPolicy: 'cache-first',
+  requestPolicy: "cache-first",
   fetchOptions: () => ({
-    credentials: 'include',
+    credentials: "include",
   }),
   suspense: true,
 })
 
 const Providers: React.FC<PropsWithChildren> = ({ children }) => {
   return (
-    <UrqlProvider client={client} ssr={ssr}>
-      <LocalizationProvider
-        dateAdapter={AdapterLuxon}
-        adapterLocale={Settings.defaultLocale}
-        dateFormats={LOCALIZATION_FORMATS}
-      >
+    <LocalizationProvider
+      dateAdapter={AdapterLuxon}
+      adapterLocale={Settings.defaultLocale}
+      dateFormats={LOCALIZATION_FORMATS}
+    >
+      <UrqlProvider client={client} ssr={ssr}>
         {children}
-      </LocalizationProvider>
-    </UrqlProvider>
+      </UrqlProvider>
+    </LocalizationProvider>
   )
 }
 

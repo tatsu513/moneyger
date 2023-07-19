@@ -1,6 +1,6 @@
 type Query {
   " 作業日誌一覧 "
-  listPayments(userId: String!): [Payment!]!
+  listPayments: [Payment!]!
   " 項目1つを取得 "
   payment(paymentId: Int!): Payment
   " paymentごとの支払履歴一覧 "

@@ -3,7 +3,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli'
 const config: CodegenConfig = {
   overwrite: true,
   schema: 'graphql/schema.graphql',
-  documents: 'graphql/queries/**/*.graphql',
+  documents: ['src/app/**/*.{ts,tsx}', 'graphql/queries/**/*.graphql'],
   config: {
     skipTypename: true,
     skipTypeNameForRoot: true,
@@ -35,7 +35,6 @@ const config: CodegenConfig = {
       },
     },
   },
-  // これがつくとエラーになるがつけたいところ
   hooks: {
     afterAllFileWrite: ['prettier --write'],
   },

@@ -1,6 +1,6 @@
 /* eslint-disable */
-import * as types from './graphql'
-import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core'
+import * as types from "./graphql"
+import type { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core"
 
 /**
  * Map of all GraphQL operations in the project.
@@ -13,7 +13,7 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-  'query listPayments($userId: String!) {\n  listPayments(userId: $userId) {\n    id\n    name\n    maxAmount\n    currentAmount\n  }\n}':
+  "\n  query listPayments {\n    listPayments {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n":
     types.ListPaymentsDocument,
 }
 
@@ -35,8 +35,8 @@ export function graphql(source: string): unknown
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: 'query listPayments($userId: String!) {\n  listPayments(userId: $userId) {\n    id\n    name\n    maxAmount\n    currentAmount\n  }\n}',
-): (typeof documents)['query listPayments($userId: String!) {\n  listPayments(userId: $userId) {\n    id\n    name\n    maxAmount\n    currentAmount\n  }\n}']
+  source: "\n  query listPayments {\n    listPayments {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n",
+): (typeof documents)["\n  query listPayments {\n    listPayments {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n"]
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {}
