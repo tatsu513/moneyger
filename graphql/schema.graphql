@@ -1,50 +1,50 @@
 type Query {
-  " 作業日誌一覧 "
+  # 作業日誌一覧
   listPayments: [Payment!]!
-  " 項目1つを取得 "
+  # 項目1つを取得
   payment(paymentId: Int!): Payment
-  " paymentごとの支払履歴一覧 "
+  # paymentごとの支払履歴一覧
   listPaymentHistoriesByPaymentId(paymentId: Int!): [PaymentHistory!]!
-  " 支払履歴を1件取得 "
+  # 支払履歴を1件取得
   paymentHistory(paymentHistoryId: Int!): PaymentHistory
 }
 
-" 作業日誌情報 "
+# 作業日誌情報
 type Payment {
-  " ID "
+  # ID
   id: Int!
-  " 項目名 "
+  # 項目名
   name: String!
-  " 上限金額 "
+  # 上限金額
   maxAmount: Int!
-  " 現状の金額 "
+  # 現状の金額
   currentAmount: Int!
 }
 
 type PaymentHistory {
-  " ID "
+  # ID
   id: Int!
-  " 備考 "
+  # 備考
   note: String
-  " 支払料金 "
+  # 支払料金
   price: Int!
-  " 支払日 "
+  # 支払日
   paymentDate: String!
-  " 収支項目ID "
+  # 収支項目ID
   paymentId: Int!
 }
 
 type mutation {
-  " 収支項目の作成 "
+  # 収支項目の作成
   createPayment(name: String!, maxAmount: Int!): Int!
-  " 収支項目の更新 "
+  # 収支項目の更新
   updatePayment(id: Int!, name: String!, maxAmount: Int!): Int!
-  " 収支項目の削除 "
+  # 収支項目の削除
   deletePayment(id: Int!): Int!
-  " 支払履歴を作成 "
+  # 支払履歴を作成
   createPaymentHistory(note: String!, price: Int!, paymentId: Int!, paymentDate: String!): Int!
-  " 支払履歴を更新 "
+  # 支払履歴を更新
   updatePaymentHistory(id: Int!, note: String!, price: Int!, paymentDate: String!): Int!
-  " 支払履歴を削除 "
+  # 支払履歴を削除
   deletePaymentHistory(id: Int!): Int!
 }

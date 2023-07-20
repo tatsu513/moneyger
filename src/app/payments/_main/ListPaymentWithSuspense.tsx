@@ -1,3 +1,5 @@
+"use client"
+
 import { Typography } from "@mui/material"
 import PaymentListItem from "./PaymentListItem"
 import { graphql } from "@/dao/generated/preset"
@@ -21,10 +23,10 @@ const ListPaymentWithSuspense: React.FC = () => {
     return getUrqlVariables(paymentsMainDocument, {}, true)
   }, [])
   const [{ data }] = useQuery(urqlVariables)
-  const a: string = ""
+  console.log({ data })
   if (data == null) {
     console.info("収支項目を取得できませんでした")
-    // throw new Error('収支項目を取得できませんでした')
+    throw new Error("収支項目を取得できませんでした")
   }
 
   const listPayments = data?.listPayments ?? []
