@@ -12,7 +12,7 @@ import {
   fetchExchange,
   ssrExchange,
 } from '@urql/next';
-import { ShardEnvs } from '@/util/ShardEnvs';
+import { ShardEnvs } from '@/util/shardEnvs';
 
 Settings.defaultLocale = 'ja-JP';
 Settings.defaultZone = 'Asia/Tokyo';
