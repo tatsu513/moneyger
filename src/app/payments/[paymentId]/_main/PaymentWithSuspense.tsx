@@ -1,3 +1,4 @@
+import { grey } from '@/color';
 import { graphql } from '@/dao/generated/preset';
 import getUrqlVariables from '@/util/getUrqlVariables';
 import { Box, Button, Typography } from '@mui/material';
@@ -62,7 +63,9 @@ const PaymentWithSuspense: React.FC<Props> = ({ id }) => {
       <Button variant="contained" fullWidth>
         変更を保存
       </Button>
-      <Button variant="text">支払金額を追加する</Button>
+      <Button variant="text" sx={{ color: grey[900] }}>
+        削除する
+      </Button>
     </>
   );
 };
