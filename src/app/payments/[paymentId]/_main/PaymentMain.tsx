@@ -2,7 +2,7 @@
 import CommonLoading from '@/components/common/CommonLoading';
 import FetchErrorBoundary from '@/components/common/FetchErrorBoundary';
 import PageTitle from '@/components/common/PageTitle';
-import React, { ChangeEvent, Suspense, useCallback, useState } from 'react';
+import React, { Suspense } from 'react';
 import PaymentWithSuspense from '@/app/payments/[paymentId]/_main/PaymentWithSuspense';
 
 type Props = {
@@ -10,13 +10,6 @@ type Props = {
 };
 
 const PaymentMain: React.FC<Props> = ({ paymentId }) => {
-  const [value, setValue] = useState<string>('');
-  const onChange = useCallback(
-    (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-      setValue(e.target.value);
-    },
-    [],
-  );
   return (
     <>
       <PageTitle title="食事" />
