@@ -1,7 +1,7 @@
-import '@/app/reset.css';
+import CssBaseline from '@mui/material/CssBaseline';
 import type { Metadata } from 'next';
 import Providers from '@/app/Providers';
-import MainContents from '@/app/_layout/MainContents';
+import MoneygerAppBar from '@/components/common/MoneygerAppBar';
 
 export const metadata: Metadata = {
   title: 'moneyger',
@@ -16,8 +16,10 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
+        <CssBaseline />
         <Providers>
-          <MainContents>{children}</MainContents>
+          <MoneygerAppBar />
+          {children}
         </Providers>
       </body>
     </html>

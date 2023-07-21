@@ -1,24 +1,48 @@
 import getDisplayPrice from 'src/logics/getDisplayPrice';
-import { Box, Divider, Typography } from '@mui/material';
+import { Box, Divider, ListItemButton, Typography } from '@mui/material';
 import React from 'react';
-import DisplayCalcPrice from '@/components/common/DisplayCalcPrice';
+import getDisplayCalcPrice from '@/logics/getDisplayCalcPrice';
+import { blue, grey, red } from '@/color';
 
 type Props = {
-  title: string;
-  currentPrice: number;
-  limitPrice: number;
+  name: string;
+  currentAmount: number;
+  maxAmount: number;
 };
 
-const PaymentListItem: React.FC<Props> = ({ title, currentPrice, limitPrice }) => {
+const PaymentListItem: React.FC<Props> = ({
+  name,
+  currentAmount,
+  maxAmount,
+}) => {
+  const calcPrice = getDisplayCalcPrice(currentAmount, maxAmount);
+  const calcPriceColor = (() => {
+    if (calcPrice === 0) return grey[900];
+    if (calcPrice < 0) return red[900];
+    return blue[900];
+  })();
   return (
     <>
-      <Box display="flex" justifyContent="space-between" alignItems="center" p={1}>
-        <Typography variant="body1">{title}</Typography>
+      <ListItemButton
+        sx={{
+          px: 2,
+          py: 1,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Typography variant="body1">{name}</Typography>
         <Box textAlign="right">
-          <Typography variant="body1">{getDisplayPrice(currentPrice)}</Typography>
-          <DisplayCalcPrice currentPrice={currentPrice} limitPrice={limitPrice} />
+          <Typography variant="h3Bold" color={calcPriceColor} mb={0.5}>
+            -{(maxAmount - calcPrice).toLocaleString()}円
+          </Typography>
+          <Typography variant="body2">
+            支払済:{calcPrice.toLocaleString()}円/ 上限:
+            {getDisplayPrice(maxAmount)}円
+          </Typography>
         </Box>
-      </Box>
+      </ListItemButton>
       <Divider />
     </>
   );

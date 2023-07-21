@@ -1,5 +1,10 @@
-import PaymentsMain from "@/app/payments/_main/PaymentsMain"
+import PaymentsMain from '@/app/payments/_main/PaymentsMain';
+import PageContentsTemplate from '@/components/common/PageContentsTemplate';
 
 export default async function Home() {
-  return <PaymentsMain />
+  return (
+    <PageContentsTemplate>
+      <PaymentsMain />
+    </PageContentsTemplate>
+  );
 }

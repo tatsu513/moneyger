@@ -1,13 +1,11 @@
-'use client';
-
-import { Typography } from '@mui/material';
 import PaymentListItem from '@/app/payments/_main/PaymentListItem';
 import { graphql } from '@/dao/generated/preset';
 import { useMemo } from 'react';
 import getUrqlVariables from '@/util/getUrqlVariables';
 import { useQuery } from 'urql';
+import { Divider, List, Typography } from '@mui/material';
 
-const paymentsMainDocument = graphql(`
+const listPaymentWithSuspenseDocument = graphql(`
   query listPayments {
     listPayments {
       id
@@ -19,11 +17,11 @@ const paymentsMainDocument = graphql(`
 `);
 
 const ListPaymentWithSuspense: React.FC = () => {
-  const urqlVariables = useMemo(() => {
-    return getUrqlVariables(paymentsMainDocument, {}, true);
+  const val = useMemo(() => {
+    return getUrqlVariables(listPaymentWithSuspenseDocument, {}, true);
   }, []);
-  const [{ data }] = useQuery(urqlVariables);
-  console.log({ data });
+  const [{ data }] = useQuery(val);
+
   if (data == null) {
     console.info('収支項目を取得できませんでした');
     throw new Error('収支項目を取得できませんでした');
@@ -34,16 +32,17 @@ const ListPaymentWithSuspense: React.FC = () => {
     return <Typography>データがありません</Typography>;
   }
   return (
-    <>
+    <List>
+      <Divider />
       {data?.listPayments.map((p) => (
         <PaymentListItem
           key={p.name}
-          title={p.name}
-          currentPrice={p.currentAmount}
-          limitPrice={p.maxAmount}
+          name={p.name}
+          currentAmount={p.currentAmount}
+          maxAmount={p.maxAmount}
         />
       ))}
-    </>
+    </List>
   );
 };
 

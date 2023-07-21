@@ -1,5 +1,5 @@
-const getDisplayCalcPrice = (currentPrice: number, limitPrice: number) => {
-  return (currentPrice - limitPrice).toLocaleString();
+const getDisplayCalcPrice = (currentAmount: number, maxAmount: number) => {
+  return maxAmount - currentAmount;
 };
 
 export default getDisplayCalcPrice;
