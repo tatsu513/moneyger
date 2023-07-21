@@ -21,6 +21,70 @@ const resolvers: Resolvers = {
         },
       ];
     },
+    payment: (_, { paymentId }) => {
+      return {
+        currentAmount: 2000,
+        id: paymentId,
+        name: '食費',
+        maxAmount: 30000,
+      };
+    },
+    // paymentに紐づく支払履歴一覧
+    listPaymentHistoriesByPaymentId: async (_, { paymentId }) => {
+      return [
+        {
+          paymentDate: '',
+          id: 1,
+          paymentId: paymentId,
+          note: '',
+          price: 300,
+        },
+        {
+          paymentDate: '',
+          id: 2,
+          paymentId: paymentId,
+          note: '',
+          price: 500,
+        },
+      ];
+    },
+    // 支払履歴を1件取得
+    paymentHistory: async (_, { paymentHistoryId }) => {
+      return {
+        paymentDate: '',
+        id: paymentHistoryId,
+        paymentId: 1,
+        note: '',
+        price: 300,
+      };
+    },
+  },
+  mutation: {
+    createPayment: async (_, { name, maxAmount }) => {
+      console.log({ name, maxAmount });
+      return 1;
+    },
+    updatePayment: async (_, { id, name, maxAmount }) => {
+      console.log({ name, maxAmount });
+      return id;
+    },
+    deletePayment: async (_, { id }) => {
+      return id;
+    },
+    createPaymentHistory: async (
+      _,
+      { note, price, paymentDate, paymentId },
+    ) => {
+      console.log({ note, price, paymentDate, paymentId });
+      return 1;
+    },
+    updatePaymentHistory: async (_, { id, note, price, paymentDate }) => {
+      console.log({ note, price, paymentDate });
+      return id;
+    },
+    deletePaymentHistory: async (_, { id }) => {
+      return id;
+    },
   },
 };
 
