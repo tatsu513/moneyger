@@ -5,17 +5,26 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { Settings } from 'luxon';
 import React, { PropsWithChildren } from 'react';
-import { Client, UrqlProvider, cacheExchange, fetchExchange, ssrExchange } from '@urql/next';
+import {
+  Client,
+  UrqlProvider,
+  cacheExchange,
+  fetchExchange,
+  ssrExchange,
+} from '@urql/next';
+import { ShardEnvs } from '@/util/ShardEnvs';
 
 Settings.defaultLocale = 'ja-JP';
 Settings.defaultZone = 'Asia/Tokyo';
+
+const shardEnvs = new ShardEnvs();
 
 const isServerSide = typeof window === 'undefined';
 const ssr = ssrExchange({
   isClient: !isServerSide,
 });
 const client = new Client({
-  url: 'http://localhost:3000/graphql',
+  url: shardEnvs.graphqlEndpoint,
   exchanges: [cacheExchange, fetchExchange, ssr],
   fetchOptions: () => {
     return { headers: { authorization: 'Bearer token' } };

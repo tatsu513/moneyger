@@ -46,7 +46,8 @@
     "react-dom": "18.2.0",
     "styled-components": "^6.0.3",
     "typescript": "5.1.6",
-    "urql": "^4.0.4"
+    "urql": "^4.0.4",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "4.0.1",
