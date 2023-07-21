@@ -23,9 +23,9 @@ const resolvers: Resolvers = {
     },
     payment: (_, { paymentId }) => {
       return {
-        currentAmount: 2000,
         id: paymentId,
         name: '食費',
+        currentAmount: 2000,
         maxAmount: 30000,
       };
     },

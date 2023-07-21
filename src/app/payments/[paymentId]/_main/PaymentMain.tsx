@@ -1,12 +1,15 @@
 'use client';
-import { Box, Button, TextField, Typography } from '@mui/material';
-import React, { ChangeEvent, useCallback, useState } from 'react';
+import CommonLoading from '@/components/common/CommonLoading';
+import FetchErrorBoundary from '@/components/common/FetchErrorBoundary';
+import PageTitle from '@/components/common/PageTitle';
+import React, { ChangeEvent, Suspense, useCallback, useState } from 'react';
+import PaymentWithSuspense from '@/app/payments/[paymentId]/_main/PaymentWithSuspense';
 
 type Props = {
-  itemId: string;
+  paymentId: number;
 };
 
-const PaymentMain: React.FC<Props> = () => {
+const PaymentMain: React.FC<Props> = ({ paymentId }) => {
   const [value, setValue] = useState<string>('');
   const onChange = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -16,20 +19,12 @@ const PaymentMain: React.FC<Props> = () => {
   );
   return (
     <>
-      <Typography variant="h2">食費</Typography>
-
-      <Box>
-        <Typography variant="body1">上限</Typography>
-        <TextField value={value} fullWidth onChange={onChange} />
-      </Box>
-
-      <Box>
-        <Typography variant="body1">使用金額</Typography>
-        <TextField value={value} fullWidth onChange={onChange} />
-      </Box>
-
-      <Button variant="contained">変更を保存</Button>
-      <Button variant="text">支払金額を追加する</Button>
+      <PageTitle title="食事" />
+      <FetchErrorBoundary>
+        <Suspense fallback={<CommonLoading />}>
+          <PaymentWithSuspense id={paymentId} />
+        </Suspense>
+      </FetchErrorBoundary>
     </>
   );
 };

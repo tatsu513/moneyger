@@ -350,6 +350,19 @@ export type Resolvers<ContextType = Context> = {
   mutation?: MutationResolvers<ContextType>;
 };
 
+export type PaymentQueryVariables = Exact<{
+  paymentId: Scalars['Int']['input'];
+}>;
+
+export type PaymentQuery = {
+  payment?: {
+    id: number;
+    name: string;
+    maxAmount: number;
+    currentAmount: number;
+  } | null;
+};
+
 export type ListPaymentsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type ListPaymentsQuery = {
@@ -361,6 +374,16 @@ export type ListPaymentsQuery = {
   }>;
 };
 
+export const PaymentDocument = gql`
+  query payment($paymentId: Int!) {
+    payment(paymentId: $paymentId) {
+      id
+      name
+      maxAmount
+      currentAmount
+    }
+  }
+`;
 export const ListPaymentsDocument = gql`
   query listPayments {
     listPayments {
@@ -389,6 +412,20 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper,
 ) {
   return {
+    payment(
+      variables: PaymentQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<PaymentQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<PaymentQuery>(PaymentDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'payment',
+        'query',
+      );
+    },
     listPayments(
       variables?: ListPaymentsQueryVariables,
       requestHeaders?: GraphQLClientRequestHeaders,

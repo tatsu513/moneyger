@@ -37,6 +37,7 @@ const ListPaymentWithSuspense: React.FC = () => {
       {data?.listPayments.map((p) => (
         <PaymentListItem
           key={p.name}
+          id={p.id}
           name={p.name}
           currentAmount={p.currentAmount}
           maxAmount={p.maxAmount}

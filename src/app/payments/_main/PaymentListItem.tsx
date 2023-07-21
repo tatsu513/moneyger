@@ -1,28 +1,42 @@
 import getDisplayPrice from 'src/logics/getDisplayPrice';
-import { Box, Divider, ListItemButton, Typography } from '@mui/material';
-import React from 'react';
+import {
+  Box,
+  Divider,
+  ListItem,
+  ListItemButton,
+  Typography,
+} from '@mui/material';
+import React, { useCallback } from 'react';
 import getDisplayCalcPrice from '@/logics/getDisplayCalcPrice';
 import { blue, grey, red } from '@/color';
+import { useRouter } from 'next/navigation';
 
 type Props = {
+  id: number;
   name: string;
   currentAmount: number;
   maxAmount: number;
 };
 
 const PaymentListItem: React.FC<Props> = ({
+  id,
   name,
   currentAmount,
   maxAmount,
 }) => {
+  const router = useRouter();
   const calcPrice = getDisplayCalcPrice(currentAmount, maxAmount);
   const calcPriceColor = (() => {
     if (calcPrice === 0) return grey[900];
     if (calcPrice < 0) return red[900];
     return blue[900];
   })();
+
+  const handleClick = useCallback(() => {
+    router.push(`/payments/[paymentId]`.replace('[paymentId]', id.toString()));
+  }, [router, id]);
   return (
-    <>
+    <ListItem divider disablePadding>
       <ListItemButton
         sx={{
           px: 2,
@@ -31,6 +45,7 @@ const PaymentListItem: React.FC<Props> = ({
           justifyContent: 'space-between',
           alignItems: 'center',
         }}
+        onClick={handleClick}
       >
         <Typography variant="body1">{name}</Typography>
         <Box textAlign="right">
@@ -44,7 +59,7 @@ const PaymentListItem: React.FC<Props> = ({
         </Box>
       </ListItemButton>
       <Divider />
-    </>
+    </ListItem>
   );
 };
 
