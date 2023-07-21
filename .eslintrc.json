@@ -1,3 +1,52 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "next/core-web-vitals",
+    "prettier",
+    "plugin:consistent-default-export-name/fixed"
+  ],
+  "plugins": ["import", "unused-imports", "import-access"],
+  "rules": {
+    "import/no-duplicates": "error",
+    "unused-imports/no-unused-imports": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_",
+        "destructuredArrayIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/consistent-type-assertions": [
+      "error",
+      {
+        "assertionStyle": "never"
+      }
+    ],
+    "consistent-default-export-name/default-export-match-filename": "error",
+    "consistent-default-export-name/default-import-match-filename": "error",
+    "import/no-anonymous-default-export": "error",
+    "react/jsx-no-bind": [
+      "error",
+      {
+        "allowArrowFunctions": false,
+        "allowBind": false,
+        "ignoreRefs": true
+      }
+    ],
+    "no-param-reassign": ["error", { "props": true }],
+    "no-else-return": "error",
+    "no-restricted-imports": ["error", { "patterns": ["./", "../"] }],
+    "import-access/jsdoc": ["error"]
+  },
+  "overrides": [
+    {
+      "files": ["**/page.tsx", "**/layout.tsx", "**/api/*.ts"],
+      "rules": {
+        "consistent-default-export-name/default-export-match-filename": "off"
+      }
+    }
+  ]
 }

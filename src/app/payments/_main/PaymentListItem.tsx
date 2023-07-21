@@ -1,14 +1,13 @@
-import getDisplayPrice from "src/logics/getDisplayPrice"
-import { Box, Divider, Typography } from "@mui/material"
-import React from "react"
-import getDisplayCalcPrice from "src/logics/getDisplayCalcPrice"
-import DisplayCalcPrice from "@/components/common/DisplayCalcPrice"
+import getDisplayPrice from 'src/logics/getDisplayPrice';
+import { Box, Divider, Typography } from '@mui/material';
+import React from 'react';
+import DisplayCalcPrice from '@/components/common/DisplayCalcPrice';
 
 type Props = {
-  title: string
-  currentPrice: number
-  limitPrice: number
-}
+  title: string;
+  currentPrice: number;
+  limitPrice: number;
+};
 
 const PaymentListItem: React.FC<Props> = ({ title, currentPrice, limitPrice }) => {
   return (
@@ -22,7 +21,7 @@ const PaymentListItem: React.FC<Props> = ({ title, currentPrice, limitPrice }) =
       </Box>
       <Divider />
     </>
-  )
-}
+  );
+};
 
-export default PaymentListItem
+export default PaymentListItem;

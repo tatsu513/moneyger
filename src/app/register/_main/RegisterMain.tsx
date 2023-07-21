@@ -1,32 +1,40 @@
-'use client'
-import { Autocomplete, Box, Button, TextField, Typography } from '@mui/material'
-import { DatePicker } from '@mui/x-date-pickers'
-import { DateTime } from 'luxon'
-import React, { ChangeEvent, SyntheticEvent, useCallback, useState } from 'react'
+'use client';
+import {
+  Autocomplete,
+  AutocompleteRenderInputParams,
+  Box,
+  Button,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
+import { DateTime } from 'luxon';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 
 type Props = {
-  itemId?: string
-}
+  itemId?: string;
+};
 
 const RegisterMain: React.FC<Props> = ({ itemId }) => {
-  const selectedItem = options.find((o) => o.id === itemId)
+  const selectedItem = options.find((o) => o.id === itemId);
 
-  const [price, setPrice] = useState<string>('')
-  const [item, setItem] = useState<Option | null>(selectedItem ?? null)
-  const [date, setDate] = useState<DateTime | null>(DateTime.now())
+  const [price, setPrice] = useState<string>('');
+  const [item, _setItem] = useState<Option | null>(selectedItem ?? null);
+  const [date, setDate] = useState<DateTime | null>(DateTime.now());
   const onChange = useCallback((e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setPrice(e.target.value)
-  }, [])
-  const onChangeItem = useCallback((_e: SyntheticEvent<Element, Event>, value: Option | null) => {
-    setItem(value)
-  }, [])
+    setPrice(e.target.value);
+  }, []);
   const onChangeDate = useCallback((date: DateTime | null) => {
-    setDate(date)
-  }, [])
+    setDate(date);
+  }, []);
 
   const submit = useCallback(() => {
-    console.log(price, item, date)
-  }, [price, item, date])
+    console.log(price, item, date);
+  }, [price, item, date]);
+
+  const renderInput = useCallback((params: AutocompleteRenderInputParams) => {
+    return <TextField {...params} label="カテゴリ" />;
+  }, []);
   return (
     <Box>
       <Typography variant="h3">支払登録</Typography>
@@ -43,7 +51,7 @@ const RegisterMain: React.FC<Props> = ({ itemId }) => {
           id="combo-box-demo"
           options={options}
           fullWidth
-          renderInput={(params) => <TextField {...params} label="カテゴリ" />}
+          renderInput={renderInput}
         />
       </Box>
 
@@ -54,16 +62,16 @@ const RegisterMain: React.FC<Props> = ({ itemId }) => {
 
       <Button onClick={submit}>登録する</Button>
     </Box>
-  )
-}
+  );
+};
 
-export default RegisterMain
+export default RegisterMain;
 
 type Option = {
-  id: string
-  label: string
-}
+  id: string;
+  label: string;
+};
 const options = [
   { id: '1', label: '食費' },
   { id: '2', label: 'いつ栞' },
-]
+];

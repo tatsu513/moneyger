@@ -1,8 +1,8 @@
-import ISiteMessageRepository from 'src/graphql-v2/interfaces/ISiteMessageRepository'
-
 export type ContextIds = {
-  workmanUserId: string
-  workmanClientId: string
-}
+  workmanUserId: string;
+  workmanClientId: string;
+};
 
-export type Context = {}
+// そのうち中身を書くのでdisable
+// eslint-disable-next-line
+export type Context = {};

@@ -1,14 +1,7 @@
-import MoneygerDialog from "@/components/common/MoneygerDialog";
-import DialogState from "@/types/DialogState";
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  Typography,
-} from "@mui/material";
-import React, { ChangeEvent, useCallback, useMemo, useState } from "react";
+import MoneygerDialog from '@/components/common/MoneygerDialog';
+import DialogState from '@/types/DialogState';
+import { Box, Button, Checkbox, FormControlLabel, FormGroup, Typography } from '@mui/material';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 
 type Props = {
   dialogState: DialogState;
@@ -64,7 +57,7 @@ const DeleteCategoryDialog: React.FC<Props> = ({ dialogState, onClose }) => {
 export default DeleteCategoryDialog;
 
 const accounts = {
-  id: "1",
-  title: "食費",
+  id: '1',
+  title: '食費',
   limitPrice: 0,
 };

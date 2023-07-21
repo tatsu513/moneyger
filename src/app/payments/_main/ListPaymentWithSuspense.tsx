@@ -1,11 +1,11 @@
-"use client"
+'use client';
 
-import { Typography } from "@mui/material"
-import PaymentListItem from "./PaymentListItem"
-import { graphql } from "@/dao/generated/preset"
-import { useMemo } from "react"
-import getUrqlVariables from "@/util/getUrqlVariables"
-import { useQuery } from "urql"
+import { Typography } from '@mui/material';
+import PaymentListItem from '@/app/payments/_main/PaymentListItem';
+import { graphql } from '@/dao/generated/preset';
+import { useMemo } from 'react';
+import getUrqlVariables from '@/util/getUrqlVariables';
+import { useQuery } from 'urql';
 
 const paymentsMainDocument = graphql(`
   query listPayments {
@@ -16,22 +16,22 @@ const paymentsMainDocument = graphql(`
       currentAmount
     }
   }
-`)
+`);
 
 const ListPaymentWithSuspense: React.FC = () => {
   const urqlVariables = useMemo(() => {
-    return getUrqlVariables(paymentsMainDocument, {}, true)
-  }, [])
-  const [{ data }] = useQuery(urqlVariables)
-  console.log({ data })
+    return getUrqlVariables(paymentsMainDocument, {}, true);
+  }, []);
+  const [{ data }] = useQuery(urqlVariables);
+  console.log({ data });
   if (data == null) {
-    console.info("収支項目を取得できませんでした")
-    throw new Error("収支項目を取得できませんでした")
+    console.info('収支項目を取得できませんでした');
+    throw new Error('収支項目を取得できませんでした');
   }
 
-  const listPayments = data?.listPayments ?? []
+  const listPayments = data?.listPayments ?? [];
   if (listPayments.length === 0) {
-    return <Typography>データがありません</Typography>
+    return <Typography>データがありません</Typography>;
   }
   return (
     <>
@@ -44,7 +44,7 @@ const ListPaymentWithSuspense: React.FC = () => {
         />
       ))}
     </>
-  )
-}
+  );
+};
 
-export default ListPaymentWithSuspense
+export default ListPaymentWithSuspense;

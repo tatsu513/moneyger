@@ -1,18 +1,18 @@
-"use client";
-import { Box, Button, TextField, Typography } from "@mui/material";
-import React, { ChangeEvent, useCallback, useState } from "react";
+'use client';
+import { Box, Button, TextField, Typography } from '@mui/material';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 
 type Props = {
   itemId: string;
 };
 
-const AccountMain: React.FC<Props> = ({ itemId }) => {
-  const [value, setValue] = useState<string>("");
+const PaymentMain: React.FC<Props> = () => {
+  const [value, setValue] = useState<string>('');
   const onChange = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
       setValue(e.target.value);
     },
-    []
+    [],
   );
   return (
     <>
@@ -34,4 +34,4 @@ const AccountMain: React.FC<Props> = ({ itemId }) => {
   );
 };
 
-export default AccountMain;
+export default PaymentMain;

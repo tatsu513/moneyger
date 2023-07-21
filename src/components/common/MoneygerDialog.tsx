@@ -1,11 +1,11 @@
-import DialogState from "@/types/DialogState";
+import DialogState from '@/types/DialogState';
 import {
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-} from "@mui/material";
-import React, { PropsWithChildren } from "react";
+} from '@mui/material';
+import React from 'react';
 
 type Props = {
   children: React.ReactNode;
@@ -22,7 +22,7 @@ const MoneygerDialog: React.FC<Props> = ({
   onClose,
 }) => {
   return (
-    <Dialog open={state === "open"} onClose={onClose} fullWidth>
+    <Dialog open={state === 'open'} onClose={onClose} fullWidth>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>{children}</DialogContent>
       {actions && <DialogActions>{actions}</DialogActions>}

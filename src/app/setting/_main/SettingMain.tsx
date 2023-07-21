@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Box,
@@ -10,40 +10,42 @@ import {
   Menu,
   MenuItem,
   Typography,
-} from "@mui/material";
-import React, { useCallback, useRef, useState } from "react";
-import AddCategoryDialog from "@/app/setting/_dialog/AddCategoryDialog";
-import DialogState from "@/types/DialogState";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { red } from "@mui/material/colors";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import UpdateCategoryDialog from "@/app/setting/_dialog/UpdateCategoryDialog";
-import DeleteCategoryDialog from "@/app/setting/_dialog/DeleteCategoryDialog";
+} from '@mui/material';
+import React, { useCallback, useState } from 'react';
+import AddCategoryDialog from '@/app/setting/_dialog/AddCategoryDialog';
+import DialogState from '@/types/DialogState';
+import {
+  MoreHoriz as MoreHorizIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+} from '@mui/icons-material/';
+import { red } from '@mui/material/colors';
+import UpdateCategoryDialog from '@/app/setting/_dialog/UpdateCategoryDialog';
+import DeleteCategoryDialog from '@/app/setting/_dialog/DeleteCategoryDialog';
 
 const SettingMain = () => {
-  const [dialogState, setDialogState] = useState<DialogState>("closed");
+  const [dialogState, setDialogState] = useState<DialogState>('closed');
   const [updateDialogState, setUpdateDialogState] =
-    useState<DialogState>("closed");
+    useState<DialogState>('closed');
   const [deleteDialogState, setDeleteDialogState] =
-    useState<DialogState>("closed");
+    useState<DialogState>('closed');
 
   const openDialog = useCallback(() => {
-    setDialogState("open");
+    setDialogState('open');
   }, []);
 
   const closeDialog = useCallback(() => {
-    setDialogState("closed");
-    setUpdateDialogState("closed");
-    setDeleteDialogState("closed");
+    setDialogState('closed');
+    setUpdateDialogState('closed');
+    setDeleteDialogState('closed');
   }, []);
 
   const openUpdateDialog = useCallback(() => {
-    setUpdateDialogState("open");
+    setUpdateDialogState('open');
   }, []);
 
   const DeleteUpdateDialog = useCallback(() => {
-    setDeleteDialogState("open");
+    setDeleteDialogState('open');
   }, []);
 
   return (
@@ -52,7 +54,7 @@ const SettingMain = () => {
         {accounts.map((v) => (
           <ListItem
             key={v.title}
-            sx={{ flexDirection: "column" }}
+            sx={{ flexDirection: 'column' }}
             secondaryAction={
               <MoreHorizMenu
                 onClickUpdate={openUpdateDialog}
@@ -99,25 +101,24 @@ const MoreHorizMenu: React.FC<MoreHorizMenuProps> = ({
   onClickUpdate,
   onClickDelete,
 }) => {
-  const ref = useRef();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleMenu = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget),
+    [],
+  );
+
+  const handleClose = useCallback(() => setAnchorEl(null), []);
 
   const openUpdateDialog = useCallback(() => {
     onClickUpdate();
     handleClose();
-  }, [onClickUpdate]);
+  }, [onClickUpdate, handleClose]);
 
   const openDeleteDialog = useCallback(() => {
     onClickDelete();
     handleClose();
-  }, [onClickDelete]);
+  }, [onClickDelete, handleClose]);
   return (
     <>
       <IconButton edge="end" aria-label="3点リーダー" onClick={handleMenu}>
@@ -126,13 +127,13 @@ const MoreHorizMenu: React.FC<MoreHorizMenuProps> = ({
       <Menu
         anchorEl={anchorEl}
         anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
+          vertical: 'top',
+          horizontal: 'right',
         }}
         keepMounted
         transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
+          vertical: 'top',
+          horizontal: 'right',
         }}
         open={Boolean(anchorEl)}
         onClose={handleClose}
@@ -158,13 +159,13 @@ const MoreHorizMenu: React.FC<MoreHorizMenuProps> = ({
 
 const accounts = [
   {
-    id: "1",
-    title: "食費",
+    id: '1',
+    title: '食費',
     limitPrice: 0,
   },
   {
-    id: "2",
-    title: "いつ栞",
+    id: '2',
+    title: 'いつ栞',
     limitPrice: 30000,
   },
 ];
