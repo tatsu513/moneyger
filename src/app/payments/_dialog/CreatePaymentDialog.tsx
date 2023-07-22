@@ -1,5 +1,6 @@
 import MoneygerDialog from '@/components/common/MoneygerDialog';
 import { graphql } from '@/dao/generated/preset';
+import { maxAmountType, nameType } from '@/models/payment';
 import DialogState from '@/types/DialogState';
 import { Box, Button, Slide, TextField, Typography } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
@@ -13,11 +14,6 @@ const createPaymentDialogCreatePaymentDocument = graphql(`
   }
 `);
 
-const nameType = z
-  .string()
-  .min(2, { message: '2~10文字で入力してください' })
-  .max(10, { message: '2~10文字で入力してください' });
-const maxAmountType = z.coerce.number().gte(1).lte(999999);
 const createPaymentSchema = z.object({
   name: nameType,
   maxAmount: maxAmountType,
@@ -64,7 +60,7 @@ const CreatePaymentDialog: React.FC<Props> = ({ dialogState, onClose }) => {
   const submit = useMutation(createPaymentDialogCreatePaymentDocument)[1];
   const handleSubmit = useCallback(async () => {
     if (!safeParseResult.success) {
-      console.error('入力ちを確認してください', { name, maxAmount });
+      console.error('入力値を確認してください', { name, maxAmount });
       return;
     }
     try {

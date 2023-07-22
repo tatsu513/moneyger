@@ -1,3 +1,4 @@
+'use client';
 import PaymentListItem from '@/app/payments/_main/PaymentListItem';
 import { graphql } from '@/dao/generated/preset';
 import { useMemo } from 'react';
@@ -33,7 +34,7 @@ const ListPaymentWithSuspense: React.FC = () => {
   }
   return (
     <List>
-      <Divider />
+      <Divider component="li" />
       {data?.listPayments.map((p) => (
         <PaymentListItem
           key={p.name}

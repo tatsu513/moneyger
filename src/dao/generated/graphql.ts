@@ -362,6 +362,24 @@ export type PaymentQuery = {
   } | null;
 };
 
+export type DeletePaymentDialog_DeletePaymentMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+export type DeletePaymentDialog_DeletePaymentMutation = {
+  deletePayment: number;
+};
+
+export type CreatePaymentDialog_UpdatePaymentMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
+  maxAmount: Scalars['Int']['input'];
+}>;
+
+export type CreatePaymentDialog_UpdatePaymentMutation = {
+  updatePayment: number;
+};
+
 export type CreatePaymentDialog_CreatePaymentMutationVariables = Exact<{
   name: Scalars['String']['input'];
   maxAmount: Scalars['Int']['input'];
@@ -382,6 +400,19 @@ export type ListPaymentsQuery = {
   }>;
 };
 
+export type PaymentPageQueryVariables = Exact<{
+  paymentId: Scalars['Int']['input'];
+}>;
+
+export type PaymentPageQuery = {
+  payment?: {
+    id: number;
+    name: string;
+    maxAmount: number;
+    currentAmount: number;
+  } | null;
+};
+
 export const PaymentDocument = gql`
   query payment($paymentId: Int!) {
     payment(paymentId: $paymentId) {
@@ -392,6 +423,20 @@ export const PaymentDocument = gql`
     }
   }
 `;
+export const DeletePaymentDialog_DeletePaymentDocument = gql`
+  mutation deletePaymentDialog_DeletePayment($id: Int!) {
+    deletePayment(id: $id)
+  }
+`;
+export const CreatePaymentDialog_UpdatePaymentDocument = gql`
+  mutation createPaymentDialog_UpdatePayment(
+    $id: Int!
+    $name: String!
+    $maxAmount: Int!
+  ) {
+    updatePayment(id: $id, name: $name, maxAmount: $maxAmount)
+  }
+`;
 export const CreatePaymentDialog_CreatePaymentDocument = gql`
   mutation createPaymentDialog_CreatePayment($name: String!, $maxAmount: Int!) {
     createPayment(name: $name, maxAmount: $maxAmount)
@@ -400,6 +445,16 @@ export const CreatePaymentDialog_CreatePaymentDocument = gql`
 export const ListPaymentsDocument = gql`
   query listPayments {
     listPayments {
+      id
+      name
+      maxAmount
+      currentAmount
+    }
+  }
+`;
+export const PaymentPageDocument = gql`
+  query paymentPage($paymentId: Int!) {
+    payment(paymentId: $paymentId) {
       id
       name
       maxAmount
@@ -439,6 +494,36 @@ export function getSdk(
         'query',
       );
     },
+    deletePaymentDialog_DeletePayment(
+      variables: DeletePaymentDialog_DeletePaymentMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<DeletePaymentDialog_DeletePaymentMutation> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<DeletePaymentDialog_DeletePaymentMutation>(
+            DeletePaymentDialog_DeletePaymentDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'deletePaymentDialog_DeletePayment',
+        'mutation',
+      );
+    },
+    createPaymentDialog_UpdatePayment(
+      variables: CreatePaymentDialog_UpdatePaymentMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<CreatePaymentDialog_UpdatePaymentMutation> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<CreatePaymentDialog_UpdatePaymentMutation>(
+            CreatePaymentDialog_UpdatePaymentDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'createPaymentDialog_UpdatePayment',
+        'mutation',
+      );
+    },
     createPaymentDialog_CreatePayment(
       variables: CreatePaymentDialog_CreatePaymentMutationVariables,
       requestHeaders?: GraphQLClientRequestHeaders,
@@ -465,6 +550,20 @@ export function getSdk(
             ...wrappedRequestHeaders,
           }),
         'listPayments',
+        'query',
+      );
+    },
+    paymentPage(
+      variables: PaymentPageQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<PaymentPageQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<PaymentPageQuery>(PaymentPageDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'paymentPage',
         'query',
       );
     },

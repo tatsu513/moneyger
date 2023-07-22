@@ -118,6 +118,24 @@ export type PaymentQuery = {
   } | null;
 };
 
+export type DeletePaymentDialog_DeletePaymentMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+export type DeletePaymentDialog_DeletePaymentMutation = {
+  deletePayment: number;
+};
+
+export type CreatePaymentDialog_UpdatePaymentMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
+  maxAmount: Scalars['Int']['input'];
+}>;
+
+export type CreatePaymentDialog_UpdatePaymentMutation = {
+  updatePayment: number;
+};
+
 export type CreatePaymentDialog_CreatePaymentMutationVariables = Exact<{
   name: Scalars['String']['input'];
   maxAmount: Scalars['Int']['input'];
@@ -136,6 +154,19 @@ export type ListPaymentsQuery = {
     maxAmount: number;
     currentAmount: number;
   }>;
+};
+
+export type PaymentPageQueryVariables = Exact<{
+  paymentId: Scalars['Int']['input'];
+}>;
+
+export type PaymentPageQuery = {
+  payment?: {
+    id: number;
+    name: string;
+    maxAmount: number;
+    currentAmount: number;
+  } | null;
 };
 
 export const PaymentDocument = {
@@ -192,6 +223,128 @@ export const PaymentDocument = {
     },
   ],
 } as unknown as DocumentNode<PaymentQuery, PaymentQueryVariables>;
+export const DeletePaymentDialog_DeletePaymentDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'deletePaymentDialog_DeletePayment' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'deletePayment' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'id' },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeletePaymentDialog_DeletePaymentMutation,
+  DeletePaymentDialog_DeletePaymentMutationVariables
+>;
+export const CreatePaymentDialog_UpdatePaymentDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createPaymentDialog_UpdatePayment' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'name' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'maxAmount' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updatePayment' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'id' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'name' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'name' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'maxAmount' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'maxAmount' },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreatePaymentDialog_UpdatePaymentMutation,
+  CreatePaymentDialog_UpdatePaymentMutationVariables
+>;
 export const CreatePaymentDialog_CreatePaymentDocument = {
   kind: 'Document',
   definitions: [
@@ -287,3 +440,57 @@ export const ListPaymentsDocument = {
     },
   ],
 } as unknown as DocumentNode<ListPaymentsQuery, ListPaymentsQueryVariables>;
+export const PaymentPageDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'paymentPage' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'paymentId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'payment' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'paymentId' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'paymentId' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'maxAmount' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'currentAmount' },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<PaymentPageQuery, PaymentPageQueryVariables>;

@@ -8,8 +8,8 @@ import ListPaymentWithSuspense from '@/app/payments/_main/ListPaymentWithSuspens
 import PageTitle from '@/components/common/PageTitle';
 import MainContentsWrapper from '@/components/common/MainContentsWrapper';
 import { Add as AddIcon } from '@mui/icons-material';
-import CreatePaymentDialog from '@/app/payments/_dialog/createPaymentDialog';
 import DialogState from '@/types/DialogState';
+import CreatePaymentDialog from '@/app/payments/_dialog/CreatePaymentDialog';
 
 const PaymentsMain = () => {
   const [dialogState, setDialogState] = useState<DialogState>('closed');

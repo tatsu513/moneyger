@@ -1,3 +1,4 @@
+'use client';
 import getDisplayPrice from 'src/logics/getDisplayPrice';
 import {
   Box,
