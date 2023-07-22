@@ -35,40 +35,6 @@ export type Scalars = {
   Float: { input: number; output: number };
 };
 
-export type Payment = {
-  currentAmount: Scalars['Int']['output'];
-  id: Scalars['Int']['output'];
-  maxAmount: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-};
-
-export type PaymentHistory = {
-  id: Scalars['Int']['output'];
-  note?: Maybe<Scalars['String']['output']>;
-  paymentDate: Scalars['String']['output'];
-  paymentId: Scalars['Int']['output'];
-  price: Scalars['Int']['output'];
-};
-
-export type Query = {
-  listPaymentHistoriesByPaymentId: Array<PaymentHistory>;
-  listPayments: Array<Payment>;
-  payment?: Maybe<Payment>;
-  paymentHistory?: Maybe<PaymentHistory>;
-};
-
-export type QueryListPaymentHistoriesByPaymentIdArgs = {
-  paymentId: Scalars['Int']['input'];
-};
-
-export type QueryPaymentArgs = {
-  paymentId: Scalars['Int']['input'];
-};
-
-export type QueryPaymentHistoryArgs = {
-  paymentHistoryId: Scalars['Int']['input'];
-};
-
 export type Mutation = {
   createPayment: Scalars['Int']['output'];
   createPaymentHistory: Scalars['Int']['output'];
@@ -109,6 +75,40 @@ export type MutationUpdatePaymentHistoryArgs = {
   note: Scalars['String']['input'];
   paymentDate: Scalars['String']['input'];
   price: Scalars['Int']['input'];
+};
+
+export type Payment = {
+  currentAmount: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  maxAmount: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+};
+
+export type PaymentHistory = {
+  id: Scalars['Int']['output'];
+  note?: Maybe<Scalars['String']['output']>;
+  paymentDate: Scalars['String']['output'];
+  paymentId: Scalars['Int']['output'];
+  price: Scalars['Int']['output'];
+};
+
+export type Query = {
+  listPaymentHistoriesByPaymentId: Array<PaymentHistory>;
+  listPayments: Array<Payment>;
+  payment?: Maybe<Payment>;
+  paymentHistory?: Maybe<PaymentHistory>;
+};
+
+export type QueryListPaymentHistoriesByPaymentIdArgs = {
+  paymentId: Scalars['Int']['input'];
+};
+
+export type QueryPaymentArgs = {
+  paymentId: Scalars['Int']['input'];
+};
+
+export type QueryPaymentHistoryArgs = {
+  paymentHistoryId: Scalars['Int']['input'];
 };
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -220,22 +220,71 @@ export type DirectiveResolverFn<
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  Mutation: ResolverTypeWrapper<{}>;
   Payment: ResolverTypeWrapper<Payment>;
   PaymentHistory: ResolverTypeWrapper<PaymentHistory>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
-  mutation: ResolverTypeWrapper<Mutation>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   Int: Scalars['Int']['output'];
+  Mutation: {};
   Payment: Payment;
   PaymentHistory: PaymentHistory;
   Query: {};
   String: Scalars['String']['output'];
-  mutation: Mutation;
+};
+
+export type MutationResolvers<
+  ContextType = Context,
+  ParentType extends
+    ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation'],
+> = {
+  createPayment?: Resolver<
+    ResolversTypes['Int'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreatePaymentArgs, 'maxAmount' | 'name'>
+  >;
+  createPaymentHistory?: Resolver<
+    ResolversTypes['Int'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationCreatePaymentHistoryArgs,
+      'note' | 'paymentDate' | 'paymentId' | 'price'
+    >
+  >;
+  deletePayment?: Resolver<
+    ResolversTypes['Int'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeletePaymentArgs, 'id'>
+  >;
+  deletePaymentHistory?: Resolver<
+    ResolversTypes['Int'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeletePaymentHistoryArgs, 'id'>
+  >;
+  updatePayment?: Resolver<
+    ResolversTypes['Int'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdatePaymentArgs, 'id' | 'maxAmount' | 'name'>
+  >;
+  updatePaymentHistory?: Resolver<
+    ResolversTypes['Int'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationUpdatePaymentHistoryArgs,
+      'id' | 'note' | 'paymentDate' | 'price'
+    >
+  >;
 };
 
 export type PaymentResolvers<
@@ -293,61 +342,11 @@ export type QueryResolvers<
   >;
 };
 
-export type MutationResolvers<
-  ContextType = Context,
-  ParentType extends
-    ResolversParentTypes['mutation'] = ResolversParentTypes['mutation'],
-> = {
-  createPayment?: Resolver<
-    ResolversTypes['Int'],
-    ParentType,
-    ContextType,
-    RequireFields<MutationCreatePaymentArgs, 'maxAmount' | 'name'>
-  >;
-  createPaymentHistory?: Resolver<
-    ResolversTypes['Int'],
-    ParentType,
-    ContextType,
-    RequireFields<
-      MutationCreatePaymentHistoryArgs,
-      'note' | 'paymentDate' | 'paymentId' | 'price'
-    >
-  >;
-  deletePayment?: Resolver<
-    ResolversTypes['Int'],
-    ParentType,
-    ContextType,
-    RequireFields<MutationDeletePaymentArgs, 'id'>
-  >;
-  deletePaymentHistory?: Resolver<
-    ResolversTypes['Int'],
-    ParentType,
-    ContextType,
-    RequireFields<MutationDeletePaymentHistoryArgs, 'id'>
-  >;
-  updatePayment?: Resolver<
-    ResolversTypes['Int'],
-    ParentType,
-    ContextType,
-    RequireFields<MutationUpdatePaymentArgs, 'id' | 'maxAmount' | 'name'>
-  >;
-  updatePaymentHistory?: Resolver<
-    ResolversTypes['Int'],
-    ParentType,
-    ContextType,
-    RequireFields<
-      MutationUpdatePaymentHistoryArgs,
-      'id' | 'note' | 'paymentDate' | 'price'
-    >
-  >;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export type Resolvers<ContextType = Context> = {
+  Mutation?: MutationResolvers<ContextType>;
   Payment?: PaymentResolvers<ContextType>;
   PaymentHistory?: PaymentHistoryResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  mutation?: MutationResolvers<ContextType>;
 };
 
 export type PaymentQueryVariables = Exact<{
@@ -361,6 +360,15 @@ export type PaymentQuery = {
     maxAmount: number;
     currentAmount: number;
   } | null;
+};
+
+export type CreatePaymentDialog_CreatePaymentMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+  maxAmount: Scalars['Int']['input'];
+}>;
+
+export type CreatePaymentDialog_CreatePaymentMutation = {
+  createPayment: number;
 };
 
 export type ListPaymentsQueryVariables = Exact<{ [key: string]: never }>;
@@ -382,6 +390,11 @@ export const PaymentDocument = gql`
       maxAmount
       currentAmount
     }
+  }
+`;
+export const CreatePaymentDialog_CreatePaymentDocument = gql`
+  mutation createPaymentDialog_CreatePayment($name: String!, $maxAmount: Int!) {
+    createPayment(name: $name, maxAmount: $maxAmount)
   }
 `;
 export const ListPaymentsDocument = gql`
@@ -424,6 +437,21 @@ export function getSdk(
           }),
         'payment',
         'query',
+      );
+    },
+    createPaymentDialog_CreatePayment(
+      variables: CreatePaymentDialog_CreatePaymentMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<CreatePaymentDialog_CreatePaymentMutation> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<CreatePaymentDialog_CreatePaymentMutation>(
+            CreatePaymentDialog_CreatePaymentDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'createPaymentDialog_CreatePayment',
+        'mutation',
       );
     },
     listPayments(

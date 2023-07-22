@@ -50,10 +50,10 @@ const PaymentListItem: React.FC<Props> = ({
         <Typography variant="body1">{name}</Typography>
         <Box textAlign="right">
           <Typography variant="h3Bold" color={calcPriceColor} mb={0.5}>
-            -{(maxAmount - calcPrice).toLocaleString()}円
+            {calcPrice.toLocaleString()}円
           </Typography>
           <Typography variant="body2">
-            支払済:{calcPrice.toLocaleString()}円/ 上限:
+            支払済:{currentAmount.toLocaleString()}円/ 上限:
             {getDisplayPrice(maxAmount)}円
           </Typography>
         </Box>

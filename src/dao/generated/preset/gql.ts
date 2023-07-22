@@ -15,6 +15,8 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
 const documents = {
   '\n  query payment($paymentId: Int!) {\n    payment(paymentId: $paymentId) {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n':
     types.PaymentDocument,
+  '\n  mutation createPaymentDialog_CreatePayment($name: String!, $maxAmount: Int!) {\n    createPayment(name: $name, maxAmount: $maxAmount)\n  }\n':
+    types.CreatePaymentDialog_CreatePaymentDocument,
   '\n  query listPayments {\n    listPayments {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n':
     types.ListPaymentsDocument,
 };
@@ -39,6 +41,12 @@ export function graphql(source: string): unknown;
 export function graphql(
   source: '\n  query payment($paymentId: Int!) {\n    payment(paymentId: $paymentId) {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n',
 ): (typeof documents)['\n  query payment($paymentId: Int!) {\n    payment(paymentId: $paymentId) {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation createPaymentDialog_CreatePayment($name: String!, $maxAmount: Int!) {\n    createPayment(name: $name, maxAmount: $maxAmount)\n  }\n',
+): (typeof documents)['\n  mutation createPaymentDialog_CreatePayment($name: String!, $maxAmount: Int!) {\n    createPayment(name: $name, maxAmount: $maxAmount)\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

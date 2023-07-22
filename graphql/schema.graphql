@@ -34,7 +34,7 @@ type PaymentHistory {
   paymentId: Int!
 }
 
-type mutation {
+type Mutation {
   # 収支項目の作成
   createPayment(name: String!, maxAmount: Int!): Int!
   # 収支項目の更新
@@ -42,9 +42,19 @@ type mutation {
   # 収支項目の削除
   deletePayment(id: Int!): Int!
   # 支払履歴を作成
-  createPaymentHistory(note: String!, price: Int!, paymentId: Int!, paymentDate: String!): Int!
+  createPaymentHistory(
+    note: String!
+    price: Int!
+    paymentId: Int!
+    paymentDate: String!
+  ): Int!
   # 支払履歴を更新
-  updatePaymentHistory(id: Int!, note: String!, price: Int!, paymentDate: String!): Int!
+  updatePaymentHistory(
+    id: Int!
+    note: String!
+    price: Int!
+    paymentDate: String!
+  ): Int!
   # 支払履歴を削除
   deletePaymentHistory(id: Int!): Int!
 }

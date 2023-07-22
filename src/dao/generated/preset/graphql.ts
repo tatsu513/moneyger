@@ -29,40 +29,6 @@ export type Scalars = {
   Float: { input: number; output: number };
 };
 
-export type Payment = {
-  currentAmount: Scalars['Int']['output'];
-  id: Scalars['Int']['output'];
-  maxAmount: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-};
-
-export type PaymentHistory = {
-  id: Scalars['Int']['output'];
-  note?: Maybe<Scalars['String']['output']>;
-  paymentDate: Scalars['String']['output'];
-  paymentId: Scalars['Int']['output'];
-  price: Scalars['Int']['output'];
-};
-
-export type Query = {
-  listPaymentHistoriesByPaymentId: Array<PaymentHistory>;
-  listPayments: Array<Payment>;
-  payment?: Maybe<Payment>;
-  paymentHistory?: Maybe<PaymentHistory>;
-};
-
-export type QueryListPaymentHistoriesByPaymentIdArgs = {
-  paymentId: Scalars['Int']['input'];
-};
-
-export type QueryPaymentArgs = {
-  paymentId: Scalars['Int']['input'];
-};
-
-export type QueryPaymentHistoryArgs = {
-  paymentHistoryId: Scalars['Int']['input'];
-};
-
 export type Mutation = {
   createPayment: Scalars['Int']['output'];
   createPaymentHistory: Scalars['Int']['output'];
@@ -105,6 +71,40 @@ export type MutationUpdatePaymentHistoryArgs = {
   price: Scalars['Int']['input'];
 };
 
+export type Payment = {
+  currentAmount: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  maxAmount: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+};
+
+export type PaymentHistory = {
+  id: Scalars['Int']['output'];
+  note?: Maybe<Scalars['String']['output']>;
+  paymentDate: Scalars['String']['output'];
+  paymentId: Scalars['Int']['output'];
+  price: Scalars['Int']['output'];
+};
+
+export type Query = {
+  listPaymentHistoriesByPaymentId: Array<PaymentHistory>;
+  listPayments: Array<Payment>;
+  payment?: Maybe<Payment>;
+  paymentHistory?: Maybe<PaymentHistory>;
+};
+
+export type QueryListPaymentHistoriesByPaymentIdArgs = {
+  paymentId: Scalars['Int']['input'];
+};
+
+export type QueryPaymentArgs = {
+  paymentId: Scalars['Int']['input'];
+};
+
+export type QueryPaymentHistoryArgs = {
+  paymentHistoryId: Scalars['Int']['input'];
+};
+
 export type PaymentQueryVariables = Exact<{
   paymentId: Scalars['Int']['input'];
 }>;
@@ -116,6 +116,15 @@ export type PaymentQuery = {
     maxAmount: number;
     currentAmount: number;
   } | null;
+};
+
+export type CreatePaymentDialog_CreatePaymentMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+  maxAmount: Scalars['Int']['input'];
+}>;
+
+export type CreatePaymentDialog_CreatePaymentMutation = {
+  createPayment: number;
 };
 
 export type ListPaymentsQueryVariables = Exact<{ [key: string]: never }>;
@@ -183,6 +192,70 @@ export const PaymentDocument = {
     },
   ],
 } as unknown as DocumentNode<PaymentQuery, PaymentQueryVariables>;
+export const CreatePaymentDialog_CreatePaymentDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createPaymentDialog_CreatePayment' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'name' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'maxAmount' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createPayment' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'name' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'name' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'maxAmount' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'maxAmount' },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreatePaymentDialog_CreatePaymentMutation,
+  CreatePaymentDialog_CreatePaymentMutationVariables
+>;
 export const ListPaymentsDocument = {
   kind: 'Document',
   definitions: [

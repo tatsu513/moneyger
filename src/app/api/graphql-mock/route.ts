@@ -46,7 +46,7 @@ const resolvers: Resolvers = {
       };
     },
   },
-  mutation: {
+  Mutation: {
     createPayment: async (_, { name, maxAmount }) => {
       console.log({ name, maxAmount });
       return 1;
