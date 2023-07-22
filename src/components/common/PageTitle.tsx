@@ -5,11 +5,7 @@ type Props = {
   title: string;
 };
 const PageTitle: React.FC<Props> = ({ title }) => {
-  return (
-    <Typography variant="h1Bold" mb={2}>
-      {title}
-    </Typography>
-  );
+  return <Typography variant="h1Bold">{title}</Typography>;
 };
 
 export default PageTitle;

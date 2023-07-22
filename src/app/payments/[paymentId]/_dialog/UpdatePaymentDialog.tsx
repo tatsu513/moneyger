@@ -7,9 +7,9 @@ type Props = {
   dialogState: DialogState;
   onClose: () => void;
 };
-const AddCategoryDialog: React.FC<Props> = ({ dialogState, onClose }) => {
-  const [title, setTitle] = useState('');
-  const [limitPrice, setLimitPrice] = useState('');
+const UpdatePaymentDialog: React.FC<Props> = ({ dialogState, onClose }) => {
+  const [title, setTitle] = useState(accounts.title);
+  const [limitPrice, setLimitPrice] = useState(accounts.limitPrice.toString());
 
   const isEnableSubmit = title !== '' && limitPrice !== '';
 
@@ -36,31 +36,21 @@ const AddCategoryDialog: React.FC<Props> = ({ dialogState, onClose }) => {
 
   const handleClose = useCallback(() => {
     onClose();
-    setTitle('');
-    setLimitPrice('');
+    setTitle(accounts.title);
+    setLimitPrice(accounts.limitPrice.toString());
   }, [onClose]);
-
-  const submit = useCallback(async () => {
-    await fetch('http://localhost:3000/api/payments/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ title, limitPrice: Number(limitPrice) }),
-    });
-  }, [title, limitPrice]);
   return (
     <MoneygerDialog
       state={dialogState}
       onClose={handleClose}
-      title="カテゴリを追加"
+      title="内容を編集"
       actions={
         <Box display="flex" justifyContent="flex-end" gap={1}>
           <Button variant="text" onClick={handleClose}>
             キャンセル
           </Button>
-          <Button variant="contained" disabled={!isEnableSubmit} onClick={submit}>
-            登録
+          <Button variant="contained" disabled={!isEnableSubmit}>
+            更新
           </Button>
         </Box>
       }
@@ -69,7 +59,12 @@ const AddCategoryDialog: React.FC<Props> = ({ dialogState, onClose }) => {
         <Typography variant="body1" mb={1}>
           名称
         </Typography>
-        <TextField value={title} fullWidth onChange={handleChangeTitle} placeholder="食費" />
+        <TextField
+          value={title}
+          fullWidth
+          onChange={handleChangeTitle}
+          placeholder="食費"
+        />
       </Box>
       <Box>
         <Typography variant="body1" mb={1}>
@@ -86,4 +81,10 @@ const AddCategoryDialog: React.FC<Props> = ({ dialogState, onClose }) => {
   );
 };
 
-export default AddCategoryDialog;
+export default UpdatePaymentDialog;
+
+const accounts = {
+  id: '1',
+  title: '食費',
+  limitPrice: 0,
+};

@@ -1,13 +1,20 @@
 import MoneygerDialog from '@/components/common/MoneygerDialog';
 import DialogState from '@/types/DialogState';
-import { Box, Button, Checkbox, FormControlLabel, FormGroup, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  Typography,
+} from '@mui/material';
 import React, { ChangeEvent, useCallback, useState } from 'react';
 
 type Props = {
   dialogState: DialogState;
   onClose: () => void;
 };
-const DeleteCategoryDialog: React.FC<Props> = ({ dialogState, onClose }) => {
+const DeletePaymentDialog: React.FC<Props> = ({ dialogState, onClose }) => {
   const [checked, setChecked] = useState(false);
 
   const onCheck = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +61,7 @@ const DeleteCategoryDialog: React.FC<Props> = ({ dialogState, onClose }) => {
   );
 };
 
-export default DeleteCategoryDialog;
+export default DeletePaymentDialog;
 
 const accounts = {
   id: '1',

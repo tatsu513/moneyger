@@ -5,28 +5,15 @@ import { globSync } from 'glob';
 import fs from 'fs';
 const resolvers: Resolvers = {
   Query: {
-    listPayments: () => {
-      return [
-        {
-          currentAmount: 2000,
-          id: 1,
-          name: '食費',
-          maxAmount: 30000,
-        },
-        {
-          currentAmount: 9000,
-          id: 2,
-          name: '日用品',
-          maxAmount: 10000,
-        },
-      ];
-    },
+    listPayments: () => payments,
     payment: (_, { paymentId }) => {
+      const target = payments.find((p) => p.id === paymentId);
+      if (target == null) return null;
       return {
-        id: paymentId,
-        name: '食費',
-        currentAmount: 2000,
-        maxAmount: 30000,
+        id: target.id,
+        name: target.name,
+        currentAmount: target.currentAmount,
+        maxAmount: target.maxAmount,
       };
     },
     // paymentに紐づく支払履歴一覧
@@ -107,3 +94,24 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   return handler(request);
 }
+
+const payments = [
+  {
+    currentAmount: 2000,
+    id: 1,
+    name: '食費',
+    maxAmount: 30000,
+  },
+  {
+    currentAmount: 9000,
+    id: 2,
+    name: '日用品',
+    maxAmount: 10000,
+  },
+  {
+    currentAmount: 7000,
+    id: 3,
+    name: '交通費',
+    maxAmount: 5000,
+  },
+];
