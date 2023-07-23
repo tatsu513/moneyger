@@ -13,25 +13,23 @@ import {
   fetchExchange,
   ssrExchange,
 } from '@urql/next';
-import { ShardEnvs } from '@/util/shardEnvs';
 import { devtoolsExchange } from '@urql/devtools';
 import { refocusExchange } from '@urql/exchange-refocus';
 import { retryExchange } from '@urql/exchange-retry';
 import { ThemeProvider } from '@emotion/react';
 import theme from '@/theme';
 import { CssBaseline } from '@mui/material';
+import { GRAPHQL_ENDPOINT } from '@/constants/graphqlEndpoint';
 
 Settings.defaultLocale = 'ja-JP';
 Settings.defaultZone = 'Asia/Tokyo';
-
-const shardEnvs = new ShardEnvs();
 
 const isServerSide = typeof window === 'undefined';
 const ssr = ssrExchange({
   isClient: !isServerSide,
 });
 const client = new Client({
-  url: shardEnvs.graphqlEndpoint,
+  url: GRAPHQL_ENDPOINT,
   exchanges: [
     devtoolsExchange,
     refocusExchange(),

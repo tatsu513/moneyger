@@ -9,14 +9,12 @@ import {
 } from '@urql/core';
 import { registerUrql } from '@urql/next/rsc';
 import { cache } from 'react';
-import { ShardEnvs } from '@/util/shardEnvs';
-
-const shardEnvs = new ShardEnvs();
+import { GRAPHQL_ENDPOINT } from '@/constants/graphqlEndpoint';
 
 const makeClient = (cookie: string) => {
   return () => {
     return createClient({
-      url: shardEnvs.graphqlEndpoint,
+      url: `http:localhost:3000${GRAPHQL_ENDPOINT}`,
       exchanges: [cacheExchange, debugExchange, fetchExchange],
       fetchOptions: () => {
         return {
