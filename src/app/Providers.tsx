@@ -29,7 +29,7 @@ const ssr = ssrExchange({
   isClient: !isServerSide,
 });
 const client = new Client({
-  url: GRAPHQL_ENDPOINT,
+  url: `http://localhost:3000/${GRAPHQL_ENDPOINT}`,
   exchanges: [
     devtoolsExchange,
     refocusExchange(),

@@ -93,6 +93,7 @@ export type PaymentHistory = {
 };
 
 export type Query = {
+  listPaymentHistories: Array<PaymentHistory>;
   listPaymentHistoriesByPaymentId: Array<PaymentHistory>;
   listPayments: Array<Payment>;
   payment?: Maybe<Payment>;
@@ -317,6 +318,11 @@ export type QueryResolvers<
   ParentType extends
     ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
 > = {
+  listPaymentHistories?: Resolver<
+    Array<ResolversTypes['PaymentHistory']>,
+    ParentType,
+    ContextType
+  >;
   listPaymentHistoriesByPaymentId?: Resolver<
     Array<ResolversTypes['PaymentHistory']>,
     ParentType,
@@ -349,17 +355,34 @@ export type Resolvers<ContextType = Context> = {
   Query?: QueryResolvers<ContextType>;
 };
 
-export type PaymentQueryVariables = Exact<{
+export type ListPaymentHistoriesQueryVariables = Exact<{
   paymentId: Scalars['Int']['input'];
 }>;
 
-export type PaymentQuery = {
-  payment?: {
+export type ListPaymentHistoriesQuery = {
+  listPaymentHistoriesByPaymentId: Array<{
     id: number;
-    name: string;
-    maxAmount: number;
-    currentAmount: number;
-  } | null;
+    paymentId: number;
+    paymentDate: string;
+    note?: string | null;
+    price: number;
+  }>;
+};
+
+export type PaymentAndPriceWithSuspenseQueryVariables = Exact<{
+  paymentId: Scalars['Int']['input'];
+}>;
+
+export type PaymentAndPriceWithSuspenseQuery = {
+  payment?: { id: number; name: string } | null;
+};
+
+export type PaymentHistoriesPageQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type PaymentHistoriesPageQuery = {
+  listPayments: Array<{ id: number; name: string }>;
 };
 
 export type DeletePaymentDialog_DeletePaymentMutationVariables = Exact<{
@@ -378,6 +401,32 @@ export type CreatePaymentDialog_UpdatePaymentMutationVariables = Exact<{
 
 export type CreatePaymentDialog_UpdatePaymentMutation = {
   updatePayment: number;
+};
+
+export type PaymentQueryVariables = Exact<{
+  paymentId: Scalars['Int']['input'];
+}>;
+
+export type PaymentQuery = {
+  payment?: {
+    id: number;
+    name: string;
+    maxAmount: number;
+    currentAmount: number;
+  } | null;
+};
+
+export type PaymentPageQueryVariables = Exact<{
+  paymentId: Scalars['Int']['input'];
+}>;
+
+export type PaymentPageQuery = {
+  payment?: {
+    id: number;
+    name: string;
+    maxAmount: number;
+    currentAmount: number;
+  } | null;
 };
 
 export type CreatePaymentDialog_CreatePaymentMutationVariables = Exact<{
@@ -400,26 +449,30 @@ export type ListPaymentsQuery = {
   }>;
 };
 
-export type PaymentPageQueryVariables = Exact<{
-  paymentId: Scalars['Int']['input'];
-}>;
-
-export type PaymentPageQuery = {
-  payment?: {
-    id: number;
-    name: string;
-    maxAmount: number;
-    currentAmount: number;
-  } | null;
-};
-
-export const PaymentDocument = gql`
-  query payment($paymentId: Int!) {
+export const ListPaymentHistoriesDocument = gql`
+  query listPaymentHistories($paymentId: Int!) {
+    listPaymentHistoriesByPaymentId(paymentId: $paymentId) {
+      id
+      paymentId
+      paymentDate
+      note
+      price
+    }
+  }
+`;
+export const PaymentAndPriceWithSuspenseDocument = gql`
+  query paymentAndPriceWithSuspense($paymentId: Int!) {
     payment(paymentId: $paymentId) {
       id
       name
-      maxAmount
-      currentAmount
+    }
+  }
+`;
+export const PaymentHistoriesPageDocument = gql`
+  query paymentHistoriesPage {
+    listPayments {
+      id
+      name
     }
   }
 `;
@@ -437,14 +490,9 @@ export const CreatePaymentDialog_UpdatePaymentDocument = gql`
     updatePayment(id: $id, name: $name, maxAmount: $maxAmount)
   }
 `;
-export const CreatePaymentDialog_CreatePaymentDocument = gql`
-  mutation createPaymentDialog_CreatePayment($name: String!, $maxAmount: Int!) {
-    createPayment(name: $name, maxAmount: $maxAmount)
-  }
-`;
-export const ListPaymentsDocument = gql`
-  query listPayments {
-    listPayments {
+export const PaymentDocument = gql`
+  query payment($paymentId: Int!) {
+    payment(paymentId: $paymentId) {
       id
       name
       maxAmount
@@ -455,6 +503,21 @@ export const ListPaymentsDocument = gql`
 export const PaymentPageDocument = gql`
   query paymentPage($paymentId: Int!) {
     payment(paymentId: $paymentId) {
+      id
+      name
+      maxAmount
+      currentAmount
+    }
+  }
+`;
+export const CreatePaymentDialog_CreatePaymentDocument = gql`
+  mutation createPaymentDialog_CreatePayment($name: String!, $maxAmount: Int!) {
+    createPayment(name: $name, maxAmount: $maxAmount)
+  }
+`;
+export const ListPaymentsDocument = gql`
+  query listPayments {
+    listPayments {
       id
       name
       maxAmount
@@ -480,17 +543,48 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper,
 ) {
   return {
-    payment(
-      variables: PaymentQueryVariables,
+    listPaymentHistories(
+      variables: ListPaymentHistoriesQueryVariables,
       requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<PaymentQuery> {
+    ): Promise<ListPaymentHistoriesQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<PaymentQuery>(PaymentDocument, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
-          }),
-        'payment',
+          client.request<ListPaymentHistoriesQuery>(
+            ListPaymentHistoriesDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'listPaymentHistories',
+        'query',
+      );
+    },
+    paymentAndPriceWithSuspense(
+      variables: PaymentAndPriceWithSuspenseQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<PaymentAndPriceWithSuspenseQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<PaymentAndPriceWithSuspenseQuery>(
+            PaymentAndPriceWithSuspenseDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'paymentAndPriceWithSuspense',
+        'query',
+      );
+    },
+    paymentHistoriesPage(
+      variables?: PaymentHistoriesPageQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<PaymentHistoriesPageQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<PaymentHistoriesPageQuery>(
+            PaymentHistoriesPageDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'paymentHistoriesPage',
         'query',
       );
     },
@@ -524,6 +618,34 @@ export function getSdk(
         'mutation',
       );
     },
+    payment(
+      variables: PaymentQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<PaymentQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<PaymentQuery>(PaymentDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'payment',
+        'query',
+      );
+    },
+    paymentPage(
+      variables: PaymentPageQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<PaymentPageQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<PaymentPageQuery>(PaymentPageDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'paymentPage',
+        'query',
+      );
+    },
     createPaymentDialog_CreatePayment(
       variables: CreatePaymentDialog_CreatePaymentMutationVariables,
       requestHeaders?: GraphQLClientRequestHeaders,
@@ -550,20 +672,6 @@ export function getSdk(
             ...wrappedRequestHeaders,
           }),
         'listPayments',
-        'query',
-      );
-    },
-    paymentPage(
-      variables: PaymentPageQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<PaymentPageQuery> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<PaymentPageQuery>(PaymentPageDocument, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
-          }),
-        'paymentPage',
         'query',
       );
     },

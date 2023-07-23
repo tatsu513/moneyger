@@ -24,24 +24,17 @@ const resolvers: Resolvers = {
         maxAmount: target.maxAmount,
       };
     },
+    listPaymentHistories: async () => {
+      return paymentHistories;
+    },
     // paymentに紐づく支払履歴一覧
     listPaymentHistoriesByPaymentId: async (_, { paymentId }) => {
-      return [
-        {
-          paymentDate: '',
-          id: 1,
-          paymentId: paymentId,
-          note: '',
-          price: 300,
-        },
-        {
-          paymentDate: '',
-          id: 2,
-          paymentId: paymentId,
-          note: '',
-          price: 500,
-        },
-      ];
+      const target = paymentHistories.flatMap((p) => {
+        if (p.paymentId !== paymentId) return [];
+        return [p];
+      });
+      if (target == null) return [];
+      return target;
     },
     // 支払履歴を1件取得
     paymentHistory: async (_, { paymentHistoryId }) => {
@@ -119,5 +112,36 @@ const payments = [
     id: 3,
     name: '交通費',
     maxAmount: 5000,
+  },
+];
+
+const paymentHistories = [
+  {
+    id: 10,
+    paymentId: 1,
+    paymentDate: '2023-07-01T00:00:00+09:00',
+    note: 'メモ',
+    price: 1000,
+  },
+  {
+    id: 11,
+    paymentId: 2,
+    paymentDate: '2023-07-02T00:00:00+09:00',
+    note: null,
+    price: 2200,
+  },
+  {
+    id: 12,
+    paymentId: 3,
+    paymentDate: '2023-07-03T00:00:00+09:00',
+    note: null,
+    price: 222,
+  },
+  {
+    id: 13,
+    paymentId: 1,
+    paymentDate: '2023-07-04T00:00:00+09:00',
+    note: 'ハンバーグ定食',
+    price: 980,
   },
 ];
