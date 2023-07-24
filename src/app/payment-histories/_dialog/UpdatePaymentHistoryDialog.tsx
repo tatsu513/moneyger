@@ -1,11 +1,13 @@
 import CommonLoading from '@/components/common/CommonLoading';
+import MoneygerDatePicker from '@/components/common/MoneygerDatePicker';
 import MoneygerDialog from '@/components/common/MoneygerDialog';
 import { graphql } from '@/dao/generated/preset';
 import { PaymentHistory } from '@/dao/generated/preset/graphql';
-import PrismaDateToFrontendDateStr from '@/logics/PrismaDateToFrontendDateStr';
+import stringDateToDateTime from '@/logics/stringDateToDateTime';
 import { noteType, paymentDateType, priceType } from '@/models/paymentHistory';
 import DialogState from '@/types/DialogState';
 import { Box, Button, TextField, Typography } from '@mui/material';
+import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useCallback, useState } from 'react';
 import { useMutation } from 'urql';
@@ -47,8 +49,8 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
   const router = useRouter();
   const [price, setPrice] = useState(paymentHistory.price.toString());
   const [note, setNote] = useState(paymentHistory.note);
-  const [paymentDate, setPaymentDate] = useState(
-    PrismaDateToFrontendDateStr(paymentHistory.paymentDate),
+  const [paymentDate, setPaymentDate] = useState<DateTime | null>(
+    stringDateToDateTime(paymentHistory.paymentDate),
   );
 
   const safeParseResult = updateSchema.safeParse({
@@ -58,12 +60,9 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
     note,
   });
 
-  const handleChangePaymentDate = useCallback(
-    (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-      setPaymentDate(e.target.value);
-    },
-    [],
-  );
+  const handleChangeDate = useCallback((date: DateTime | null) => {
+    setPaymentDate(date);
+  }, []);
 
   const handleChangePrice = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -86,7 +85,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
 
   const handleClose = useCallback(() => {
     onClose();
-    setPaymentDate(paymentHistory.paymentDate);
+    setPaymentDate(stringDateToDateTime(paymentHistory.paymentDate));
     setPrice(paymentHistory.price.toString());
     setNote(paymentHistory.note);
   }, [paymentHistory, onClose]);
@@ -158,13 +157,11 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
         <>
           <Box mb={3}>
             <Typography variant="body1" mb={1}>
-              名称
+              支払日
             </Typography>
-            <TextField
+            <MoneygerDatePicker
               value={paymentDate}
-              fullWidth
-              onChange={handleChangePaymentDate}
-              placeholder="支払日"
+              onChange={handleChangeDate}
             />
           </Box>
           <Box mb={3}>
