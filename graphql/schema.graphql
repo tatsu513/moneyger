@@ -53,7 +53,7 @@ type Mutation {
   # 支払履歴を更新
   updatePaymentHistory(
     id: Int!
-    note: String!
+    note: String
     price: Int!
     paymentDate: String!
   ): Int!

@@ -38,13 +38,11 @@ const resolvers: Resolvers = {
     },
     // 支払履歴を1件取得
     paymentHistory: async (_, { paymentHistoryId }) => {
-      return {
-        paymentDate: '',
-        id: paymentHistoryId,
-        paymentId: 1,
-        note: '',
-        price: 300,
-      };
+      const target = paymentHistories.find((h) => h.id === paymentHistoryId);
+      if (target == null) {
+        throw Error('支払履歴が見つかりません');
+      }
+      return target;
     },
   },
   Mutation: {
