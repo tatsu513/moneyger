@@ -14,6 +14,7 @@ const MoneygerDatePicker: React.FC<Props> = ({ value, onChange }) => {
       onChange={onChange}
       sx={{ width: '100%' }}
       closeOnSelect
+      disableFuture
     />
   );
 };
