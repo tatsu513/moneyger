@@ -1,15 +1,26 @@
+import MoneygerAutocomplete from '@/components/common/MoneygerAutocomplete';
 import MoneygerDatePicker from '@/components/common/MoneygerDatePicker';
 import MoneygerDialog from '@/components/common/MoneygerDialog';
 import { graphql } from '@/dao/generated/preset';
-import { Payment } from '@/dao/generated/preset/graphql';
-import { noteType, paymentDateType, priceType } from '@/models/paymentHistory';
+import { PaymentHistoriesPageQuery } from '@/dao/generated/preset/graphql';
+import {
+  createPaymentHistorySchema,
+  editCreatePaymentHistorySchema,
+  priceType,
+} from '@/models/paymentHistory';
 import DialogState from '@/types/DialogState';
-import { Box, Button, Slide, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Slide,
+  TextField,
+  Typography,
+  createFilterOptions,
+} from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import { DateTime } from 'luxon';
 import React, { ChangeEvent, useCallback, useState } from 'react';
 import { useMutation } from 'urql';
-import { z } from 'zod';
 
 const createPaymentHistoryDialogCreatePaymentDocument = graphql(`
   mutation createPaymentHistoryDialog_CreatePaymentHistory(
@@ -27,32 +38,41 @@ const createPaymentHistoryDialogCreatePaymentDocument = graphql(`
   }
 `);
 
-const createPaymentHistorySchema = z.object({
-  paymentId: z.number(),
-  paymentDate: paymentDateType,
-  price: priceType,
-  note: noteType,
-});
-
+type LocalPaymentsType = PaymentHistoriesPageQuery['listPayments'];
 type Props = {
   dialogState: DialogState;
+  listPayments: LocalPaymentsType;
   onClose: () => void;
 };
 const CreatePaymentHistoryDialog: React.FC<Props> = ({
   dialogState,
+  listPayments,
   onClose,
 }) => {
-  const [payment, setPayment] = useState<Payment | null>(null);
+  const [payment, setPayment] = useState<LocalPaymentsType[number] | null>(
+    null,
+  );
   const [paymentDate, setPaymentDate] = useState<DateTime | null>(null);
   const [price, setPrice] = useState<string>('');
   const [note, setNote] = useState<string>('');
 
-  const safeParseResult = createPaymentHistorySchema.safeParse({
+  const safeParseResult = editCreatePaymentHistorySchema.safeParse({
     paymentId: payment?.id,
     paymentDate,
     price,
     note,
   });
+  console.log({ safeParseResult });
+
+  const handlePaymentChange = useCallback(
+    (
+      _e: React.SyntheticEvent<Element, Event>,
+      value: LocalPaymentsType[number] | null,
+    ) => {
+      setPayment(value);
+    },
+    [],
+  );
 
   const handleChangeDate = useCallback((date: DateTime | null) => {
     setPaymentDate(date);
@@ -86,7 +106,13 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
     createPaymentHistoryDialogCreatePaymentDocument,
   )[1];
   const handleSubmit = useCallback(async () => {
-    if (!safeParseResult.success) {
+    const parseResult = createPaymentHistorySchema.safeParse({
+      payment,
+      paymentDate: paymentDate?.toISO(),
+      price,
+      note,
+    });
+    if (!parseResult.success) {
       console.error('入力値を確認してください', {
         payment,
         paymentDate,
@@ -97,10 +123,10 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
     }
     try {
       const result = await submit({
-        paymentId: safeParseResult.data.paymentId,
-        paymentDate: safeParseResult.data.paymentDate,
-        price: safeParseResult.data.price,
-        note: safeParseResult.data.note,
+        paymentId: parseResult.data.paymentId,
+        paymentDate: parseResult.data.paymentDate,
+        price: parseResult.data.price,
+        note: parseResult.data.note,
       });
       if (result.error) {
         throw new Error('処理失敗です');
@@ -110,7 +136,18 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
       console.error('処理失敗です', { error });
       return;
     }
-  }, [submit, onClose, safeParseResult, payment, paymentDate, price, note]);
+  }, [submit, onClose, payment, paymentDate, price, note]);
+
+  const getOptionLabel = useCallback(
+    (option: LocalPaymentsType[number]): string => option.name,
+    [],
+  );
+
+  const filterOptions = createFilterOptions({
+    matchFrom: 'any',
+    stringify: (payment: LocalPaymentsType[number]) => payment.name,
+  });
+
   return (
     <MoneygerDialog
       open={dialogState === 'open'}
@@ -119,6 +156,22 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
       fullScreen
       TransitionComponent={Transition}
     >
+      <Box mb={3}>
+        <Typography variant="body1" mb={1}>
+          支払項目
+        </Typography>
+        <MoneygerAutocomplete
+          id="payment-history-category"
+          value={payment}
+          options={listPayments}
+          noOptionsText="支払項目がありません"
+          ariaLabel="支払項目の設定"
+          label="支払項目"
+          getOptionLabel={getOptionLabel}
+          filterOptions={filterOptions}
+          onChange={handlePaymentChange}
+        />
+      </Box>
       <Box mb={3}>
         <Typography variant="body1" mb={1}>
           支払日

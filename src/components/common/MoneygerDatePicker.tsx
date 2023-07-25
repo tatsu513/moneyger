@@ -9,7 +9,12 @@ type Props = {
 
 const MoneygerDatePicker: React.FC<Props> = ({ value, onChange }) => {
   return (
-    <DatePicker value={value} onChange={onChange} sx={{ width: '100%' }} />
+    <DatePicker
+      value={value}
+      onChange={onChange}
+      sx={{ width: '100%' }}
+      closeOnSelect
+    />
   );
 };
 

@@ -10,6 +10,7 @@ import ListPaymentHistoriesWithSuspense from '@/app/payment-histories/_main/List
 import DialogState from '@/types/DialogState';
 import MoneygerAutocomplete from '@/components/common/MoneygerAutocomplete';
 import { grey } from '@/color';
+import CreatePaymentHistoryDialog from '@/app/payment-histories/_dialog/CreatePaymentHistoryDialog';
 
 type ListPayment = {
   id: number;
@@ -92,7 +93,11 @@ const PaymentHistoriesMain: React.FC<Props> = ({ listPayments }) => {
           支払履歴を追加
         </Fab>
       </Box>
-      {/* <CreatePaymentDialog dialogState={dialogState} onClose={dialogClose} /> */}
+      <CreatePaymentHistoryDialog
+        dialogState={dialogState}
+        listPayments={listPayments}
+        onClose={dialogClose}
+      />
     </Box>
   );
 };
