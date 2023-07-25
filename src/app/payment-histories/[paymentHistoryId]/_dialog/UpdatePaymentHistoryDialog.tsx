@@ -1,4 +1,5 @@
 import CommonLoading from '@/components/common/CommonLoading';
+import MoneygerAutocomplete from '@/components/common/MoneygerAutocomplete';
 import MoneygerDatePicker from '@/components/common/MoneygerDatePicker';
 import MoneygerDialog from '@/components/common/MoneygerDialog';
 import { graphql } from '@/dao/generated/preset';
@@ -11,7 +12,13 @@ import {
   priceType,
 } from '@/models/paymentHistory';
 import DialogState from '@/types/DialogState';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  createFilterOptions,
+} from '@mui/material';
 import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useCallback, useState } from 'react';
@@ -41,17 +48,25 @@ const updateSchema = z.object({
   note: noteType,
 });
 
+type LocalPaymentType = {
+  id: number;
+  name: string;
+};
+
 type Props = {
   dialogState: DialogState;
   paymentHistory: PaymentHistory;
+  listPayments: LocalPaymentType[];
   onClose: () => void;
 };
 const UpdatePaymentHistoryDialog: React.FC<Props> = ({
   dialogState,
   paymentHistory,
+  listPayments,
   onClose,
 }) => {
   const router = useRouter();
+  const [payment, setPayment] = useState<LocalPaymentType | null>(null);
   const [price, setPrice] = useState(paymentHistory.price.toString());
   const [note, setNote] = useState(paymentHistory.note);
   const [paymentDate, setPaymentDate] = useState<DateTime | null>(
@@ -116,10 +131,10 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
     }
     try {
       const result = await submit({
-        id: safeParseResult.data.id,
-        paymentDate: safeParseResult.data.paymentDate,
-        price: safeParseResult.data.price,
-        note: safeParseResult.data.note,
+        id: parseResult.data.paymentId,
+        paymentDate: parseResult.data.paymentDate,
+        price: parseResult.data.price,
+        note: parseResult.data.note,
       });
       if (result.error) {
         throw new Error('処理失敗です');
@@ -130,16 +145,27 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
       console.error('処理失敗です', { error });
       return;
     }
-  }, [
-    safeParseResult,
-    paymentHistory,
-    submit,
-    onClose,
-    router,
-    note,
-    price,
-    paymentDate,
-  ]);
+  }, [submit, onClose, router, payment, note, price, paymentDate]);
+
+  const handlePaymentChange = useCallback(
+    (
+      _e: React.SyntheticEvent<Element, Event>,
+      value: LocalPaymentType | null,
+    ) => {
+      setPayment(value);
+    },
+    [],
+  );
+
+  const getOptionLabel = useCallback(
+    (option: LocalPaymentType): string => option.name,
+    [],
+  );
+
+  const filterOptions = createFilterOptions({
+    matchFrom: 'any',
+    stringify: (payment: LocalPaymentType) => payment.name,
+  });
 
   return (
     <MoneygerDialog
@@ -166,6 +192,22 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
         <CommonLoading />
       ) : (
         <>
+          <Box mb={3}>
+            <Typography variant="body1" mb={1}>
+              支払項目
+            </Typography>
+            <MoneygerAutocomplete
+              id="payment-history-category"
+              value={payment}
+              options={listPayments}
+              noOptionsText="支払項目がありません"
+              ariaLabel="支払項目の設定"
+              label="支払項目"
+              getOptionLabel={getOptionLabel}
+              filterOptions={filterOptions}
+              onChange={handlePaymentChange}
+            />
+          </Box>
           <Box mb={3}>
             <Typography variant="body1" mb={1}>
               支払日

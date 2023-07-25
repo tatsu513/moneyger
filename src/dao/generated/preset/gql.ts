@@ -25,8 +25,6 @@ const documents = {
     types.CreatePaymentHistoryDialog_CreatePaymentHistoryDocument,
   '\n  query listPaymentHistories($paymentId: Int!) {\n    listPaymentHistoriesByPaymentId(paymentId: $paymentId) {\n      id\n      paymentId\n      paymentDate\n      note\n      price\n    }\n  }\n':
     types.ListPaymentHistoriesDocument,
-  '\n  query paymentAndPriceWithSuspense($paymentId: Int!) {\n    payment(paymentId: $paymentId) {\n      id\n      name\n    }\n  }\n':
-    types.PaymentAndPriceWithSuspenseDocument,
   '\n  query paymentHistoriesPage {\n    listPayments {\n      id\n      name\n    }\n  }\n':
     types.PaymentHistoriesPageDocument,
   '\n  mutation deletePaymentDialog_DeletePayment($id: Int!) {\n    deletePayment(id: $id)\n  }\n':
@@ -93,12 +91,6 @@ export function graphql(
 export function graphql(
   source: '\n  query listPaymentHistories($paymentId: Int!) {\n    listPaymentHistoriesByPaymentId(paymentId: $paymentId) {\n      id\n      paymentId\n      paymentDate\n      note\n      price\n    }\n  }\n',
 ): (typeof documents)['\n  query listPaymentHistories($paymentId: Int!) {\n    listPaymentHistoriesByPaymentId(paymentId: $paymentId) {\n      id\n      paymentId\n      paymentDate\n      note\n      price\n    }\n  }\n'];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: '\n  query paymentAndPriceWithSuspense($paymentId: Int!) {\n    payment(paymentId: $paymentId) {\n      id\n      name\n    }\n  }\n',
-): (typeof documents)['\n  query paymentAndPriceWithSuspense($paymentId: Int!) {\n    payment(paymentId: $paymentId) {\n      id\n      name\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

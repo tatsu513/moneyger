@@ -175,14 +175,6 @@ export type ListPaymentHistoriesQuery = {
   }>;
 };
 
-export type PaymentAndPriceWithSuspenseQueryVariables = Exact<{
-  paymentId: Scalars['Int']['input'];
-}>;
-
-export type PaymentAndPriceWithSuspenseQuery = {
-  payment?: { id: number; name: string } | null;
-};
-
 export type PaymentHistoriesPageQueryVariables = Exact<{
   [key: string]: never;
 }>;
@@ -639,58 +631,6 @@ export const ListPaymentHistoriesDocument = {
 } as unknown as DocumentNode<
   ListPaymentHistoriesQuery,
   ListPaymentHistoriesQueryVariables
->;
-export const PaymentAndPriceWithSuspenseDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'paymentAndPriceWithSuspense' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'paymentId' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'payment' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'paymentId' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'paymentId' },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  PaymentAndPriceWithSuspenseQuery,
-  PaymentAndPriceWithSuspenseQueryVariables
 >;
 export const PaymentHistoriesPageDocument = {
   kind: 'Document',

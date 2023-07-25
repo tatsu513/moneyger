@@ -84,6 +84,7 @@ const PaymentHistoryMain: React.FC<Props> = ({
       <UpdatePaymentHistoryDialog
         dialogState={updateDialogState}
         paymentHistory={paymentHistory}
+        listPayments={listPayments}
         onClose={closeDialog}
       />
       <DeletePaymentHistoryDialog

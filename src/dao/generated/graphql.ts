@@ -424,14 +424,6 @@ export type ListPaymentHistoriesQuery = {
   }>;
 };
 
-export type PaymentAndPriceWithSuspenseQueryVariables = Exact<{
-  paymentId: Scalars['Int']['input'];
-}>;
-
-export type PaymentAndPriceWithSuspenseQuery = {
-  payment?: { id: number; name: string } | null;
-};
-
 export type PaymentHistoriesPageQueryVariables = Exact<{
   [key: string]: never;
 }>;
@@ -566,14 +558,6 @@ export const ListPaymentHistoriesDocument = gql`
       paymentDate
       note
       price
-    }
-  }
-`;
-export const PaymentAndPriceWithSuspenseDocument = gql`
-  query paymentAndPriceWithSuspense($paymentId: Int!) {
-    payment(paymentId: $paymentId) {
-      id
-      name
     }
   }
 `;
@@ -739,21 +723,6 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders },
           ),
         'listPaymentHistories',
-        'query',
-      );
-    },
-    paymentAndPriceWithSuspense(
-      variables: PaymentAndPriceWithSuspenseQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<PaymentAndPriceWithSuspenseQuery> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<PaymentAndPriceWithSuspenseQuery>(
-            PaymentAndPriceWithSuspenseDocument,
-            variables,
-            { ...requestHeaders, ...wrappedRequestHeaders },
-          ),
-        'paymentAndPriceWithSuspense',
         'query',
       );
     },
