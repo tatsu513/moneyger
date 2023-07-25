@@ -56,6 +56,7 @@ const PaymentHistoriesMain: React.FC<Props> = ({ listPayments }) => {
 
         <Box mb={2} mt={2}>
           <MoneygerAutocomplete
+            id="payment-histories-payment"
             options={listPayments}
             value={
               listPayments.find((p) => p.id === selectedPayment?.id) ?? null

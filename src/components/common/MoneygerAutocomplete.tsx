@@ -68,7 +68,7 @@ const MoneygerAutocomplete = <T,>({
   const renderOption = useCallback(
     (props: HTMLAttributes<HTMLLIElement>, option: T) => {
       return (
-        <Box component="li" key={props.id} {...props}>
+        <Box {...props} component="li" key={props.id}>
           <Typography sx={{ wordBreak: 'break-all' }}>
             {getOptionLabel ? getOptionLabel(option) : JSON.stringify(option)}
           </Typography>
