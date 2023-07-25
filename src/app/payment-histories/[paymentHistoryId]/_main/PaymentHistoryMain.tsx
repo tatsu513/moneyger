@@ -7,12 +7,12 @@ import {
 import DialogState from '@/types/DialogState';
 import { Box, Button, IconButton, Typography } from '@mui/material';
 import React, { useCallback, useState } from 'react';
-import UpdatePaymentHistoryDialog from '@/app/payment-histories/_dialog/UpdatePaymentHistoryDialog';
+import UpdatePaymentHistoryDialog from '@/app/payment-histories/[paymentHistoryId]/_dialog/UpdatePaymentHistoryDialog';
 import PrismaDateToFrontendDateStr from '@/logics/PrismaDateToFrontendDateStr';
 import PageTitle from '@/components/common/PageTitle';
 import { grey } from '@mui/material/colors';
 import { Delete as DeleteIcon } from '@mui/icons-material';
-import DeletePaymentHistoryDialog from '@/app/payment-histories/_dialog/DeletePaymentHistoryDialog';
+import DeletePaymentHistoryDialog from '@/app/payment-histories/[paymentHistoryId]/_dialog/DeletePaymentHistoryDialog';
 
 type ListPayments = PaymentHistoryPageListPaymentsQuery['listPayments'];
 

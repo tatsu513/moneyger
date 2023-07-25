@@ -45,7 +45,7 @@ type Mutation {
   deletePayment(id: Int!): Int!
   # 支払履歴を作成
   createPaymentHistory(
-    note: String!
+    note: String
     price: Int!
     paymentId: Int!
     paymentDate: String!

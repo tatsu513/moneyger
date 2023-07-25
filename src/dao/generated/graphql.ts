@@ -50,7 +50,7 @@ export type MutationCreatePaymentArgs = {
 };
 
 export type MutationCreatePaymentHistoryArgs = {
-  note: Scalars['String']['input'];
+  note?: InputMaybe<Scalars['String']['input']>;
   paymentDate: Scalars['String']['input'];
   paymentId: Scalars['Int']['input'];
   price: Scalars['Int']['input'];
@@ -256,7 +256,7 @@ export type MutationResolvers<
     ContextType,
     RequireFields<
       MutationCreatePaymentHistoryArgs,
-      'note' | 'paymentDate' | 'paymentId' | 'price'
+      'paymentDate' | 'paymentId' | 'price'
     >
   >;
   deletePayment?: Resolver<
@@ -355,6 +355,27 @@ export type Resolvers<ContextType = Context> = {
   Query?: QueryResolvers<ContextType>;
 };
 
+export type DeletePaymentHistoryDialog_DeletePaymentHistoryMutationVariables =
+  Exact<{
+    id: Scalars['Int']['input'];
+  }>;
+
+export type DeletePaymentHistoryDialog_DeletePaymentHistoryMutation = {
+  deletePaymentHistory: number;
+};
+
+export type CreatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables =
+  Exact<{
+    id: Scalars['Int']['input'];
+    paymentDate: Scalars['String']['input'];
+    price: Scalars['Int']['input'];
+    note?: InputMaybe<Scalars['String']['input']>;
+  }>;
+
+export type CreatePaymentHistoryDialog_UpdateHistoryPaymentMutation = {
+  updatePaymentHistory: number;
+};
+
 export type PaymentHistoryPageQueryVariables = Exact<{
   paymentHistoryId: Scalars['Int']['input'];
 }>;
@@ -377,25 +398,16 @@ export type PaymentHistoryPageListPaymentsQuery = {
   listPayments: Array<{ id: number; name: string }>;
 };
 
-export type DeletePaymentHistoryDialog_DeletePaymentHistoryMutationVariables =
+export type CreatePaymentHistoryDialog_CreatePaymentHistoryMutationVariables =
   Exact<{
-    id: Scalars['Int']['input'];
-  }>;
-
-export type DeletePaymentHistoryDialog_DeletePaymentHistoryMutation = {
-  deletePaymentHistory: number;
-};
-
-export type CreatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables =
-  Exact<{
-    id: Scalars['Int']['input'];
+    paymentId: Scalars['Int']['input'];
     paymentDate: Scalars['String']['input'];
     price: Scalars['Int']['input'];
     note?: InputMaybe<Scalars['String']['input']>;
   }>;
 
-export type CreatePaymentHistoryDialog_UpdateHistoryPaymentMutation = {
-  updatePaymentHistory: number;
+export type CreatePaymentHistoryDialog_CreatePaymentHistoryMutation = {
+  createPaymentHistory: number;
 };
 
 export type ListPaymentHistoriesQueryVariables = Exact<{
@@ -492,6 +504,26 @@ export type ListPaymentsQuery = {
   }>;
 };
 
+export const DeletePaymentHistoryDialog_DeletePaymentHistoryDocument = gql`
+  mutation deletePaymentHistoryDialog_DeletePaymentHistory($id: Int!) {
+    deletePaymentHistory(id: $id)
+  }
+`;
+export const CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument = gql`
+  mutation createPaymentHistoryDialog_UpdateHistoryPayment(
+    $id: Int!
+    $paymentDate: String!
+    $price: Int!
+    $note: String
+  ) {
+    updatePaymentHistory(
+      id: $id
+      paymentDate: $paymentDate
+      price: $price
+      note: $note
+    )
+  }
+`;
 export const PaymentHistoryPageDocument = gql`
   query paymentHistoryPage($paymentHistoryId: Int!) {
     paymentHistory(paymentHistoryId: $paymentHistoryId) {
@@ -511,20 +543,15 @@ export const PaymentHistoryPageListPaymentsDocument = gql`
     }
   }
 `;
-export const DeletePaymentHistoryDialog_DeletePaymentHistoryDocument = gql`
-  mutation deletePaymentHistoryDialog_DeletePaymentHistory($id: Int!) {
-    deletePaymentHistory(id: $id)
-  }
-`;
-export const CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument = gql`
-  mutation createPaymentHistoryDialog_UpdateHistoryPayment(
-    $id: Int!
+export const CreatePaymentHistoryDialog_CreatePaymentHistoryDocument = gql`
+  mutation createPaymentHistoryDialog_CreatePaymentHistory(
+    $paymentId: Int!
     $paymentDate: String!
     $price: Int!
     $note: String
   ) {
-    updatePaymentHistory(
-      id: $id
+    createPaymentHistory(
+      paymentId: $paymentId
       paymentDate: $paymentDate
       price: $price
       note: $note
@@ -625,6 +652,36 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper,
 ) {
   return {
+    deletePaymentHistoryDialog_DeletePaymentHistory(
+      variables: DeletePaymentHistoryDialog_DeletePaymentHistoryMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<DeletePaymentHistoryDialog_DeletePaymentHistoryMutation> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<DeletePaymentHistoryDialog_DeletePaymentHistoryMutation>(
+            DeletePaymentHistoryDialog_DeletePaymentHistoryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'deletePaymentHistoryDialog_DeletePaymentHistory',
+        'mutation',
+      );
+    },
+    createPaymentHistoryDialog_UpdateHistoryPayment(
+      variables: CreatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<CreatePaymentHistoryDialog_UpdateHistoryPaymentMutation> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<CreatePaymentHistoryDialog_UpdateHistoryPaymentMutation>(
+            CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'createPaymentHistoryDialog_UpdateHistoryPayment',
+        'mutation',
+      );
+    },
     paymentHistoryPage(
       variables: PaymentHistoryPageQueryVariables,
       requestHeaders?: GraphQLClientRequestHeaders,
@@ -655,33 +712,18 @@ export function getSdk(
         'query',
       );
     },
-    deletePaymentHistoryDialog_DeletePaymentHistory(
-      variables: DeletePaymentHistoryDialog_DeletePaymentHistoryMutationVariables,
+    createPaymentHistoryDialog_CreatePaymentHistory(
+      variables: CreatePaymentHistoryDialog_CreatePaymentHistoryMutationVariables,
       requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<DeletePaymentHistoryDialog_DeletePaymentHistoryMutation> {
+    ): Promise<CreatePaymentHistoryDialog_CreatePaymentHistoryMutation> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<DeletePaymentHistoryDialog_DeletePaymentHistoryMutation>(
-            DeletePaymentHistoryDialog_DeletePaymentHistoryDocument,
+          client.request<CreatePaymentHistoryDialog_CreatePaymentHistoryMutation>(
+            CreatePaymentHistoryDialog_CreatePaymentHistoryDocument,
             variables,
             { ...requestHeaders, ...wrappedRequestHeaders },
           ),
-        'deletePaymentHistoryDialog_DeletePaymentHistory',
-        'mutation',
-      );
-    },
-    createPaymentHistoryDialog_UpdateHistoryPayment(
-      variables: CreatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables,
-      requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<CreatePaymentHistoryDialog_UpdateHistoryPaymentMutation> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<CreatePaymentHistoryDialog_UpdateHistoryPaymentMutation>(
-            CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument,
-            variables,
-            { ...requestHeaders, ...wrappedRequestHeaders },
-          ),
-        'createPaymentHistoryDialog_UpdateHistoryPayment',
+        'createPaymentHistoryDialog_CreatePaymentHistory',
         'mutation',
       );
     },
