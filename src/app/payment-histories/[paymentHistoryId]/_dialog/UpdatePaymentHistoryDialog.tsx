@@ -4,7 +4,12 @@ import MoneygerDialog from '@/components/common/MoneygerDialog';
 import { graphql } from '@/dao/generated/preset';
 import { PaymentHistory } from '@/dao/generated/preset/graphql';
 import stringDateToDateTime from '@/logics/stringDateToDateTime';
-import { noteType, paymentDateType, priceType } from '@/models/paymentHistory';
+import {
+  createPaymentHistorySchema,
+  noteType,
+  paymentDateType,
+  priceType,
+} from '@/models/paymentHistory';
 import DialogState from '@/types/DialogState';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
@@ -94,9 +99,15 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
     updatePaymentHistoryDialogUpdatePaymentHistoryDocument,
   )[1];
   const handleSubmit = useCallback(async () => {
-    if (!safeParseResult.success) {
+    const parseResult = createPaymentHistorySchema.safeParse({
+      paymentId: payment?.id,
+      paymentDate: paymentDate?.toISO(),
+      price,
+      note,
+    });
+    if (!parseResult.success) {
       console.error('入力値を確認してください', {
-        id: paymentHistory.id,
+        payment,
         paymentDate,
         price,
         note,

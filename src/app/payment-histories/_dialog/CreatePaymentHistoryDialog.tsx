@@ -62,7 +62,6 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
     price,
     note,
   });
-  console.log({ safeParseResult });
 
   const handlePaymentChange = useCallback(
     (
