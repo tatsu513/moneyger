@@ -10,11 +10,14 @@ import {
 import { registerUrql } from '@urql/next/rsc';
 import { cache } from 'react';
 import { GRAPHQL_ENDPOINT } from '@/constants/graphqlEndpoint';
+import { ShardEnvs } from '@/util/shardEnvs';
+
+const envs = new ShardEnvs();
 
 const makeClient = (cookie: string) => {
   return () => {
     return createClient({
-      url: `http:localhost:3000${GRAPHQL_ENDPOINT}`,
+      url: envs.nextAuthUrl + GRAPHQL_ENDPOINT,
       exchanges: [cacheExchange, debugExchange, fetchExchange],
       fetchOptions: () => {
         return {

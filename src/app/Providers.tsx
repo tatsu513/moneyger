@@ -20,16 +20,19 @@ import { ThemeProvider } from '@emotion/react';
 import theme from '@/theme';
 import { CssBaseline } from '@mui/material';
 import { GRAPHQL_ENDPOINT } from '@/constants/graphqlEndpoint';
+import { ShardEnvs } from '@/util/shardEnvs';
 
 Settings.defaultLocale = 'ja-JP';
 Settings.defaultZone = 'Asia/Tokyo';
+
+const envs = new ShardEnvs();
 
 const isServerSide = typeof window === 'undefined';
 const ssr = ssrExchange({
   isClient: !isServerSide,
 });
 const client = new Client({
-  url: `http://localhost:3000/${GRAPHQL_ENDPOINT}`,
+  url: envs.nextAuthUrl + GRAPHQL_ENDPOINT,
   exchanges: [
     devtoolsExchange,
     refocusExchange(),
