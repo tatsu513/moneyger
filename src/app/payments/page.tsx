@@ -1,7 +1,7 @@
 import PaymentsMain from '@/app/payments/_main/PaymentsMain';
 import PageContentsTemplate from '@/components/common/PageContentsTemplate';
 
-export default async function Home() {
+export default function Home() {
   return (
     <PageContentsTemplate>
       <PaymentsMain />

@@ -26,7 +26,7 @@ const ListPaymentWithSuspense: React.FC = () => {
     <>LOADING...</>;
   }
   if (error != null) {
-    console.info('収支項目を取得できませんでした');
+    console.error('収支項目を取得できませんでした', { error });
     throw new Error('収支項目を取得できませんでした');
   }
 
