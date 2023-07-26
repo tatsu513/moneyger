@@ -22,7 +22,7 @@ const ssr = ssrExchange({
 const makeClient = (cookie: string) => {
   return () => {
     return createClient({
-      url: 'https://moneyger-alpha.vercel.app/api/graphql',
+      url: 'http://localhost:3000/api/graphql',
       exchanges: [cacheExchange, debugExchange, ssr, fetchExchange],
       fetchOptions: () => {
         return {
