@@ -1,4 +1,3 @@
-import CssBaseline from '@mui/material/CssBaseline';
 import type { Metadata } from 'next';
 import Providers from '@/app/Providers';
 import MoneygerAppBar from '@/components/common/MoneygerAppBar';
@@ -16,7 +15,6 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        <CssBaseline />
         <Providers>
           <MoneygerAppBar />
           {children}

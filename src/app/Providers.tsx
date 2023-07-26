@@ -55,13 +55,13 @@ const client = new Client({
 const Providers: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <LocalizationProvider
         dateAdapter={AdapterLuxon}
         adapterLocale={Settings.defaultLocale}
         dateFormats={LOCALIZATION_FORMATS}
       >
         <UrqlProvider client={client} ssr={ssr}>
-          <CssBaseline />
           {children}
         </UrqlProvider>
       </LocalizationProvider>
