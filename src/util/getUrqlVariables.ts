@@ -1,5 +1,5 @@
-import DefinedGraphQLType from "@/types/DefinedGraphQLType"
-import { AnyVariables, DocumentInput, UseQueryArgs } from "urql"
+import DefinedGraphQLType from '@/types/DefinedGraphQLType';
+import { AnyVariables, DocumentInput, UseQueryArgs } from 'urql';
 
 const getUrqlVariables = <Result, Variables extends AnyVariables>(
   document: DocumentInput<Result, Variables>,
@@ -16,7 +16,7 @@ const getUrqlVariables = <Result, Variables extends AnyVariables>(
       additionalTypenames,
     },
     pause,
-  }
-}
+  };
+};
 
-export default getUrqlVariables
+export default getUrqlVariables;
