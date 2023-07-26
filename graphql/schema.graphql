@@ -3,8 +3,6 @@ type Query {
   listPayments: [Payment!]!
   # 項目1つを取得
   payment(paymentId: Int!): Payment
-  # 支払履歴を全て返す
-  listPaymentHistories: [PaymentHistory!]!
   # paymentごとの支払履歴一覧
   listPaymentHistoriesByPaymentId(paymentId: Int!): [PaymentHistory!]!
   # 支払履歴を1件取得

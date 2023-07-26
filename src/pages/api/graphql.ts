@@ -1,15 +1,7 @@
-import { globSync } from 'glob';
-import { createYoga, createSchema } from 'graphql-yoga';
-import fs from 'fs';
+import { ApolloServer } from '@apollo/server';
 import { Resolvers } from '@/dao/generated/graphql';
-
-const typeDefs = [
-  globSync(`${process.cwd()}/graphql/schema.graphql`).map((file) => {
-    return fs.readFileSync(file, {
-      encoding: 'utf8',
-    });
-  }),
-];
+import { startServerAndCreateNextHandler } from '@as-integrations/next';
+import fs from 'fs';
 
 const resolvers: Resolvers = {
   Query: {
@@ -23,9 +15,6 @@ const resolvers: Resolvers = {
         currentAmount: target.currentAmount,
         maxAmount: target.maxAmount,
       };
-    },
-    listPaymentHistories: async () => {
-      return paymentHistories;
     },
     // paymentに紐づく支払履歴一覧
     listPaymentHistoriesByPaymentId: async (_, { paymentId }) => {
@@ -74,23 +63,16 @@ const resolvers: Resolvers = {
   },
 };
 
-const schema = createSchema({
-  typeDefs,
+const server = new ApolloServer({
+  typeDefs: [
+    fs.readFileSync(process.cwd() + '/graphql/schema.graphql', {
+      encoding: 'utf8',
+    }),
+  ],
   resolvers,
 });
 
-export const config = {
-  api: {
-    // Disable body parsing (required for file uploads)
-    bodyParser: false,
-  },
-};
-
-export default createYoga({
-  schema,
-  // Needed to be defined explicitly because our endpoint lives at a different path other than `/graphql`
-  graphqlEndpoint: '/api/graphql',
-});
+export default startServerAndCreateNextHandler(server);
 
 const payments = [
   {

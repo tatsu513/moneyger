@@ -93,7 +93,6 @@ export type PaymentHistory = {
 };
 
 export type Query = {
-  listPaymentHistories: Array<PaymentHistory>;
   listPaymentHistoriesByPaymentId: Array<PaymentHistory>;
   listPayments: Array<Payment>;
   payment?: Maybe<Payment>;
@@ -318,11 +317,6 @@ export type QueryResolvers<
   ParentType extends
     ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
 > = {
-  listPaymentHistories?: Resolver<
-    Array<ResolversTypes['PaymentHistory']>,
-    ParentType,
-    ContextType
-  >;
   listPaymentHistoriesByPaymentId?: Resolver<
     Array<ResolversTypes['PaymentHistory']>,
     ParentType,

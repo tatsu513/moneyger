@@ -87,7 +87,6 @@ export type PaymentHistory = {
 };
 
 export type Query = {
-  listPaymentHistories: Array<PaymentHistory>;
   listPaymentHistoriesByPaymentId: Array<PaymentHistory>;
   listPayments: Array<Payment>;
   payment?: Maybe<Payment>;
