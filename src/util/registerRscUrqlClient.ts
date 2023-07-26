@@ -17,7 +17,7 @@ const envs = new ShardEnvs();
 const makeClient = (cookie: string) => {
   return () => {
     return createClient({
-      url: envs.nextAuthUrl + GRAPHQL_ENDPOINT,
+      url: 'http://localhost:3000' + GRAPHQL_ENDPOINT,
       exchanges: [cacheExchange, debugExchange, fetchExchange],
       fetchOptions: () => {
         return {
