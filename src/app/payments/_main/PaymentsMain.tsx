@@ -1,10 +1,7 @@
 'use client';
 
-import React, { Suspense, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Box, Fab } from '@mui/material';
-import FetchErrorBoundary from '@/components/common/FetchErrorBoundary';
-import CommonLoading from '@/components/common/CommonLoading';
-import ListPaymentWithSuspense from '@/app/payments/_main/ListPaymentWithSuspense';
 import PageTitle from '@/components/common/PageTitle';
 import MainContentsWrapper from '@/components/common/MainContentsWrapper';
 import { Add as AddIcon } from '@mui/icons-material';
@@ -20,11 +17,11 @@ const PaymentsMain = () => {
       <MainContentsWrapper>
         <PageTitle title="Payments" />
       </MainContentsWrapper>
-      <FetchErrorBoundary>
+      {/* <FetchErrorBoundary>
         <Suspense fallback={<CommonLoading />}>
           <ListPaymentWithSuspense />
         </Suspense>
-      </FetchErrorBoundary>
+      </FetchErrorBoundary> */}
 
       <Box
         sx={{
