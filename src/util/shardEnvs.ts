@@ -13,7 +13,7 @@ export class ShardEnvs {
 
   constructor() {
     this._env = shardEnvsSchema.parse({
-      nextAuthUrl: process.env.NEXTAUTH_URL,
+      nextAuthUrl: process.env.NEXT_PUBLIC_NEXTAUTH_URL,
     });
   }
 
