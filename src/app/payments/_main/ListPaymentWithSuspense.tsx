@@ -20,11 +20,14 @@ const ListPaymentWithSuspense: React.FC = () => {
   const val = useMemo(() => {
     return getUrqlVariables(listPaymentWithSuspenseDocument, {}, true);
   }, []);
-  const [{ data }] = useQuery(val);
+  const [{ data, fetching, error }] = useQuery(val);
 
-  if (data == null) {
+  if (fetching) {
+    <>LOADING...</>;
+  }
+  if (error) {
     console.info('収支項目を取得できませんでした');
-    // throw new Error('収支項目を取得できませんでした');
+    throw new Error('収支項目を取得できませんでした');
   }
 
   const listPayments = data?.listPayments ?? [];
