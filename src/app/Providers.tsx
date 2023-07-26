@@ -39,8 +39,8 @@ const client = new Client({
     cacheExchange,
     retryExchange({}),
     debugExchange,
-    ssr,
     fetchExchange,
+    ssr,
   ],
   requestPolicy: 'cache-first',
   fetchOptions: () => {
