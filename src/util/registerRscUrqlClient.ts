@@ -6,18 +6,23 @@ import {
   createClient,
   debugExchange,
   fetchExchange,
+  ssrExchange,
 } from '@urql/core';
 import { registerUrql } from '@urql/next/rsc';
 import { cache } from 'react';
-import { GRAPHQL_ENDPOINT } from '@/constants/graphqlEndpoint';
 import { ShardEnvs } from '@/util/shardEnvs';
 
 const envs = new ShardEnvs();
 
+const isServerSide = typeof window === 'undefined';
+const ssr = ssrExchange({
+  isClient: !isServerSide,
+});
+
 const makeClient = (cookie: string) => {
   return () => {
     return createClient({
-      url: envs.nextAuthUrl + GRAPHQL_ENDPOINT,
+      url: 'https://moneyger-alpha.vercel.app/api/graphql',
       exchanges: [cacheExchange, debugExchange, fetchExchange],
       fetchOptions: () => {
         return {
