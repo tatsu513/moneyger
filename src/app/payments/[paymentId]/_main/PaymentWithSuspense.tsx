@@ -30,7 +30,8 @@ const PaymentWithSuspense: React.FC<Props> = ({ paymentId, onClickDelete }) => {
   const payment = data?.payment;
   if (payment == null) {
     console.info('収支項目を取得できませんでした');
-    throw new Error('収支項目を取得できませんでした');
+    return <>取れません</>;
+    //throw new Error('収支項目を取得できませんでした');
   }
   return (
     <>
