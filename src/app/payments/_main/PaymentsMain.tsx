@@ -2,6 +2,7 @@
 
 import React, { useCallback, useState } from 'react';
 import { Box, Fab } from '@mui/material';
+import ListPaymentWithSuspense from '@/app/payments/_main/ListPaymentWithSuspense';
 import PageTitle from '@/components/common/PageTitle';
 import MainContentsWrapper from '@/components/common/MainContentsWrapper';
 import { Add as AddIcon } from '@mui/icons-material';
@@ -22,6 +23,7 @@ const PaymentsMain = () => {
           <ListPaymentWithSuspense />
         </Suspense>
       </FetchErrorBoundary> */}
+      <ListPaymentWithSuspense />
 
       <Box
         sx={{
