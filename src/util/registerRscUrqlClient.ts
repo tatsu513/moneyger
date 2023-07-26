@@ -23,7 +23,7 @@ const makeClient = (cookie: string) => {
   return () => {
     return createClient({
       url: 'https://moneyger-alpha.vercel.app/api/graphql',
-      exchanges: [cacheExchange, debugExchange, fetchExchange],
+      exchanges: [cacheExchange, debugExchange, ssr, fetchExchange],
       fetchOptions: () => {
         return {
           headers: {
