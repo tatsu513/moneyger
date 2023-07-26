@@ -6,9 +6,9 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { Settings } from 'luxon';
 import React, { PropsWithChildren } from 'react';
 import {
-  Client,
   UrqlProvider,
   cacheExchange,
+  createClient,
   debugExchange,
   fetchExchange,
   ssrExchange,
@@ -31,7 +31,7 @@ const isServerSide = typeof window === 'undefined';
 const ssr = ssrExchange({
   isClient: !isServerSide,
 });
-const client = new Client({
+const client = createClient({
   url: envs.nextAuthUrl + GRAPHQL_ENDPOINT,
   exchanges: [
     devtoolsExchange,
