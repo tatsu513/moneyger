@@ -1,13 +1,9 @@
 import PaymentsMain from '@/app/payments/_main/PaymentsMain';
-import { GRAPHQL_ENDPOINT } from '@/constants/graphqlEndpoint';
 import { graphql } from '@/dao/generated/preset';
 import { currentAmountType, maxAmountType, nameType } from '@/models/payment';
 import registerRscUrqlClient from '@/util/registerRscUrqlClient';
-import { ShardEnvs } from '@/util/shardEnvs';
 import { notFound } from 'next/navigation';
 import { z } from 'zod';
-
-const envs = new ShardEnvs();
 
 const paymentsPageDocument = graphql(`
   query listPayments {
@@ -37,8 +33,6 @@ export default async function page() {
       {},
       { suspense: true },
     );
-    console.log({ result });
-    console.log({ url: envs.nextAuthUrl + GRAPHQL_ENDPOINT });
     if (result.error) {
       throw result.error;
     }
