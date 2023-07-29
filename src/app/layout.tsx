@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Providers from '@/app/Providers';
-import MoneygerAppBar from '@/components/common/MoneygerAppBar';
-import PageContentsTemplate from '@/components/common/PageContentsTemplate';
+import MainTemplate from '@/components/common/MainTemplate';
 
 export const metadata: Metadata = {
   title: 'moneyger',
@@ -17,8 +16,7 @@ export default function RootLayout({
     <html lang="ja">
       <body>
         <Providers>
-          <MoneygerAppBar />
-          <PageContentsTemplate>{children}</PageContentsTemplate>
+          <MainTemplate>{children}</MainTemplate>
         </Providers>
       </body>
     </html>

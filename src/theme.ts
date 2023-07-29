@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material/styles';
-import { blue, grey, red } from 'src/color';
+import { blue, green, grey, red } from 'src/color';
 
 // font-size
 const fontSize = {
@@ -148,13 +148,14 @@ const initialTheme = createTheme({
       default: grey[0],
     },
     error: {
-      main: red[500],
+      main: red[900],
     },
     primary: {
-      main: red[500],
+      main: blue[500],
+      contrastText: grey[0],
     },
     secondary: {
-      main: grey[0],
+      main: green[900],
     },
   },
   components: {
@@ -239,6 +240,7 @@ const theme = createTheme(initialTheme, {
     MuiButton: {
       styleOverrides: {
         containedInherit: {
+          color: grey[0],
           '@media (hover: none)': {
             // 背景色がhover時の色に上書きされgrey[0]になってしまうのでdisabledをデフォルトカラーで上書き
             '&:disabled': {

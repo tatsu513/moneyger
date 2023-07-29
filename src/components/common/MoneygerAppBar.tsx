@@ -7,7 +7,7 @@ import { grey } from '@/color';
 
 const MoneygerAppBar = () => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <AppBar position="static" sx={{ bgcolor: grey[0], color: grey[900] }}>
         <Toolbar>
           <IconButton

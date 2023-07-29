@@ -1,10 +1,12 @@
 import CommonLoading from '@/components/common/CommonLoading';
 import MoneygerDialog from '@/components/common/MoneygerDialog';
+import PrimaryButton from '@/components/common/buttons/PrimaryButton';
+import TextButton from '@/components/common/buttons/TextButton';
 import { graphql } from '@/dao/generated/preset';
 import { Payment } from '@/dao/generated/preset/graphql';
 import { maxAmountType, nameType } from '@/models/payment';
 import DialogState from '@/types/DialogState';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useCallback, useState } from 'react';
 import { useMutation } from 'urql';
@@ -102,16 +104,12 @@ const UpdatePaymentDialog: React.FC<Props> = ({
       fullWidth
       actions={
         <Box display="flex" justifyContent="flex-end" gap={1}>
-          <Button variant="text" onClick={handleClose}>
-            キャンセル
-          </Button>
-          <Button
-            variant="contained"
+          <TextButton label="キャンセル" onClick={handleClose} />
+          <PrimaryButton
+            label="更新する"
             disabled={!safeParseResult.success}
             onClick={handleSubmit}
-          >
-            更新する
-          </Button>
+          />
         </Box>
       }
     >

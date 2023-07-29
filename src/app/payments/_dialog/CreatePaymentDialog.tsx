@@ -1,8 +1,10 @@
 import MoneygerDialog from '@/components/common/MoneygerDialog';
+import PrimaryButton from '@/components/common/buttons/PrimaryButton';
+import TextButton from '@/components/common/buttons/TextButton';
 import { graphql } from '@/dao/generated/preset';
 import { maxAmountType, nameType } from '@/models/payment';
 import DialogState from '@/types/DialogState';
-import { Box, Button, Slide, TextField, Typography } from '@mui/material';
+import { Box, Slide, TextField, Typography } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import React, { ChangeEvent, useCallback, useState } from 'react';
 import { useMutation } from 'urql';
@@ -108,16 +110,12 @@ const CreatePaymentDialog: React.FC<Props> = ({ dialogState, onClose }) => {
         />
       </Box>
       <Box display="flex" flexDirection="column" columnGap={2}>
-        <Button
-          variant="contained"
+        <PrimaryButton
+          label="追加する"
           disabled={!safeParseResult.success}
           onClick={handleSubmit}
-        >
-          追加する
-        </Button>
-        <Button variant="text" onClick={handleClose} fullWidth>
-          キャンセル
-        </Button>
+        />
+        <TextButton label="キャンセル" fullWidth onClick={handleClose} />
       </Box>
     </MoneygerDialog>
   );

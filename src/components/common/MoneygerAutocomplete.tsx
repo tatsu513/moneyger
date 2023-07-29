@@ -49,7 +49,7 @@ const MoneygerAutocomplete = <T,>({
       return (
         <TextField
           {...params}
-          size="small"
+          size="medium"
           variant="outlined"
           inputProps={{
             ...params.inputProps,

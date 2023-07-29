@@ -1,12 +1,13 @@
 import CommonLoading from '@/components/common/CommonLoading';
 import MoneygerDialog from '@/components/common/MoneygerDialog';
+import PrimaryButton from '@/components/common/buttons/PrimaryButton';
+import TextButton from '@/components/common/buttons/TextButton';
 import { graphql } from '@/dao/generated/preset';
 import { PaymentHistory } from '@/dao/generated/preset/graphql';
 import PrismaDateToFrontendDateStr from '@/logics/PrismaDateToFrontendDateStr';
 import DialogState from '@/types/DialogState';
 import {
   Box,
-  Button,
   Checkbox,
   FormControlLabel,
   FormGroup,
@@ -64,16 +65,12 @@ const DeletePaymentHistoryDialog: React.FC<Props> = ({
       fullWidth
       actions={
         <Box display="flex" justifyContent="flex-end" gap={1}>
-          <Button variant="text" onClick={onClose}>
-            キャンセル
-          </Button>
-          <Button
-            variant="contained"
+          <TextButton label="キャンセル" onClick={onClose} />
+          <PrimaryButton
+            label="削除"
             disabled={!checked}
             onClick={handleSubmit}
-          >
-            削除
-          </Button>
+          />
         </Box>
       }
     >

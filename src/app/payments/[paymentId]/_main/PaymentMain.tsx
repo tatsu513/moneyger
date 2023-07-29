@@ -1,6 +1,6 @@
 'use client';
 import React, { useCallback, useState } from 'react';
-import { Box, Button, IconButton, Typography } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import UpdatePaymentDialog from '@/app/payments/[paymentId]/_dialog/UpdatePaymentDialog';
 import DialogState from '@/types/DialogState';
 import DeletePaymentDialog from '@/app/payments/[paymentId]/_dialog/DeletePaymentDialog';
@@ -8,6 +8,7 @@ import { Payment } from '@/dao/generated/preset/graphql';
 import PageTitle from '@/components/common/PageTitle';
 import { grey } from '@/color';
 import { Delete as DeleteIcon } from '@mui/icons-material';
+import SecondaryButton from '@/components/common/buttons/SecondaryButton';
 
 type Props = {
   payment: Payment;
@@ -67,11 +68,15 @@ const PaymentMain: React.FC<Props> = ({ payment }) => {
             {payment.currentAmount.toLocaleString()}円
           </Typography>
         </Box>
-      </Box>
 
-      <Button variant="outlined" fullWidth onClick={updateDialogOpen}>
-        編集する
-      </Button>
+        <Box mt={2}>
+          <SecondaryButton
+            label="編集する"
+            fullWidth
+            onClick={updateDialogOpen}
+          />
+        </Box>
+      </Box>
 
       <UpdatePaymentDialog
         dialogState={updateDialogState}

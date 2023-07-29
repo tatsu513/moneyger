@@ -1,6 +1,8 @@
 import MoneygerAutocomplete from '@/components/common/MoneygerAutocomplete';
 import MoneygerDatePicker from '@/components/common/MoneygerDatePicker';
 import MoneygerDialog from '@/components/common/MoneygerDialog';
+import PrimaryButton from '@/components/common/buttons/PrimaryButton';
+import TextButton from '@/components/common/buttons/TextButton';
 import { graphql } from '@/dao/generated/preset';
 import { PaymentHistoriesPageQuery } from '@/dao/generated/preset/graphql';
 import {
@@ -11,7 +13,6 @@ import {
 import DialogState from '@/types/DialogState';
 import {
   Box,
-  Button,
   Slide,
   TextField,
   Typography,
@@ -202,16 +203,12 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
         />
       </Box>
       <Box display="flex" flexDirection="column" columnGap={2}>
-        <Button
-          variant="contained"
+        <PrimaryButton
+          label="追加する"
           disabled={!safeParseResult.success}
           onClick={handleSubmit}
-        >
-          追加する
-        </Button>
-        <Button variant="text" onClick={handleClose} fullWidth>
-          キャンセル
-        </Button>
+        />
+        <TextButton label="キャンセル" fullWidth onClick={handleClose} />
       </Box>
     </MoneygerDialog>
   );

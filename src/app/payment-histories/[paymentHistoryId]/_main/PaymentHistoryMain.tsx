@@ -5,7 +5,7 @@ import {
   PaymentHistoryPageListPaymentsQuery,
 } from '@/dao/generated/preset/graphql';
 import DialogState from '@/types/DialogState';
-import { Box, Button, IconButton, Typography } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import UpdatePaymentHistoryDialog from '@/app/payment-histories/[paymentHistoryId]/_dialog/UpdatePaymentHistoryDialog';
 import PrismaDateToFrontendDateStr from '@/logics/PrismaDateToFrontendDateStr';
@@ -13,6 +13,7 @@ import PageTitle from '@/components/common/PageTitle';
 import { grey } from '@mui/material/colors';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import DeletePaymentHistoryDialog from '@/app/payment-histories/[paymentHistoryId]/_dialog/DeletePaymentHistoryDialog';
+import SecondaryButton from '@/components/common/buttons/SecondaryButton';
 
 type Props = {
   paymentHistory: PaymentHistory;
@@ -75,9 +76,7 @@ const PaymentHistoryMain: React.FC<Props> = ({
         </Typography>
       </Box>
 
-      <Button variant="outlined" fullWidth onClick={updateDialogOpen}>
-        編集する
-      </Button>
+      <SecondaryButton label="編集する" fullWidth onClick={updateDialogOpen} />
 
       <UpdatePaymentHistoryDialog
         dialogState={updateDialogState}

@@ -2,14 +2,14 @@
 import CommonLoading from '@/components/common/CommonLoading';
 import FetchErrorBoundary from '@/components/common/FetchErrorBoundary';
 import PageTitle from '@/components/common/PageTitle';
-import { Box, Fab, Typography, createFilterOptions } from '@mui/material';
+import { Box, Typography, createFilterOptions } from '@mui/material';
 import React, { Suspense, useCallback, useState } from 'react';
-import { Add as AddIcon } from '@mui/icons-material';
 import ListPaymentHistoriesWithSuspense from '@/app/payment-histories/_main/ListPaymentHistoriesWithSuspense';
 import DialogState from '@/types/DialogState';
 import MoneygerAutocomplete from '@/components/common/MoneygerAutocomplete';
 import { grey } from '@/color';
 import CreatePaymentHistoryDialog from '@/app/payment-histories/_dialog/CreatePaymentHistoryDialog';
+import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 
 type ListPayment = {
   id: number;
@@ -51,9 +51,17 @@ const PaymentHistoriesMain: React.FC<Props> = ({ listPayments }) => {
   return (
     <Box>
       <Box px={2}>
-        <PageTitle title="支払履歴一覧" />
+        <Box
+          mb={3}
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <PageTitle title="支払履歴一覧" />
+          <PrimaryButton label="追加する" onClick={dialogOpen} />
+        </Box>
 
-        <Box mb={2} mt={2}>
+        <Box mb={2}>
           <MoneygerAutocomplete
             id="payment-histories-payment"
             options={listPayments}
@@ -78,21 +86,6 @@ const PaymentHistoriesMain: React.FC<Props> = ({ listPayments }) => {
           </Suspense>
         </FetchErrorBoundary>
       )}
-
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 'auto',
-          bottom: 32,
-          right: 16,
-          left: 'auto',
-        }}
-      >
-        <Fab variant="extended" size="medium" onClick={dialogOpen}>
-          <AddIcon sx={{ mr: 0.5 }} />
-          支払履歴を追加
-        </Fab>
-      </Box>
       <CreatePaymentHistoryDialog
         dialogState={dialogState}
         listPayments={listPayments}

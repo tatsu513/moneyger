@@ -30,7 +30,7 @@ const PaymentListItem: React.FC<Props> = ({
   const calcPriceColor = (() => {
     if (calcPrice === 0) return grey[900];
     if (calcPrice < 0) return red[900];
-    return blue[900];
+    return blue[500];
   })();
 
   const handleClick = useCallback(() => {

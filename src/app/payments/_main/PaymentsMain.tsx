@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useCallback, useState } from 'react';
-import { Box, Fab } from '@mui/material';
+import { Box, Divider, List } from '@mui/material';
 import PageTitle from '@/components/common/PageTitle';
-import { Add as AddIcon } from '@mui/icons-material';
 import DialogState from '@/types/DialogState';
 import CreatePaymentDialog from '@/app/payments/_dialog/CreatePaymentDialog';
 import { Payment } from '@/dao/generated/preset/graphql';
 import PaymentListItem from '@/app/payments/_main/PaymentListItem';
+import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 
 type Props = {
   payments: Payment[];
@@ -18,27 +18,22 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
   const dialogClose = useCallback(() => setDialogState('closed'), []);
   return (
     <Box>
-      <Box px={2}>
-        <PageTitle title="Payments" />
-      </Box>
-      {payments.map((p) => (
-        <PaymentListItem key={p.name} {...p} />
-      ))}
-
       <Box
-        sx={{
-          position: 'fixed',
-          top: 'auto',
-          bottom: 32,
-          right: 16,
-          left: 'auto',
-        }}
+        px={2}
+        pb={2}
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
       >
-        <Fab variant="extended" size="medium" onClick={dialogOpen}>
-          <AddIcon sx={{ mr: 0.5 }} />
-          支払項目を追加
-        </Fab>
+        <PageTitle title="Payments" />
+        <PrimaryButton label="追加する" onClick={dialogOpen} />
       </Box>
+      <List>
+        <Divider component="li" />
+        {payments.map((p) => (
+          <PaymentListItem key={p.name} {...p} />
+        ))}
+      </List>
       <CreatePaymentDialog dialogState={dialogState} onClose={dialogClose} />
     </Box>
   );

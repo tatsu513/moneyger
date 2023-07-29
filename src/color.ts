@@ -14,9 +14,9 @@ export const red = {
 };
 
 export const blue = {
-  100: '#90CAF4',
-  500: '#53A5E0',
-  900: '#1871B1',
+  100: '#BBEDEA',
+  300: '#5CC9C2',
+  500: '#239790',
 };
 
 export const green = {
