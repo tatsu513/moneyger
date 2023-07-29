@@ -1,7 +1,6 @@
 'use client';
 import CommonLoading from '@/components/common/CommonLoading';
 import FetchErrorBoundary from '@/components/common/FetchErrorBoundary';
-import MainContentsWrapper from '@/components/common/MainContentsWrapper';
 import PageTitle from '@/components/common/PageTitle';
 import { Box, Fab, Typography, createFilterOptions } from '@mui/material';
 import React, { Suspense, useCallback, useState } from 'react';
@@ -51,7 +50,7 @@ const PaymentHistoriesMain: React.FC<Props> = ({ listPayments }) => {
   });
   return (
     <Box>
-      <MainContentsWrapper>
+      <Box px={2}>
         <PageTitle title="支払履歴一覧" />
 
         <Box mb={2} mt={2}>
@@ -67,7 +66,7 @@ const PaymentHistoriesMain: React.FC<Props> = ({ listPayments }) => {
             onChange={handleChangePayment}
           />
         </Box>
-      </MainContentsWrapper>
+      </Box>
       {selectedPayment == null ? (
         <Typography variant="body1" color={grey[500]} px={2}>
           支払項目を選択してください

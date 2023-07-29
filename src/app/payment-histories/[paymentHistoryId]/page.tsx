@@ -4,7 +4,6 @@ import registerRscUrqlClient from '@/util/registerRscUrqlClient';
 import { z } from 'zod';
 import { notFound } from 'next/navigation';
 import PaymentHistoryMain from '@/app/payment-histories/[paymentHistoryId]/_main/PaymentHistoryMain';
-import MainContentsWrapper from '@/components/common/MainContentsWrapper';
 import { nameType } from '@/models/payment';
 
 const paymentHistoryPageDocument = graphql(`
@@ -71,12 +70,10 @@ export default async function Home({
     );
     return (
       <PageContentsTemplate>
-        <MainContentsWrapper>
-          <PaymentHistoryMain
-            paymentHistory={result}
-            listPayments={listPaymentResult}
-          />
-        </MainContentsWrapper>
+        <PaymentHistoryMain
+          paymentHistory={result}
+          listPayments={listPaymentResult}
+        />
       </PageContentsTemplate>
     );
   } catch (e) {

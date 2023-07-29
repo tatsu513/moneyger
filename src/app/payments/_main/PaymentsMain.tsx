@@ -3,7 +3,6 @@
 import React, { useCallback, useState } from 'react';
 import { Box, Fab } from '@mui/material';
 import PageTitle from '@/components/common/PageTitle';
-import MainContentsWrapper from '@/components/common/MainContentsWrapper';
 import { Add as AddIcon } from '@mui/icons-material';
 import DialogState from '@/types/DialogState';
 import CreatePaymentDialog from '@/app/payments/_dialog/CreatePaymentDialog';
@@ -19,9 +18,9 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
   const dialogClose = useCallback(() => setDialogState('closed'), []);
   return (
     <Box>
-      <MainContentsWrapper>
+      <Box px={2}>
         <PageTitle title="Payments" />
-      </MainContentsWrapper>
+      </Box>
       {payments.map((p) => (
         <PaymentListItem key={p.name} {...p} />
       ))}

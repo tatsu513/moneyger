@@ -1,8 +1,8 @@
 'use client';
 
 import {
+  PaymentHistory,
   PaymentHistoryPageListPaymentsQuery,
-  PaymentHistoryPageQuery,
 } from '@/dao/generated/preset/graphql';
 import DialogState from '@/types/DialogState';
 import { Box, Button, IconButton, Typography } from '@mui/material';
@@ -14,11 +14,9 @@ import { grey } from '@mui/material/colors';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import DeletePaymentHistoryDialog from '@/app/payment-histories/[paymentHistoryId]/_dialog/DeletePaymentHistoryDialog';
 
-type ListPayments = PaymentHistoryPageListPaymentsQuery['listPayments'];
-
 type Props = {
-  paymentHistory: NonNullable<PaymentHistoryPageQuery['paymentHistory']>;
-  listPayments: ListPayments;
+  paymentHistory: PaymentHistory;
+  listPayments: PaymentHistoryPageListPaymentsQuery['listPayments'];
 };
 const PaymentHistoryMain: React.FC<Props> = ({
   paymentHistory,
@@ -44,7 +42,7 @@ const PaymentHistoryMain: React.FC<Props> = ({
     return <>支払項目が見つかりません</>;
   }
   return (
-    <Box>
+    <Box px={2}>
       <Box
         display="flex"
         justifyContent="space-between"

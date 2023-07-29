@@ -1,6 +1,4 @@
 import PaymentMain from '@/app/payments/[paymentId]/_main/PaymentMain';
-import MainContentsWrapper from '@/components/common/MainContentsWrapper';
-import PageContentsTemplate from '@/components/common/PageContentsTemplate';
 import { graphql } from '@/dao/generated/preset';
 import { currentAmountType, maxAmountType, nameType } from '@/models/payment';
 import registerRscUrqlClient from '@/util/registerRscUrqlClient';
@@ -41,13 +39,7 @@ export default async function Home({
     const res = await getClient().query(paymentPageDocument, { paymentId });
     if (res.error) throw res.error;
     const result = paymentSchema.parse(res.data?.payment);
-    return (
-      <PageContentsTemplate>
-        <MainContentsWrapper>
-          <PaymentMain payment={result} />
-        </MainContentsWrapper>
-      </PageContentsTemplate>
-    );
+    return <PaymentMain payment={result} />;
   } catch (e) {
     notFound();
   }

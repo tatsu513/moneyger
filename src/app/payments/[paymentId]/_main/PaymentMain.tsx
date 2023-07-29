@@ -31,7 +31,7 @@ const PaymentMain: React.FC<Props> = ({ payment }) => {
   }, []);
   return (
     <>
-      <Box mb={4}>
+      <Box px={2} mb={4}>
         <Box
           display="flex"
           justifyContent="space-between"

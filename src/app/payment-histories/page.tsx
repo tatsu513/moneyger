@@ -1,4 +1,3 @@
-import PageContentsTemplate from '@/components/common/PageContentsTemplate';
 import PaymentHistoriesMain from '@/app/payment-histories/_main/PaymentHistoriesMain';
 import { graphql } from '@/dao/generated/preset';
 import registerRscUrqlClient from '@/util/registerRscUrqlClient';
@@ -28,11 +27,7 @@ export default async function Home() {
     const res = await getClient().query(paymentHistoriesPageDocument, {});
     if (res.error) throw res.error;
     const result = paymentSchema.parse(res.data?.listPayments);
-    return (
-      <PageContentsTemplate>
-        <PaymentHistoriesMain listPayments={result} />
-      </PageContentsTemplate>
-    );
+    return <PaymentHistoriesMain listPayments={result} />;
   } catch (e) {
     notFound();
   }
