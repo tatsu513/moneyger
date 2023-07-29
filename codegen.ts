@@ -1,4 +1,5 @@
-import type { CodegenConfig } from '@graphql-codegen/cli'
+/* eslint-disable */
+import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
   overwrite: true,
@@ -39,6 +40,6 @@ const config: CodegenConfig = {
     afterAllFileWrite: ['prettier --write'],
   },
   ignoreNoDocuments: true,
-}
+};
 
-export default config
+export default config;

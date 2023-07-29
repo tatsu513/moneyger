@@ -11,6 +11,7 @@ import {
 import { registerUrql } from '@urql/next/rsc';
 import { cache } from 'react';
 import { ShardEnvs } from '@/util/shardEnvs';
+import { GRAPHQL_ENDPOINT } from '@/constants/graphqlEndpoint';
 
 const envs = new ShardEnvs();
 
@@ -22,7 +23,7 @@ const ssr = ssrExchange({
 const makeClient = (cookie: string) => {
   return () => {
     return createClient({
-      url: 'http://localhost:3000/api/graphql',
+      url: envs.nextAuthUrl + GRAPHQL_ENDPOINT,
       exchanges: [cacheExchange, debugExchange, ssr, fetchExchange],
       fetchOptions: () => {
         return {

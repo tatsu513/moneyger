@@ -2,14 +2,18 @@
 
 import React, { useCallback, useState } from 'react';
 import { Box, Fab } from '@mui/material';
-import ListPaymentWithSuspense from '@/app/payments/_main/ListPaymentWithSuspense';
 import PageTitle from '@/components/common/PageTitle';
 import MainContentsWrapper from '@/components/common/MainContentsWrapper';
 import { Add as AddIcon } from '@mui/icons-material';
 import DialogState from '@/types/DialogState';
 import CreatePaymentDialog from '@/app/payments/_dialog/CreatePaymentDialog';
+import { Payment } from '@/dao/generated/preset/graphql';
+import PaymentListItem from '@/app/payments/_main/PaymentListItem';
 
-const PaymentsMain = () => {
+type Props = {
+  payments: Payment[];
+};
+const PaymentsMain: React.FC<Props> = ({ payments }) => {
   const [dialogState, setDialogState] = useState<DialogState>('closed');
   const dialogOpen = useCallback(() => setDialogState('open'), []);
   const dialogClose = useCallback(() => setDialogState('closed'), []);
@@ -18,12 +22,9 @@ const PaymentsMain = () => {
       <MainContentsWrapper>
         <PageTitle title="Payments" />
       </MainContentsWrapper>
-      {/* <FetchErrorBoundary>
-        <Suspense fallback={<CommonLoading />}>
-          <ListPaymentWithSuspense />
-        </Suspense>
-      </FetchErrorBoundary> */}
-      <ListPaymentWithSuspense />
+      {payments.map((p) => (
+        <PaymentListItem key={p.name} {...p} />
+      ))}
 
       <Box
         sx={{
