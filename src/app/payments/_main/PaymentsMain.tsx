@@ -20,13 +20,13 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
     <Box>
       <Box
         px={2}
-        pb={2}
+        pb={1}
         display="flex"
         alignItems="center"
         justifyContent="space-between"
       >
-        <PageTitle title="Payments" />
-        <PrimaryButton label="追加する" onClick={dialogOpen} />
+        <PageTitle title="今月の支出" />
+        <PrimaryButton label="追加する" size="small" onClick={dialogOpen} />
       </Box>
       <List>
         <Divider component="li" />

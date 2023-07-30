@@ -3,16 +3,23 @@ import React from 'react';
 
 type Props = {
   label: string;
+  size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;
   onClick: () => void;
 };
 const SecondaryButton: React.FC<Props> = ({
-  fullWidth = false,
-  onClick,
   label,
+  size,
+  fullWidth,
+  onClick,
 }) => {
   return (
-    <Button variant="outlined" fullWidth={fullWidth} onClick={onClick}>
+    <Button
+      variant="outlined"
+      fullWidth={fullWidth}
+      size={size}
+      onClick={onClick}
+    >
       {label}
     </Button>
   );

@@ -1,32 +1,51 @@
 'use client';
-import React, { useCallback, useState } from 'react';
-import { Box, BottomNavigation, BottomNavigationAction } from '@mui/material';
+import React, { useCallback, useMemo } from 'react';
 import {
-  Restore as RestoreIcon,
-  Favorite as FavoriteIcon,
+  Box,
+  BottomNavigation,
+  BottomNavigationAction,
+  Divider,
+} from '@mui/material';
+import {
+  Payments as PaymentsIcon,
+  Summarize as SummarizeIcon,
+  Home as HomeIcon,
 } from '@mui/icons-material';
 import { z } from 'zod';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
+const home = 'home';
 const payment = 'Payment';
 const paymentHistory = 'paymentHistory';
-type Navigation = typeof payment | typeof paymentHistory;
-
-const navigationSchema = z.enum([payment, paymentHistory]);
+const navigationSchema = z.enum([home, payment, paymentHistory]);
+type NavigationType = z.infer<typeof navigationSchema>;
 
 const MoneygerBottomNavigation = () => {
   const router = useRouter();
-  const [selected, setSelected] = useState<Navigation>(payment);
+  const pathname = usePathname();
+
+  const selectedValue = useMemo(() => {
+    if (pathname == null) return home;
+    if (/payment-histories/.test(pathname)) {
+      return paymentHistory;
+    }
+    if (/payments/.test(pathname)) {
+      return payment;
+    }
+    return home;
+  }, [pathname]);
 
   const handleChange = useCallback(
-    (_e: React.SyntheticEvent<Element, Event>, newValue: Navigation) => {
+    (_e: React.SyntheticEvent<Element, Event>, newValue: NavigationType) => {
       const result = navigationSchema.safeParse(newValue);
       if (!result.success) {
         console.error('不正なナビゲーションが選択されました');
         return;
       }
-      setSelected(result.data);
       switch (result.data) {
+        case home:
+          router.push('/');
+          break;
         case payment:
           router.push('/payments');
           break;
@@ -39,16 +58,17 @@ const MoneygerBottomNavigation = () => {
 
   return (
     <Box>
-      <BottomNavigation showLabels value={selected} onChange={handleChange}>
-        <BottomNavigationAction
-          value={payment}
-          label="収支一覧"
-          icon={<RestoreIcon />}
-        />
+      <Divider />
+      <BottomNavigation
+        showLabels
+        value={selectedValue}
+        onChange={handleChange}
+      >
+        <BottomNavigationAction value={home} icon={<HomeIcon />} />
+        <BottomNavigationAction value={payment} icon={<SummarizeIcon />} />
         <BottomNavigationAction
           value={paymentHistory}
-          label="支払履歴"
-          icon={<FavoriteIcon />}
+          icon={<PaymentsIcon />}
         />
       </BottomNavigation>
     </Box>

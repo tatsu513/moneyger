@@ -3,19 +3,22 @@ import React from 'react';
 
 type Props = {
   label: string;
+  size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;
   disabled?: boolean;
   onClick: () => void;
 };
 const PrimaryButton: React.FC<Props> = ({
   label,
-  fullWidth = false,
-  disabled = false,
+  size,
+  fullWidth,
+  disabled,
   onClick,
 }) => {
   return (
     <Button
       variant="contained"
+      size={size}
       disabled={disabled}
       fullWidth={fullWidth}
       onClick={onClick}
