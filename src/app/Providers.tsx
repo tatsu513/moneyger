@@ -21,6 +21,7 @@ import theme from '@/theme';
 import { CssBaseline } from '@mui/material';
 import { GRAPHQL_ENDPOINT } from '@/constants/graphqlEndpoint';
 import { ShardEnvs } from '@/util/shardEnvs';
+import { SessionProvider } from 'next-auth/react';
 
 Settings.defaultLocale = 'ja-JP';
 Settings.defaultZone = 'Asia/Tokyo';
@@ -54,18 +55,20 @@ const client = createClient({
 
 const Providers: React.FC<PropsWithChildren> = ({ children }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <LocalizationProvider
-        dateAdapter={AdapterLuxon}
-        adapterLocale={Settings.defaultLocale}
-        dateFormats={LOCALIZATION_FORMATS}
-      >
-        <UrqlProvider client={client} ssr={ssr}>
-          {children}
-        </UrqlProvider>
-      </LocalizationProvider>
-    </ThemeProvider>
+    <SessionProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <LocalizationProvider
+          dateAdapter={AdapterLuxon}
+          adapterLocale={Settings.defaultLocale}
+          dateFormats={LOCALIZATION_FORMATS}
+        >
+          <UrqlProvider client={client} ssr={ssr}>
+            {children}
+          </UrqlProvider>
+        </LocalizationProvider>
+      </ThemeProvider>
+    </SessionProvider>
   );
 };
 

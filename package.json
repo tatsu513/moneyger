@@ -11,7 +11,8 @@
     "dev.migrate": "dotenv -e .env.development.local -- yarn prisma migrate dev",
     "dev.studio": "dotenv -e .env.development.local -- yarn prisma studio dev",
     "dev.migrate-reset": "dotenv -e .env.development.local -- yarn prisma migrate reset dev",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "codegen": "graphql-codegen --config codegen.ts",
+    "postinstall": "yarn dev.generate"
   },
   "dependencies": {
     "@apollo/server": "^4.7.5",
@@ -24,6 +25,7 @@
     "@mui/material": "^5.14.0",
     "@mui/styled-engine-sc": "^5.12.0",
     "@mui/x-date-pickers": "^6.9.2",
+    "@next-auth/prisma-adapter": "^1.0.7",
     "@prisma/client": "^5.0.0",
     "@types/luxon": "^3.3.0",
     "@types/node": "20.4.1",
@@ -43,6 +45,7 @@
     "lodash": "^4.17.21",
     "luxon": "^3.3.0",
     "next": "13.4.9",
+    "next-auth": "^4.22.3",
     "prisma": "^5.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",

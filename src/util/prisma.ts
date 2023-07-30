@@ -1,3 +1,14 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
-export const prisma = new PrismaClient();
+let prisma: PrismaClient;
+/* eslint-disable */
+const globalForPrisma = global as unknown as {
+  prisma: PrismaClient | undefined;
+};
+
+if (!globalForPrisma.prisma) {
+  globalForPrisma.prisma = new PrismaClient();
+}
+prisma = globalForPrisma.prisma;
+
+export default prisma;
