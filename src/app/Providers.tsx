@@ -56,6 +56,7 @@ const client = createClient({
 const Providers: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <SessionProvider>
+      {/* <ProtectPage> */}
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <LocalizationProvider
@@ -68,6 +69,7 @@ const Providers: React.FC<PropsWithChildren> = ({ children }) => {
           </UrqlProvider>
         </LocalizationProvider>
       </ThemeProvider>
+      {/* </ProtectPage> */}
     </SessionProvider>
   );
 };

@@ -37,7 +37,7 @@ type LoginButtonProps = {
 const LoginButton: React.FC<LoginButtonProps> = ({ provider }) => {
   const handleClick = useCallback(() => {
     signIn(provider.id, {
-      callback: '/top',
+      callback: '/',
     });
   }, [provider]);
   return (
