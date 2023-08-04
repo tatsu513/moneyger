@@ -1,30 +1,43 @@
 'use client';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { BuiltInProviderType } from 'next-auth/providers';
-import { ClientSafeProvider, LiteralUnion, signIn } from 'next-auth/react';
-import React, { useCallback } from 'react';
+import {
+  ClientSafeProvider,
+  LiteralUnion,
+  getProviders,
+  signIn,
+} from 'next-auth/react';
+import React, { useCallback, useEffect, useState } from 'react';
 
-type Props = {
-  providers: Record<
-    LiteralUnion<BuiltInProviderType, string>,
-    ClientSafeProvider
-  > | null;
-};
-const LoginMain: React.FC<Props> = ({ providers }) => {
-  if (providers == null) {
-    return <>nullです</>;
+type ProviderType = Record<
+  LiteralUnion<BuiltInProviderType, string>,
+  ClientSafeProvider
+> | null;
+
+const LoginMain: React.FC = () => {
+  const [provider, setProvider] = useState<ProviderType>(null);
+
+  useEffect(() => {
+    (async () => {
+      const providers = await getProviders().then((res) => res);
+      setProvider(providers);
+    })();
+  }, []);
+
+  if (provider == null) {
+    return <>ログイン方式が取得できませんでした</>;
   }
   return (
     <>
-      {providers &&
-        Object.values(providers).map((provider) => {
-          return (
-            <Box key={provider.name}>
-              <LoginButton provider={provider} />
-            </Box>
-          );
-        })}
+      <Typography variant="body1">ログインする</Typography>
+      {Object.values(provider).map((provider) => {
+        return (
+          <Box key={provider.name}>
+            <LoginButton provider={provider} />
+          </Box>
+        );
+      })}
     </>
   );
 };
@@ -42,7 +55,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({ provider }) => {
   }, [provider]);
   return (
     <>
-      <PrimaryButton label={provider.name} onClick={handleClick} />
+      <PrimaryButton label={provider.name} fullWidth onClick={handleClick} />
     </>
   );
 };
