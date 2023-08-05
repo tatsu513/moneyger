@@ -92,11 +92,18 @@ export type PaymentHistory = {
   price: Scalars['Int']['output'];
 };
 
+export type PaymentSummary = {
+  totalCurrentAmount: Scalars['Int']['output'];
+  totalMaxAmount: Scalars['Int']['output'];
+  totalPaymentRatio: Scalars['Float']['output'];
+};
+
 export type Query = {
   listPaymentHistoriesByPaymentId: Array<PaymentHistory>;
   listPayments: Array<Payment>;
   payment?: Maybe<Payment>;
   paymentHistory?: Maybe<PaymentHistory>;
+  paymentSummary: PaymentSummary;
 };
 
 export type QueryListPaymentHistoriesByPaymentIdArgs = {
@@ -219,10 +226,12 @@ export type DirectiveResolverFn<
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   Payment: ResolverTypeWrapper<Payment>;
   PaymentHistory: ResolverTypeWrapper<PaymentHistory>;
+  PaymentSummary: ResolverTypeWrapper<PaymentSummary>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
 };
@@ -230,10 +239,12 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
+  Float: Scalars['Float']['output'];
   Int: Scalars['Int']['output'];
   Mutation: {};
   Payment: Payment;
   PaymentHistory: PaymentHistory;
+  PaymentSummary: PaymentSummary;
   Query: {};
   String: Scalars['String']['output'];
 };
@@ -312,6 +323,21 @@ export type PaymentHistoryResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type PaymentSummaryResolvers<
+  ContextType = Context,
+  ParentType extends
+    ResolversParentTypes['PaymentSummary'] = ResolversParentTypes['PaymentSummary'],
+> = {
+  totalCurrentAmount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalMaxAmount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalPaymentRatio?: Resolver<
+    ResolversTypes['Float'],
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<
   ContextType = Context,
   ParentType extends
@@ -340,13 +366,29 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryPaymentHistoryArgs, 'paymentHistoryId'>
   >;
+  paymentSummary?: Resolver<
+    ResolversTypes['PaymentSummary'],
+    ParentType,
+    ContextType
+  >;
 };
 
 export type Resolvers<ContextType = Context> = {
   Mutation?: MutationResolvers<ContextType>;
   Payment?: PaymentResolvers<ContextType>;
   PaymentHistory?: PaymentHistoryResolvers<ContextType>;
+  PaymentSummary?: PaymentSummaryResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+};
+
+export type PaymentSummaryQueryVariables = Exact<{ [key: string]: never }>;
+
+export type PaymentSummaryQuery = {
+  paymentSummary: {
+    totalMaxAmount: number;
+    totalCurrentAmount: number;
+    totalPaymentRatio: number;
+  };
 };
 
 export type DeletePaymentHistoryDialog_DeletePaymentHistoryMutationVariables =
@@ -490,6 +532,15 @@ export type ListPaymentsQuery = {
   }>;
 };
 
+export const PaymentSummaryDocument = gql`
+  query paymentSummary {
+    paymentSummary {
+      totalMaxAmount
+      totalCurrentAmount
+      totalPaymentRatio
+    }
+  }
+`;
 export const DeletePaymentHistoryDialog_DeletePaymentHistoryDocument = gql`
   mutation deletePaymentHistoryDialog_DeletePaymentHistory($id: Int!) {
     deletePaymentHistory(id: $id)
@@ -630,6 +681,21 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper,
 ) {
   return {
+    paymentSummary(
+      variables?: PaymentSummaryQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<PaymentSummaryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<PaymentSummaryQuery>(
+            PaymentSummaryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'paymentSummary',
+        'query',
+      );
+    },
     deletePaymentHistoryDialog_DeletePaymentHistory(
       variables: DeletePaymentHistoryDialog_DeletePaymentHistoryMutationVariables,
       requestHeaders?: GraphQLClientRequestHeaders,

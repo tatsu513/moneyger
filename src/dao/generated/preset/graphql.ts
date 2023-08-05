@@ -86,11 +86,18 @@ export type PaymentHistory = {
   price: Scalars['Int']['output'];
 };
 
+export type PaymentSummary = {
+  totalCurrentAmount: Scalars['Int']['output'];
+  totalMaxAmount: Scalars['Int']['output'];
+  totalPaymentRatio: Scalars['Float']['output'];
+};
+
 export type Query = {
   listPaymentHistoriesByPaymentId: Array<PaymentHistory>;
   listPayments: Array<Payment>;
   payment?: Maybe<Payment>;
   paymentHistory?: Maybe<PaymentHistory>;
+  paymentSummary: PaymentSummary;
 };
 
 export type QueryListPaymentHistoriesByPaymentIdArgs = {
@@ -103,6 +110,16 @@ export type QueryPaymentArgs = {
 
 export type QueryPaymentHistoryArgs = {
   paymentHistoryId: Scalars['Int']['input'];
+};
+
+export type PaymentSummaryQueryVariables = Exact<{ [key: string]: never }>;
+
+export type PaymentSummaryQuery = {
+  paymentSummary: {
+    totalMaxAmount: number;
+    totalCurrentAmount: number;
+    totalPaymentRatio: number;
+  };
 };
 
 export type DeletePaymentHistoryDialog_DeletePaymentHistoryMutationVariables =
@@ -246,6 +263,42 @@ export type ListPaymentsQuery = {
   }>;
 };
 
+export const PaymentSummaryDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'paymentSummary' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'paymentSummary' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'totalMaxAmount' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'totalCurrentAmount' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'totalPaymentRatio' },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<PaymentSummaryQuery, PaymentSummaryQueryVariables>;
 export const DeletePaymentHistoryDialog_DeletePaymentHistoryDocument = {
   kind: 'Document',
   definitions: [

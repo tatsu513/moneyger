@@ -33,6 +33,26 @@ const resolvers: Resolvers = {
       }
       return target;
     },
+    // 上限の合計金額を取得
+    paymentSummary: async () => {
+      const listPayments = payments;
+      const total = listPayments.reduce(
+        (acc, val) => {
+          const data = JSON.parse(JSON.stringify(acc));
+          data.totalMaxAmount = data.totalMaxAmount + val.maxAmount;
+          data.totalCurrentAmount = data.totalCurrentAmount + val.currentAmount;
+          return data;
+        },
+        { totalMaxAmount: 0, totalCurrentAmount: 0 },
+      );
+      const result = total.totalCurrentAmount / total.totalMaxAmount;
+      const floatedVal = Math.floor(result * 1000) / 1000;
+      const ratio = floatedVal * 100;
+      return {
+        ...total,
+        totalPaymentRatio: ratio,
+      };
+    },
   },
   Mutation: {
     createPayment: async (_, { name, maxAmount }) => {
@@ -79,7 +99,7 @@ const payments = [
     currentAmount: 2000,
     id: 1,
     name: '食費',
-    maxAmount: 30000,
+    maxAmount: 35220,
   },
   {
     currentAmount: 9000,

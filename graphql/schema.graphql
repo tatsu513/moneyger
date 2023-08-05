@@ -7,6 +7,18 @@ type Query {
   listPaymentHistoriesByPaymentId(paymentId: Int!): [PaymentHistory!]!
   # 支払履歴を1件取得
   paymentHistory(paymentHistoryId: Int!): PaymentHistory
+  # 上限の合計金額を取得
+  paymentSummary: PaymentSummary!
+}
+
+# 支払の概要
+type PaymentSummary {
+  # 合計目標金額
+  totalMaxAmount: Int!
+  # 合計使用金額
+  totalCurrentAmount: Int!
+  # 割合
+  totalPaymentRatio: Float!
 }
 
 # 作業日誌情報
