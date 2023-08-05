@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { notFound } from 'next/navigation';
 import PaymentHistoryMain from '@/app/payment-histories/[paymentHistoryId]/_main/PaymentHistoryMain';
 import { nameType } from '@/models/payment';
+import checkSessionOnServer from '@/util/checkSessionOnServer';
 
 const paymentHistoryPageDocument = graphql(`
   query paymentHistoryPage($paymentHistoryId: Int!) {
@@ -52,7 +53,10 @@ export default async function Home({
   params: { paymentHistoryId: unknown };
 }) {
   const paymentHistoryId = pageParamSchema.parse(params).paymentHistoryId;
-  const { getClient } = registerRscUrqlClient('cookie');
+  const { cookie } = await checkSessionOnServer(
+    `payment-histories/${paymentHistoryId}/`,
+  );
+  const { getClient } = registerRscUrqlClient(cookie);
   try {
     const res = await getClient().query(paymentHistoryPageDocument, {
       paymentHistoryId,

@@ -4,6 +4,7 @@ import registerRscUrqlClient from '@/util/registerRscUrqlClient';
 import { z } from 'zod';
 import { nameType } from '@/models/payment';
 import { notFound } from 'next/navigation';
+import checkSessionOnServer from '@/util/checkSessionOnServer';
 
 const paymentHistoriesPageDocument = graphql(`
   query paymentHistoriesPage {
@@ -22,7 +23,8 @@ const paymentSchema = z.array(
 );
 
 export default async function Home() {
-  const { getClient } = registerRscUrqlClient('cookie');
+  const { cookie } = await checkSessionOnServer('/payment-histories');
+  const { getClient } = registerRscUrqlClient(cookie);
   try {
     const res = await getClient().query(paymentHistoriesPageDocument, {});
     if (res.error) throw res.error;

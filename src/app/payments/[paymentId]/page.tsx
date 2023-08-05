@@ -1,6 +1,7 @@
 import PaymentMain from '@/app/payments/[paymentId]/_main/PaymentMain';
 import { graphql } from '@/dao/generated/preset';
 import { currentAmountType, maxAmountType, nameType } from '@/models/payment';
+import checkSessionOnServer from '@/util/checkSessionOnServer';
 import registerRscUrqlClient from '@/util/registerRscUrqlClient';
 import { notFound } from 'next/navigation';
 import { z } from 'zod';
@@ -33,8 +34,8 @@ export default async function Home({
   params: { paymentId: unknown };
 }) {
   const paymentId = pageParamSchema.parse(params).paymentId;
-  const { getClient } = registerRscUrqlClient('cookie');
-
+  const { cookie } = await checkSessionOnServer(`/payments/${paymentId}/`);
+  const { getClient } = registerRscUrqlClient(cookie);
   try {
     const res = await getClient().query(paymentPageDocument, { paymentId });
     if (res.error) throw res.error;

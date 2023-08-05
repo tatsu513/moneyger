@@ -27,7 +27,6 @@ const PaymentHistoryListItem: React.FC<Props> = ({
     );
   }, [router, id]);
 
-  console.log({ note: note ?? '-' });
   return (
     <ListItem divider disablePadding>
       <ListItemButton

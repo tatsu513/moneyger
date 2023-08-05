@@ -56,7 +56,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({ provider }) => {
   const target = searchParams?.get('callbackUrl');
   const handleClick = useCallback(() => {
     signIn(provider.id, {
-      callbackUrl: target ?? undefined,
+      callbackUrl: target ?? '/',
       redirect: true,
     });
   }, [provider, target]);

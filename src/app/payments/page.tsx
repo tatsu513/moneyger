@@ -1,7 +1,7 @@
 import PaymentsMain from '@/app/payments/_main/PaymentsMain';
 import { graphql } from '@/dao/generated/preset';
 import { currentAmountType, maxAmountType, nameType } from '@/models/payment';
-import getSession from '@/util/getSession';
+import checkSessionOnServer from '@/util/checkSessionOnServer';
 import registerRscUrqlClient from '@/util/registerRscUrqlClient';
 import { notFound } from 'next/navigation';
 import { z } from 'zod';
@@ -27,9 +27,8 @@ const paymentsSchema = z.array(
 );
 
 export default async function page() {
-  const session = await getSession('/payments');
-  console.log({ session });
-  const { getClient } = registerRscUrqlClient('cookie');
+  const { cookie } = await checkSessionOnServer('/payments');
+  const { getClient } = registerRscUrqlClient(cookie);
   try {
     const result = await getClient().query(
       paymentsPageDocument,
