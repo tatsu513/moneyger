@@ -1,4 +1,5 @@
 'use client';
+import CommonLoading from '@/components/common/CommonLoading';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 import { Box, Typography } from '@mui/material';
 import { BuiltInProviderType } from 'next-auth/providers';
@@ -26,11 +27,13 @@ const LoginMain: React.FC = () => {
   }, []);
 
   if (provider == null) {
-    return <>ログイン方式が取得できませんでした</>;
+    return <CommonLoading />;
   }
   return (
     <>
-      <Typography variant="body1">ログインする</Typography>
+      <Typography variant="h3" textAlign="center" mb={3}>
+        ログイン
+      </Typography>
       {Object.values(provider).map((provider) => {
         return (
           <Box key={provider.name}>
@@ -54,8 +57,13 @@ const LoginButton: React.FC<LoginButtonProps> = ({ provider }) => {
     });
   }, [provider]);
   return (
-    <>
-      <PrimaryButton label={provider.name} fullWidth onClick={handleClick} />
-    </>
+    <Box mb={2}>
+      <PrimaryButton
+        label={provider.name}
+        size="large"
+        fullWidth
+        onClick={handleClick}
+      />
+    </Box>
   );
 };
