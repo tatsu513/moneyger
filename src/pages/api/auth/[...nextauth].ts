@@ -18,6 +18,12 @@ export const options: NextAuthOptions = {
   ],
   adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    async redirect({ url, baseUrl }) {
+      console.log({ url, baseUrl });
+      return url;
+    },
+  },
   pages: {
     signIn: '/auth/login',
   },

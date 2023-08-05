@@ -9,6 +9,7 @@ import {
   getProviders,
   signIn,
 } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 
 type ProviderType = Record<
@@ -51,11 +52,14 @@ type LoginButtonProps = {
   provider: ClientSafeProvider;
 };
 const LoginButton: React.FC<LoginButtonProps> = ({ provider }) => {
+  const searchParams = useSearchParams();
+  const target = searchParams?.get('callbackUrl');
   const handleClick = useCallback(() => {
     signIn(provider.id, {
-      callback: '/',
+      callbackUrl: target ?? undefined,
+      redirect: true,
     });
-  }, [provider]);
+  }, [provider, target]);
   return (
     <Box mb={2}>
       <PrimaryButton
