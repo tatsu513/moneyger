@@ -3,6 +3,8 @@ import { blue, green, grey, red } from 'src/color';
 
 // font-size
 const fontSize = {
+  LLL: 32,
+  LL: 28,
   L: 24,
   M: 20,
   S: 18,
@@ -92,6 +94,10 @@ const initialTheme = createTheme({
       fontSize: fontSize.XS,
     },
     // その他
+    totalPrice: {
+      fontSize: fontSize.LLL,
+      fontWeight: 'bold',
+    },
     sideMenu: {
       fontSize: fontSize.XXXS,
     },
@@ -302,6 +308,7 @@ declare module '@mui/material/styles' {
     body2Underline?: React.CSSProperties;
     captionBold?: React.CSSProperties;
     // その他
+    totalPrice?: React.CSSProperties;
     sideMenu?: React.CSSProperties;
     sideMenuBold?: React.CSSProperties;
     dashboardTitle?: React.CSSProperties;
@@ -334,6 +341,7 @@ declare module '@mui/material/Typography' {
     body2Underline: true;
     captionBold: true;
     // その他
+    totalPrice: true;
     sideMenu: true;
     sideMenuBold: true;
     dashboardTitle: true;
