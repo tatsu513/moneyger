@@ -23,8 +23,8 @@ const paymentSchema = z.array(
 );
 
 export default async function Home() {
-  const { cookie } = await checkSessionOnServer('/payment-histories');
-  const { getClient } = registerRscUrqlClient(cookie);
+  const { session, cookie } = await checkSessionOnServer('/payment-histories');
+  const { getClient } = registerRscUrqlClient(session, cookie);
   try {
     const res = await getClient().query(paymentHistoriesPageDocument, {});
     if (res.error) throw res.error;
