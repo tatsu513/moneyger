@@ -65,9 +65,13 @@ const resolvers: Resolvers = {
           name,
           maxAmount,
           currentAmount: 0,
+          author: {
+            connect: {
+              id: user.id,
+            },
+          },
         },
       });
-      console.log({ name, maxAmount });
       return newPayment.id;
     },
     updatePayment: async (_, { id, name, maxAmount }) => {
