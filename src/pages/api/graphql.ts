@@ -2,6 +2,8 @@ import { ApolloServer } from '@apollo/server';
 import { Resolvers } from '@/dao/generated/graphql';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import fs from 'fs';
+import prisma from '@/util/prisma';
+import { GraphQLError } from 'graphql';
 
 const resolvers: Resolvers = {
   Query: {
@@ -34,7 +36,8 @@ const resolvers: Resolvers = {
       return target;
     },
     // 上限の合計金額を取得
-    paymentSummary: async () => {
+    paymentSummary: async (_, _args, { user }) => {
+      console.log({ user });
       const listPayments = payments;
       const total = listPayments.reduce(
         (acc, val) => {
@@ -55,9 +58,17 @@ const resolvers: Resolvers = {
     },
   },
   Mutation: {
-    createPayment: async (_, { name, maxAmount }) => {
+    createPayment: async (_, { name, maxAmount }, { user }) => {
+      console.log({ user });
+      const newPayment = await prisma.payment.create({
+        data: {
+          name,
+          maxAmount,
+          currentAmount: 0,
+        },
+      });
       console.log({ name, maxAmount });
-      return 1;
+      return newPayment.id;
     },
     updatePayment: async (_, { id, name, maxAmount }) => {
       console.log({ name, maxAmount });
@@ -92,7 +103,30 @@ const server = new ApolloServer({
   resolvers,
 });
 
-export default startServerAndCreateNextHandler(server);
+export default startServerAndCreateNextHandler(server, {
+  context: async (req) => {
+    const callerUserId = req.headers['caller-user-id'];
+    if (typeof callerUserId !== 'string') {
+      throw new GraphQLError('GOT INVALID CALLER USER ID');
+    }
+    // 実際のデータを取得する時は以下を使う
+    // const user = await prisma.user.findUnique({
+    //   where: { id: callerUserId },
+    // });
+    // if (user == null) {
+    //   throw new GraphQLError('UNREGISTER USER');
+    // }
+    return {
+      user: {
+        id: callerUserId,
+        name: 'test',
+        email: 'test@email.com',
+        emailVerified: new Date(),
+        image: '#',
+      },
+    };
+  },
+});
 
 const payments = [
   {

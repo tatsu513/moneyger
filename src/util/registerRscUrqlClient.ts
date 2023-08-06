@@ -11,16 +11,20 @@ import { registerUrql } from '@urql/next/rsc';
 import { cache } from 'react';
 import { ShardEnvs } from '@/util/shardEnvs';
 import { GRAPHQL_ENDPOINT } from '@/constants/graphqlEndpoint';
+import { CustomSession } from '@/types/sessionType';
 
 const envs = new ShardEnvs();
-const makeClient = (cookie: string) => {
+const makeClient = (session: CustomSession, cookie: string) => {
   return () => {
     return createClient({
       url: envs.nextAuthUrl + GRAPHQL_ENDPOINT,
       exchanges: [cacheExchange, debugExchange, fetchExchange],
       fetchOptions: () => {
         return {
-          headers: { cookie },
+          headers: {
+            cookie,
+            'caller-user-id': session.user.id,
+          },
         };
       },
     });
@@ -31,10 +35,13 @@ const makeClient = (cookie: string) => {
  * RSC用のurqlクライアントを取得します
  * 同一リクエストで同じcookieが渡された場合は同じクライアントを返します
  */
-const registerRscUrqlClient: (cookie: string) => {
+const registerRscUrqlClient: (
+  session: CustomSession,
+  cookie: string,
+) => {
   getClient: () => Client;
-} = cache((cookie: string) => {
-  return registerUrql(makeClient(cookie));
+} = cache((session: CustomSession, cookie: string) => {
+  return registerUrql(makeClient(session, cookie));
 });
 
 export default registerRscUrqlClient;

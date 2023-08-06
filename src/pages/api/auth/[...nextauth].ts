@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { CustomSession } from '@/types/sessionType';
 import prisma from '@/util/prisma';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { NextApiHandler } from 'next';
@@ -16,6 +17,13 @@ export const options: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
     }),
   ],
+  callbacks: {
+    async session({ session, user }) {
+      const localSession: CustomSession = JSON.parse(JSON.stringify(session));
+      localSession.user.id = user.id;
+      return localSession;
+    },
+  },
   adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET,
   pages: {

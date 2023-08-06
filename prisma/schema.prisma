@@ -13,18 +13,18 @@ datasource db {
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -40,13 +40,15 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+  id             String           @id @default(cuid())
+  name           String?
+  email          String?          @unique
+  emailVerified  DateTime?
+  image          String?
+  accounts       Account[]
+  sessions       Session[]
+  Payment        Payment[]
+  PaymentHistory PaymentHistory[]
 }
 
 model VerificationToken {
@@ -63,13 +65,19 @@ model Payment {
   maxAmount      Int
   currentAmount  Int
   PaymentHistory PaymentHistory[]
+  author         User             @relation(fields: [authorId], references: [id])
+  authorId       String
+  createdAt      DateTime         @default(now())
 }
 
 model PaymentHistory {
-  id        Int     @id @default(autoincrement())
-  note      String?
-  price     Int
+  id          Int      @id @default(autoincrement())
+  note        String?
+  price       Int
   paymentDate DateTime
-  payment   Payment @relation(fields: [paymentId], references: [id])
-  paymentId Int
+  payment     Payment  @relation(fields: [paymentId], references: [id])
+  paymentId   Int
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    String
+  createdAt   DateTime @default(now())
 }

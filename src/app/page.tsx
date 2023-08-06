@@ -24,8 +24,8 @@ const schema = z.object({
 });
 
 export default async function Home() {
-  const { cookie } = await checkSessionOnServer('/');
-  const { getClient } = registerRscUrqlClient(cookie);
+  const { session, cookie } = await checkSessionOnServer('/');
+  const { getClient } = registerRscUrqlClient(session, cookie);
   try {
     const result = await getClient().query(
       topPageDocument,

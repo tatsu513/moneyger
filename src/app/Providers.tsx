@@ -21,7 +21,8 @@ import theme from '@/theme';
 import { CssBaseline } from '@mui/material';
 import { GRAPHQL_ENDPOINT } from '@/constants/graphqlEndpoint';
 import { ShardEnvs } from '@/util/shardEnvs';
-import { SessionProvider } from 'next-auth/react';
+import { SessionProvider, useSession } from 'next-auth/react';
+import { redirect } from 'next/navigation';
 
 Settings.defaultLocale = 'ja-JP';
 Settings.defaultZone = 'Asia/Tokyo';
@@ -29,29 +30,6 @@ Settings.defaultZone = 'Asia/Tokyo';
 const envs = new ShardEnvs();
 
 const isServerSide = typeof window === 'undefined';
-const ssr = ssrExchange({
-  isClient: !isServerSide,
-});
-const client = createClient({
-  url: envs.nextAuthUrl + GRAPHQL_ENDPOINT,
-  exchanges: [
-    devtoolsExchange,
-    refocusExchange(),
-    cacheExchange,
-    retryExchange({}),
-    debugExchange,
-    fetchExchange,
-    ssr,
-  ],
-  requestPolicy: 'cache-first',
-  fetchOptions: () => {
-    return {
-      headers: { authorization: 'Bearer token' },
-      credentials: 'include',
-    };
-  },
-  suspense: true,
-});
 
 const Providers: React.FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -64,9 +42,7 @@ const Providers: React.FC<PropsWithChildren> = ({ children }) => {
           adapterLocale={Settings.defaultLocale}
           dateFormats={LOCALIZATION_FORMATS}
         >
-          <UrqlProvider client={client} ssr={ssr}>
-            {children}
-          </UrqlProvider>
+          <UrqlProviderWrapper>{children}</UrqlProviderWrapper>
         </LocalizationProvider>
       </ThemeProvider>
       {/* </ProtectPage> */}
@@ -75,3 +51,41 @@ const Providers: React.FC<PropsWithChildren> = ({ children }) => {
 };
 
 export default Providers;
+
+const UrqlProviderWrapper: React.FC<PropsWithChildren> = ({ children }) => {
+  const { data: session, status } = useSession();
+  if (session == null && status !== 'loading') {
+    redirect('/auth/login');
+  }
+  const ssr = ssrExchange({
+    isClient: !isServerSide,
+  });
+  const client = createClient({
+    url: envs.nextAuthUrl + GRAPHQL_ENDPOINT,
+    exchanges: [
+      devtoolsExchange,
+      refocusExchange(),
+      cacheExchange,
+      retryExchange({}),
+      debugExchange,
+      fetchExchange,
+      ssr,
+    ],
+    requestPolicy: 'cache-first',
+    fetchOptions: () => {
+      return {
+        headers: {
+          authorization: 'Bearer token',
+          'caller-user-id': session?.user.id ?? '',
+        },
+        credentials: 'include',
+      };
+    },
+    suspense: true,
+  });
+  return (
+    <UrqlProvider client={client} ssr={ssr}>
+      {children}
+    </UrqlProvider>
+  );
+};
