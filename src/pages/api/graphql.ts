@@ -7,9 +7,13 @@ import { GraphQLError } from 'graphql';
 
 const resolvers: Resolvers = {
   Query: {
-    listPayments: () => payments,
-    payment: (_, { paymentId }) => {
-      const target = payments.find((p) => p.id === paymentId);
+    listPayments: async () => {
+      return await prisma.payment.findMany();
+    },
+    payment: async (_, { paymentId }) => {
+      const target = await prisma.payment.findUnique({
+        where: { id: paymentId },
+      });
       if (target == null) return null;
       return {
         id: target.id,

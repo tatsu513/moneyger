@@ -25,7 +25,7 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <PageTitle title="今月の支出" />
+        <PageTitle title="Monthly Data" />
         <PrimaryButton label="追加する" size="small" onClick={dialogOpen} />
       </Box>
       <List>
