@@ -22,15 +22,12 @@ import { CssBaseline } from '@mui/material';
 import { GRAPHQL_ENDPOINT } from '@/constants/graphqlEndpoint';
 import { ShardEnvs } from '@/util/shardEnvs';
 import { SessionProvider, useSession } from 'next-auth/react';
-import { redirect } from 'next/navigation';
 
 Settings.defaultLocale = 'ja-JP';
 Settings.defaultZone = 'Asia/Tokyo';
 
 const envs = new ShardEnvs();
-
 const isServerSide = typeof window === 'undefined';
-
 const Providers: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <SessionProvider>
@@ -53,10 +50,7 @@ const Providers: React.FC<PropsWithChildren> = ({ children }) => {
 export default Providers;
 
 const UrqlProviderWrapper: React.FC<PropsWithChildren> = ({ children }) => {
-  const { data: session, status } = useSession();
-  if (session == null && status !== 'loading') {
-    redirect('/auth/login');
-  }
+  const { data: session } = useSession();
   const ssr = ssrExchange({
     isClient: !isServerSide,
   });

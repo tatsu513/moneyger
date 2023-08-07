@@ -59,7 +59,6 @@ const resolvers: Resolvers = {
   },
   Mutation: {
     createPayment: async (_, { name, maxAmount }, { user }) => {
-      console.log({ user });
       const newPayment = await prisma.payment.create({
         data: {
           name,
@@ -75,25 +74,58 @@ const resolvers: Resolvers = {
       return newPayment.id;
     },
     updatePayment: async (_, { id, name, maxAmount }) => {
-      console.log({ name, maxAmount });
-      return id;
+      const target = await prisma.payment.update({
+        where: { id },
+        data: { name, maxAmount },
+      });
+      return target.id;
     },
     deletePayment: async (_, { id }) => {
-      return id;
+      const target = await prisma.payment.delete({
+        where: { id },
+      });
+      return target.id;
     },
     createPaymentHistory: async (
       _,
       { note, price, paymentDate, paymentId },
+      { user },
     ) => {
-      console.log({ note, price, paymentDate, paymentId });
-      return 1;
+      const newData = await prisma.paymentHistory.create({
+        data: {
+          note,
+          price,
+          paymentDate,
+          payment: {
+            connect: {
+              id: paymentId,
+            },
+          },
+          author: {
+            connect: {
+              id: user.id,
+            },
+          },
+        },
+      });
+      return newData.id;
     },
     updatePaymentHistory: async (_, { id, note, price, paymentDate }) => {
-      console.log({ note, price, paymentDate });
-      return id;
+      const target = await prisma.paymentHistory.update({
+        where: { id },
+        data: {
+          note,
+          price,
+          paymentDate,
+        },
+      });
+      return target.id;
     },
     deletePaymentHistory: async (_, { id }) => {
-      return id;
+      const target = await prisma.paymentHistory.delete({
+        where: { id },
+      });
+      return target.id;
     },
   },
 };
