@@ -50,14 +50,14 @@ const PaymentHistoriesMain: React.FC<Props> = ({ listPayments }) => {
   });
   return (
     <Box>
-      <Box px={2}>
+      <Box>
         <Box
           mb={2}
           display="flex"
           alignItems="center"
           justifyContent="space-between"
         >
-          <PageTitle title="お支払" />
+          <PageTitle title="お支払い" />
           <SecondaryButton label="追加する" size="small" onClick={dialogOpen} />
         </Box>
 
