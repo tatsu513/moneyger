@@ -36,7 +36,7 @@ const PaymentListItem: React.FC<Props> = ({
     <ListItem divider disablePadding>
       <ListItemButton
         sx={{
-          px: 2,
+          px: 1,
           py: 1,
           display: 'flex',
           justifyContent: 'space-between',

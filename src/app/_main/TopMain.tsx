@@ -17,7 +17,7 @@ const TopMain: React.FC<Props> = ({ summary }) => {
   const ondOfMonth = today.endOf('month').day;
   const { color, bgColor } = getPriceColorAndBgColor(diff);
   return (
-    <Box px={2}>
+    <>
       <Box textAlign="center" mb={3}>
         <Typography variant="h3" mb={1}>
           今月の残り（あと{ondOfMonth - day}日）
@@ -40,7 +40,7 @@ const TopMain: React.FC<Props> = ({ summary }) => {
         />
         <ItemBlock label="割合" body={`${totalPaymentRatio}%`} />
       </Grid>
-    </Box>
+    </>
   );
 };
 

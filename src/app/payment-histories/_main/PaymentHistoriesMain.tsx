@@ -9,7 +9,7 @@ import DialogState from '@/types/DialogState';
 import MoneygerAutocomplete from '@/components/common/MoneygerAutocomplete';
 import { grey } from '@/color';
 import CreatePaymentHistoryDialog from '@/app/payment-histories/_dialog/CreatePaymentHistoryDialog';
-import PrimaryButton from '@/components/common/buttons/PrimaryButton';
+import SecondaryButton from '@/components/common/buttons/SecondaryButton';
 
 type ListPayment = {
   id: number;
@@ -57,8 +57,8 @@ const PaymentHistoriesMain: React.FC<Props> = ({ listPayments }) => {
           alignItems="center"
           justifyContent="space-between"
         >
-          <PageTitle title="お支払履歴" />
-          <PrimaryButton label="追加する" size="small" onClick={dialogOpen} />
+          <PageTitle title="お支払" />
+          <SecondaryButton label="追加する" size="small" onClick={dialogOpen} />
         </Box>
 
         <Box mb={2}>

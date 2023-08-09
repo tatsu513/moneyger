@@ -1,4 +1,3 @@
-import PageContentsTemplate from '@/components/common/PageContentsTemplate';
 import { graphql } from '@/dao/generated/preset';
 import registerRscUrqlClient from '@/util/registerRscUrqlClient';
 import { z } from 'zod';
@@ -73,15 +72,12 @@ export default async function Home({
       listPaymentsRes.data?.listPayments,
     );
     return (
-      <PageContentsTemplate>
-        <PaymentHistoryMain
-          paymentHistory={result}
-          listPayments={listPaymentResult}
-        />
-      </PageContentsTemplate>
+      <PaymentHistoryMain
+        paymentHistory={result}
+        listPayments={listPaymentResult}
+      />
     );
   } catch (e) {
-    return <>取れない</>;
     notFound();
   }
 }

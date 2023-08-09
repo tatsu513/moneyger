@@ -7,7 +7,7 @@ import DialogState from '@/types/DialogState';
 import CreatePaymentDialog from '@/app/payments/_dialog/CreatePaymentDialog';
 import { Payment } from '@/dao/generated/preset/graphql';
 import PaymentListItem from '@/app/payments/_main/PaymentListItem';
-import PrimaryButton from '@/components/common/buttons/PrimaryButton';
+import SecondaryButton from '@/components/common/buttons/SecondaryButton';
 
 type Props = {
   payments: Payment[];
@@ -19,14 +19,13 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
   return (
     <Box>
       <Box
-        px={2}
         pb={1}
         display="flex"
         alignItems="center"
         justifyContent="space-between"
       >
-        <PageTitle title="Monthly Data" />
-        <PrimaryButton label="追加する" size="small" onClick={dialogOpen} />
+        <PageTitle title="家計簿" />
+        <SecondaryButton label="追加する" size="small" onClick={dialogOpen} />
       </Box>
       <List>
         <Divider component="li" />

@@ -5,6 +5,7 @@ import {
   BottomNavigation,
   BottomNavigationAction,
   Divider,
+  Typography,
 } from '@mui/material';
 import {
   Payments as PaymentsIcon,
@@ -64,10 +65,19 @@ const MoneygerBottomNavigation = () => {
         value={selectedValue}
         onChange={handleChange}
       >
-        <BottomNavigationAction value={home} icon={<HomeIcon />} />
-        <BottomNavigationAction value={payment} icon={<SummarizeIcon />} />
+        <BottomNavigationAction
+          value={home}
+          label={<Typography variant="bottomNavigation">ホーム</Typography>}
+          icon={<HomeIcon />}
+        />
+        <BottomNavigationAction
+          value={payment}
+          label={<Typography variant="bottomNavigation">家計簿</Typography>}
+          icon={<SummarizeIcon />}
+        />
         <BottomNavigationAction
           value={paymentHistory}
+          label={<Typography variant="bottomNavigation">お支払</Typography>}
           icon={<PaymentsIcon />}
         />
       </BottomNavigation>

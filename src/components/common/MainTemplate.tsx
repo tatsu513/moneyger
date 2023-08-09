@@ -2,7 +2,6 @@
 import { Box } from '@mui/material';
 import React, { PropsWithChildren } from 'react';
 import MoneygerAppBar from '@/components/common/MoneygerAppBar';
-import PageContentsTemplate from '@/components/common/PageContentsTemplate';
 import MoneygerBottomNavigation from '@/components/common/MoneygerBottomNavigation';
 
 const MainTemplate: React.FC<PropsWithChildren> = ({ children }) => {
@@ -18,12 +17,10 @@ const MainTemplate: React.FC<PropsWithChildren> = ({ children }) => {
     >
       <MoneygerAppBar />
       <Box display="flex" flexDirection="column" height="calc(100% - 56px)">
-        <Box flex={1} py={2} sx={{ overflowY: 'scroll' }}>
-          <PageContentsTemplate>{children}</PageContentsTemplate>
+        <Box flex={1} p={2} sx={{ overflowY: 'scroll' }}>
+          {children}
         </Box>
-        <Box>
-          <MoneygerBottomNavigation />
-        </Box>
+        <MoneygerBottomNavigation />
       </Box>
     </Box>
   );
