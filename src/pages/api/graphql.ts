@@ -24,25 +24,34 @@ const resolvers: Resolvers = {
     },
     // paymentに紐づく支払履歴一覧
     listPaymentHistoriesByPaymentId: async (_, { paymentId }) => {
-      const target = paymentHistories.flatMap((p) => {
-        if (p.paymentId !== paymentId) return [];
-        return [p];
+      const results = await prisma.paymentHistory.findMany({
+        where: { paymentId },
       });
-      if (target == null) return [];
-      return target;
+      return results.map((r) => ({
+        id: r.id,
+        note: r.note,
+        price: r.price,
+        paymentDate: r.paymentDate.toISOString(),
+        paymentId,
+      }));
     },
     // 支払履歴を1件取得
     paymentHistory: async (_, { paymentHistoryId }) => {
-      const target = paymentHistories.find((h) => h.id === paymentHistoryId);
-      if (target == null) {
+      const result = await prisma.paymentHistory.findUnique({
+        where: { id: paymentHistoryId },
+      });
+      if (result == null) {
         throw Error('支払履歴が見つかりません');
       }
-      return target;
+      return {
+        ...result,
+        paymentDate: result.paymentDate.toISOString(),
+      };
     },
-    // 上限の合計金額を取得
+    // ダッシュボード用
     paymentSummary: async (_, _args, { user }) => {
       console.log({ user });
-      const listPayments = payments;
+      const listPayments = await prisma.payment.findMany();
       const total = listPayments.reduce(
         (acc, val) => {
           const data = JSON.parse(JSON.stringify(acc));
@@ -99,7 +108,7 @@ const resolvers: Resolvers = {
         data: {
           note,
           price,
-          paymentDate,
+          paymentDate: new Date(paymentDate),
           payment: {
             connect: {
               id: paymentId,
@@ -154,7 +163,7 @@ export default startServerAndCreateNextHandler(server, {
     //   where: { id: callerUserId },
     // });
     // if (user == null) {
-    //   throw new GraphQLError('UNREGISTER USER');
+    //   throw new GraphQLError('UNREGISTERED USER');
     // }
     return {
       user: {
@@ -167,55 +176,3 @@ export default startServerAndCreateNextHandler(server, {
     };
   },
 });
-
-const payments = [
-  {
-    currentAmount: 2000,
-    id: 1,
-    name: '食費',
-    maxAmount: 35220,
-  },
-  {
-    currentAmount: 9000,
-    id: 2,
-    name: '日用品',
-    maxAmount: 10000,
-  },
-  {
-    currentAmount: 7000,
-    id: 3,
-    name: '交通費',
-    maxAmount: 5000,
-  },
-];
-
-const paymentHistories = [
-  {
-    id: 10,
-    paymentId: 1,
-    paymentDate: '2023-07-01T00:00:00+09:00',
-    note: 'メモ',
-    price: 1000,
-  },
-  {
-    id: 11,
-    paymentId: 2,
-    paymentDate: '2023-07-02T00:00:00+09:00',
-    note: null,
-    price: 2200,
-  },
-  {
-    id: 12,
-    paymentId: 3,
-    paymentDate: '2023-07-03T00:00:00+09:00',
-    note: null,
-    price: 222,
-  },
-  {
-    id: 13,
-    paymentId: 1,
-    paymentDate: '2023-07-04T00:00:00+09:00',
-    note: 'ハンバーグ定食',
-    price: 980,
-  },
-];

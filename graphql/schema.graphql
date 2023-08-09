@@ -7,7 +7,7 @@ type Query {
   listPaymentHistoriesByPaymentId(paymentId: Int!): [PaymentHistory!]!
   # 支払履歴を1件取得
   paymentHistory(paymentHistoryId: Int!): PaymentHistory
-  # 上限の合計金額を取得
+  # ダッシュボード用
   paymentSummary: PaymentSummary!
 }
 
