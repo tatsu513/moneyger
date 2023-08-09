@@ -33,7 +33,15 @@ const MoneygerAppBar = () => {
   }, []);
   return (
     <Box>
-      <AppBar position="static" sx={{ bgcolor: grey[0], color: grey[900] }}>
+      <AppBar
+        position="static"
+        sx={{
+          bgcolor: grey[0],
+          color: grey[900],
+          boxShadow: 'none',
+          borderBottom: `1px solid ${grey[100]}`,
+        }}
+      >
         <Toolbar>
           <Box
             display="flex"

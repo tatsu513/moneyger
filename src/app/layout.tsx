@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Providers from '@/app/Providers';
-import MainTemplate from '@/components/common/MainTemplate';
+import MainTemplate from '@/app/_layout/MainTemplate';
 
 export const metadata: Metadata = {
   title: 'moneyger',
