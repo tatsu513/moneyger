@@ -22,6 +22,14 @@ const resolvers: Resolvers = {
         maxAmount: target.maxAmount,
       };
     },
+    // 支払履歴を全て取得
+    listPaymentHistories: async () => {
+      const results = await prisma.paymentHistory.findMany();
+      return results.map((r) => ({
+        ...r,
+        paymentDate: r.paymentDate.toISOString(),
+      }));
+    },
     // paymentに紐づく支払履歴一覧
     listPaymentHistoriesByPaymentId: async (_, { paymentId }) => {
       const results = await prisma.paymentHistory.findMany({

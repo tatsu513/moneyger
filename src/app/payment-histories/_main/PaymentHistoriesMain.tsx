@@ -1,15 +1,13 @@
 'use client';
-import CommonLoading from '@/components/common/CommonLoading';
-import FetchErrorBoundary from '@/components/common/FetchErrorBoundary';
 import PageTitle from '@/components/common/PageTitle';
-import { Box, Typography, createFilterOptions } from '@mui/material';
-import React, { Suspense, useCallback, useState } from 'react';
-import ListPaymentHistoriesWithSuspense from '@/app/payment-histories/_main/ListPaymentHistoriesWithSuspense';
+import { Box, createFilterOptions } from '@mui/material';
+import React, { useCallback, useState } from 'react';
+import ListPaymentHistories from '@/app/payment-histories/_main/ListPaymentHistories';
 import DialogState from '@/types/DialogState';
 import MoneygerAutocomplete from '@/components/common/MoneygerAutocomplete';
-import { grey } from '@/color';
 import CreatePaymentHistoryDialog from '@/app/payment-histories/_dialog/CreatePaymentHistoryDialog';
 import SecondaryButton from '@/components/common/buttons/SecondaryButton';
+import { PaymentHistory } from '@/dao/generated/preset/graphql';
 
 type ListPayment = {
   id: number;
@@ -17,8 +15,12 @@ type ListPayment = {
 };
 type Props = {
   listPayments: ListPayment[];
+  listPaymentHistories: PaymentHistory[];
 };
-const PaymentHistoriesMain: React.FC<Props> = ({ listPayments }) => {
+const PaymentHistoriesMain: React.FC<Props> = ({
+  listPayments,
+  listPaymentHistories,
+}) => {
   const [selectedPayment, setSelectedPayment] = useState<ListPayment | null>(
     null,
   );
@@ -75,17 +77,10 @@ const PaymentHistoriesMain: React.FC<Props> = ({ listPayments }) => {
           />
         </Box>
       </Box>
-      {selectedPayment == null ? (
-        <Typography variant="body1" color={grey[500]} px={2}>
-          支払項目を選択してください
-        </Typography>
-      ) : (
-        <FetchErrorBoundary>
-          <Suspense fallback={<CommonLoading />}>
-            <ListPaymentHistoriesWithSuspense paymentId={selectedPayment.id} />
-          </Suspense>
-        </FetchErrorBoundary>
-      )}
+      <ListPaymentHistories
+        paymentId={selectedPayment?.id ?? null}
+        initialState={listPaymentHistories}
+      />
       <CreatePaymentHistoryDialog
         dialogState={dialogState}
         listPayments={listPayments}

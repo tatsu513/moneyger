@@ -99,6 +99,7 @@ export type PaymentSummary = {
 };
 
 export type Query = {
+  listPaymentHistories: Array<PaymentHistory>;
   listPaymentHistoriesByPaymentId: Array<PaymentHistory>;
   listPayments: Array<Payment>;
   payment?: Maybe<Payment>;
@@ -343,6 +344,11 @@ export type QueryResolvers<
   ParentType extends
     ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
 > = {
+  listPaymentHistories?: Resolver<
+    Array<ResolversTypes['PaymentHistory']>,
+    ParentType,
+    ContextType
+  >;
   listPaymentHistoriesByPaymentId?: Resolver<
     Array<ResolversTypes['PaymentHistory']>,
     ParentType,
@@ -466,6 +472,13 @@ export type PaymentHistoriesPageQueryVariables = Exact<{
 
 export type PaymentHistoriesPageQuery = {
   listPayments: Array<{ id: number; name: string }>;
+  listPaymentHistories: Array<{
+    id: number;
+    paymentId: number;
+    paymentDate: string;
+    note?: string | null;
+    price: number;
+  }>;
 };
 
 export type DeletePaymentDialog_DeletePaymentMutationVariables = Exact<{
@@ -611,6 +624,13 @@ export const PaymentHistoriesPageDocument = gql`
     listPayments {
       id
       name
+    }
+    listPaymentHistories {
+      id
+      paymentId
+      paymentDate
+      note
+      price
     }
   }
 `;

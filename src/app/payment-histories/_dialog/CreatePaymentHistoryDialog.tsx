@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import { DateTime } from 'luxon';
+import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useCallback, useState } from 'react';
 import { useMutation } from 'urql';
 
@@ -50,6 +51,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
   listPayments,
   onClose,
 }) => {
+  const router = useRouter();
   const [payment, setPayment] = useState<LocalPaymentsType[number] | null>(
     null,
   );
@@ -107,7 +109,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
   )[1];
   const handleSubmit = useCallback(async () => {
     const parseResult = createPaymentHistorySchema.safeParse({
-      payment,
+      paymentId: payment?.id,
       paymentDate: paymentDate?.toISO(),
       price,
       note,
@@ -115,7 +117,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
     if (!parseResult.success) {
       console.error('入力値を確認してください', {
         payment,
-        paymentDate,
+        paymentDate: paymentDate,
         price,
         note,
       });
@@ -131,12 +133,13 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
       if (result.error) {
         throw new Error('処理失敗です');
       }
+      router.refresh();
       onClose();
     } catch (error) {
       console.error('処理失敗です', { error });
       return;
     }
-  }, [submit, onClose, payment, paymentDate, price, note]);
+  }, [submit, onClose, payment, paymentDate, price, note, router]);
 
   const getOptionLabel = useCallback(
     (option: LocalPaymentsType[number]): string => option.name,
