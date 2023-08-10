@@ -10,7 +10,6 @@ import {
 import { registerUrql } from '@urql/next/rsc';
 import { cache } from 'react';
 import { ShardEnvs } from '@/util/shardEnvs';
-import { GRAPHQL_ENDPOINT } from '@/constants/graphqlEndpoint';
 import { CustomSession } from '@/types/sessionType';
 
 const envs = new ShardEnvs();

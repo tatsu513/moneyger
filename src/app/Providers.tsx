@@ -19,7 +19,6 @@ import { retryExchange } from '@urql/exchange-retry';
 import { ThemeProvider } from '@emotion/react';
 import theme from '@/theme';
 import { CssBaseline } from '@mui/material';
-import { GRAPHQL_ENDPOINT } from '@/constants/graphqlEndpoint';
 import { ShardEnvs } from '@/util/shardEnvs';
 import { SessionProvider, useSession } from 'next-auth/react';
 
