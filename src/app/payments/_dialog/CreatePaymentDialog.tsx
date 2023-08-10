@@ -81,7 +81,7 @@ const CreatePaymentDialog: React.FC<Props> = ({ dialogState, onClose }) => {
       console.error('処理失敗です', { error });
       return;
     }
-  }, [submit, onClose, safeParseResult, name, maxAmount]);
+  }, [submit, onClose, safeParseResult, name, maxAmount, router]);
   return (
     <MoneygerDialog
       open={dialogState === 'open'}

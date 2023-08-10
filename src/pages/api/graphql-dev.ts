@@ -2,7 +2,6 @@ import { ApolloServer } from '@apollo/server';
 import { Resolvers } from '@/dao/generated/graphql';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import fs from 'fs';
-import prisma from '@/util/prisma';
 import { GraphQLError } from 'graphql';
 
 const resolvers: Resolvers = {
