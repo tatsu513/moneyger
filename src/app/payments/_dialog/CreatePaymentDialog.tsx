@@ -6,6 +6,7 @@ import { maxAmountType, nameType } from '@/models/payment';
 import DialogState from '@/types/DialogState';
 import { Box, Slide, TextField, Typography } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
+import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useCallback, useState } from 'react';
 import { useMutation } from 'urql';
 import { z } from 'zod';
@@ -26,6 +27,7 @@ type Props = {
   onClose: () => void;
 };
 const CreatePaymentDialog: React.FC<Props> = ({ dialogState, onClose }) => {
+  const router = useRouter()
   const [name, setName] = useState('');
   const [maxAmount, setMaxAmount] = useState('');
 
@@ -73,6 +75,7 @@ const CreatePaymentDialog: React.FC<Props> = ({ dialogState, onClose }) => {
       if (result.error) {
         throw new Error('処理失敗です');
       }
+      router.refresh()
       onClose();
     } catch (error) {
       console.error('処理失敗です', { error });

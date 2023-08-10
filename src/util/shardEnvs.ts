@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 const shardEnvsSchema = z.object({
   nextAuthUrl: z.string(),
+  graphqlEndpoint: z.string(),
 });
 /**
  * サーバーサイドとクライアントサイドで使用可能
@@ -14,10 +15,15 @@ export class ShardEnvs {
   constructor() {
     this._env = shardEnvsSchema.parse({
       nextAuthUrl: process.env.NEXT_PUBLIC_NEXTAUTH_URL,
+      graphqlEndpoint: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT
     });
   }
 
   get nextAuthUrl(): string {
     return this._env.nextAuthUrl;
+  }
+
+  get graphqlEndpoint(): string {
+    return this._env.graphqlEndpoint;
   }
 }

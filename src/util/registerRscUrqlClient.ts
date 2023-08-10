@@ -16,8 +16,9 @@ import { CustomSession } from '@/types/sessionType';
 const envs = new ShardEnvs();
 const makeClient = (session: CustomSession, cookie: string) => {
   return () => {
+    console.log(envs.nextAuthUrl + envs.graphqlEndpoint)
     return createClient({
-      url: envs.nextAuthUrl + GRAPHQL_ENDPOINT,
+      url: envs.nextAuthUrl + envs.graphqlEndpoint,
       exchanges: [cacheExchange, debugExchange, fetchExchange],
       fetchOptions: () => {
         return {

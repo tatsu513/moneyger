@@ -55,7 +55,7 @@ const UrqlProviderWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     isClient: !isServerSide,
   });
   const client = createClient({
-    url: envs.nextAuthUrl + GRAPHQL_ENDPOINT,
+    url: envs.nextAuthUrl + envs.graphqlEndpoint,
     exchanges: [
       devtoolsExchange,
       refocusExchange(),

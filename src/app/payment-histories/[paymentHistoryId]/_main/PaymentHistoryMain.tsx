@@ -14,6 +14,7 @@ import { grey } from '@mui/material/colors';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import DeletePaymentHistoryDialog from '@/app/payment-histories/[paymentHistoryId]/_dialog/DeletePaymentHistoryDialog';
 import SecondaryButton from '@/components/common/buttons/SecondaryButton';
+import TextButton from '@/components/common/buttons/TextButton';
 
 type Props = {
   paymentHistory: PaymentHistory;
@@ -43,23 +44,15 @@ const PaymentHistoryMain: React.FC<Props> = ({
     return <>支払項目が見つかりません</>;
   }
   return (
-    <Box px={2}>
+    <>
       <Box
         display="flex"
         justifyContent="space-between"
         alignItems="center"
         mb={2}
       >
-        <PageTitle title="支払詳細" />
-        <Box color={grey[500]}>
-          <IconButton size="small" color="inherit" onClick={deleteDialogOpen}>
-            <DeleteIcon />
-          </IconButton>
-        </Box>
-      </Box>
-      <Box mb={2}>
-        <Typography variant="body1">支払項目</Typography>
-        <Typography variant="h2">{payment?.name ?? '-'}</Typography>
+        <PageTitle title={payment?.name ?? '-'} />
+        <TextButton label="削除する" onClick={deleteDialogOpen} />
       </Box>
 
       <Box mb={2}>
@@ -89,7 +82,7 @@ const PaymentHistoryMain: React.FC<Props> = ({
         paymentHistory={paymentHistory}
         onClose={closeDialog}
       />
-    </Box>
+    </>
   );
 };
 
