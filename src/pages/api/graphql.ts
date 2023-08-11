@@ -103,7 +103,6 @@ const resolvers: Resolvers = {
         data: {
           name,
           maxAmount,
-          currentAmount: 0,
           author: {
             connect: {
               id: user.id,
