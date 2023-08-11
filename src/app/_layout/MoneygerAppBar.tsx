@@ -50,7 +50,7 @@ const MoneygerAppBar = () => {
             width="100%"
           >
             <Link href="/" style={{ textDecoration: 'none', color: grey[900] }}>
-              <Typography variant="h6" sx={{ flexGrow: 1 }}>
+              <Typography variant="h2" sx={{ flexGrow: 1 }}>
                 moneyGer
               </Typography>
             </Link>
