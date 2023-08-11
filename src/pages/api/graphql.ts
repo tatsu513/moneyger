@@ -93,7 +93,7 @@ const resolvers: Resolvers = {
       return {
         totalMaxAmount,
         totalCurrentAmount,
-        totalPaymentRatio: ratio,
+        totalPaymentRatio: isNaN(ratio) ? 0 : ratio,
       };
     },
   },
