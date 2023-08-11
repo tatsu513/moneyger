@@ -57,7 +57,7 @@ const MoneygerAppBar = () => {
             {!isAuthPath && (
               <Box>
                 <IconButton color="inherit" onClick={handleMenu}>
-                  <AccountCircle fontSize="large" />
+                  <AccountCircle fontSize="medium" />
                 </IconButton>
                 <Menu
                   id="menu-appbar"
