@@ -56,13 +56,8 @@ const resolvers: Resolvers = {
     // ダッシュボード用
     paymentSummary: async (_, _args, { user }) => {
       console.log({ user });
-      const listPayments = payments;
-      const totalMaxAmount = listPayments.reduce(
-        (acc, val) => {
-          const data = JSON.parse(JSON.stringify(acc));
-          data.totalMaxAmount = data.totalMaxAmount + val.maxAmount;
-          return data;
-        },
+      const totalMaxAmount = payments.reduce(
+        (acc, val) => acc + val.maxAmount,
         0,
       );
       const totalCurrentAmount = paymentHistorys.reduce((acc, val) => {

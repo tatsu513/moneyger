@@ -80,9 +80,9 @@ const resolvers: Resolvers = {
       console.log({ user });
       const listPayments = await prisma.payment.findMany();
       const totalMaxAmount = listPayments.reduce(
-        (acc, val) => {
-          return acc + val.maxAmount
-        }, 0);
+        (acc, val) => acc + val.maxAmount,
+        0
+      );
       const paymentHistories = await prisma.paymentHistory.findMany();
       const totalCurrentAmount = paymentHistories.reduce((acc, val) => {
         return acc + val.price
