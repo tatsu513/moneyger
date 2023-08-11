@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useCallback, useState } from 'react';
-import { Box, Divider, List } from '@mui/material';
+import { Box, Divider, List, Typography } from '@mui/material';
 import PageTitle from '@/components/common/PageTitle';
 import DialogState from '@/types/DialogState';
 import CreatePaymentDialog from '@/app/payments/_dialog/CreatePaymentDialog';
 import { Payment } from '@/dao/generated/preset/graphql';
 import PaymentListItem from '@/app/payments/_main/PaymentListItem';
 import SecondaryButton from '@/components/common/buttons/SecondaryButton';
+import { grey } from '@/color';
 
 type Props = {
   payments: Payment[];
@@ -16,6 +17,10 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
   const [dialogState, setDialogState] = useState<DialogState>('closed');
   const dialogOpen = useCallback(() => setDialogState('open'), []);
   const dialogClose = useCallback(() => setDialogState('closed'), []);
+
+  if (payments.length === 0) {
+    return <Typography variant='body1' color={grey[500]}>データが登録されていません</Typography>
+  }
   return (
     <Box>
       <Box
