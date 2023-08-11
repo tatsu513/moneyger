@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "dev.generate": "dotenv -e .env.development.local -- yarn prisma generate dev",
-    "dev.migrate": "dotenv -e .env.development.local -- yarn prisma migrate dev",
+    "dev.migrate": "dotenv -e .env.development.local -- yarn prisma migrate dev --name remove_update_at",
     "dev.studio": "dotenv -e .env.development.local -- yarn prisma studio dev",
     "dev.migrate-reset": "dotenv -e .env.development.local -- yarn prisma migrate reset dev",
     "codegen": "graphql-codegen --config codegen.ts",

@@ -7,12 +7,29 @@ import { GraphQLError } from 'graphql';
 const resolvers: Resolvers = {
   Query: {
     listPayments: async () => {
-      return payments;
+      const data = payments.map((p) => {
+        const currentAmount = paymentHistorys.reduce((acc, val) => {
+          return val.paymentId === p.id ? acc + val.price : acc
+        }, 0)
+        return {
+          ...p,
+          currentAmount
+        }
+      })
+      return data
     },
     payment: async (_, { paymentId }) => {
-      const target = payments.find((p) => p.id === paymentId)
-      if (target == null) return null;
-      return target
+      const payment = payments.find((p) => p.id === paymentId)
+      if (payment == null) return null;
+      const currentAmount = paymentHistorys.reduce((acc, val) => {
+        return val.paymentId === payment.id ? acc + val.price : acc
+      }, 0)
+      return {
+        id: payment.id,
+        name: payment.name,
+        currentAmount,
+        maxAmount: payment.maxAmount,
+      };
     },
     // 支払履歴を全て取得
     listPaymentHistories: async () => {
@@ -40,20 +57,23 @@ const resolvers: Resolvers = {
     paymentSummary: async (_, _args, { user }) => {
       console.log({ user });
       const listPayments = payments;
-      const total = listPayments.reduce(
+      const totalMaxAmount = listPayments.reduce(
         (acc, val) => {
           const data = JSON.parse(JSON.stringify(acc));
           data.totalMaxAmount = data.totalMaxAmount + val.maxAmount;
-          data.totalCurrentAmount = data.totalCurrentAmount + val.currentAmount;
           return data;
         },
-        { totalMaxAmount: 0, totalCurrentAmount: 0 },
+        0,
       );
-      const result = total.totalCurrentAmount / total.totalMaxAmount;
+      const totalCurrentAmount = paymentHistorys.reduce((acc, val) => {
+        return acc + val.price
+      }, 0)
+      const result = totalCurrentAmount / totalMaxAmount;
       const floatedVal = Math.floor(result * 1000) / 1000;
       const ratio = floatedVal * 100;
       return {
-        ...total,
+        totalMaxAmount,
+        totalCurrentAmount,
         totalPaymentRatio: ratio,
       };
     },
@@ -122,7 +142,6 @@ const payments = [
     id: 1,
     name: 'テスト1',
     maxAmount: 100000,
-    currentAmount: 20000,
     authorId: 10,
     createdAt: new Date()
   },
@@ -130,7 +149,6 @@ const payments = [
     id: 2,
     name: 'テスト2',
     maxAmount: 80000,
-    currentAmount: 15000,
     authorId: 1,
     createdAt: new Date()
   },
@@ -138,7 +156,6 @@ const payments = [
     id: 3,
     name: 'テスト3',
     maxAmount: 10000,
-    currentAmount: 2200,
     authorId: 12,
     createdAt: new Date()
   },
@@ -165,7 +182,7 @@ const paymentHistorys = [
   },{
     id: 1300,
     note: '薬局',
-    price: 1588,
+    price: 300,
     paymentDate: '2023-08-07T03:12:40+09:00',
     paymentId: 3,
     authorId: 1,

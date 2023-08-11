@@ -8,18 +8,37 @@ import { GraphQLError } from 'graphql';
 const resolvers: Resolvers = {
   Query: {
     listPayments: async () => {
-      return await prisma.payment.findMany();
+      const paymentsPromise = prisma.payment.findMany();
+      const historiesPromise = prisma.paymentHistory.findMany();
+      const [payments, histories] = await Promise.all([paymentsPromise, historiesPromise])
+      const data = payments.map((p) => {
+        const currentAmount = histories.reduce((acc, val) => {
+          return val.paymentId === p.id ? acc + val.price : acc
+        }, 0)
+        return {
+          ...p,
+          currentAmount
+        }
+      })
+      return data
     },
     payment: async (_, { paymentId }) => {
-      const target = await prisma.payment.findUnique({
+      const paymentPromise = prisma.payment.findUnique({
         where: { id: paymentId },
       });
-      if (target == null) return null;
+      const historiesPromise = prisma.paymentHistory.findMany({
+        where: { paymentId }
+      })
+      const [payment, histories] = await Promise.all([paymentPromise, historiesPromise]);
+      if (payment == null) return null;
+      const currentAmount = histories.reduce((acc, val) => {
+        return val.paymentId === payment.id ? acc + val.price : acc
+      }, 0)
       return {
-        id: target.id,
-        name: target.name,
-        currentAmount: target.currentAmount,
-        maxAmount: target.maxAmount,
+        id: payment.id,
+        name: payment.name,
+        currentAmount,
+        maxAmount: payment.maxAmount,
       };
     },
     // 支払履歴を全て取得
@@ -60,20 +79,20 @@ const resolvers: Resolvers = {
     paymentSummary: async (_, _args, { user }) => {
       console.log({ user });
       const listPayments = await prisma.payment.findMany();
-      const total = listPayments.reduce(
+      const totalMaxAmount = listPayments.reduce(
         (acc, val) => {
-          const data = JSON.parse(JSON.stringify(acc));
-          data.totalMaxAmount = data.totalMaxAmount + val.maxAmount;
-          data.totalCurrentAmount = data.totalCurrentAmount + val.currentAmount;
-          return data;
-        },
-        { totalMaxAmount: 0, totalCurrentAmount: 0 },
-      );
-      const result = total.totalCurrentAmount / total.totalMaxAmount;
+          return acc + val.maxAmount
+        }, 0);
+      const paymentHistories = await prisma.paymentHistory.findMany();
+      const totalCurrentAmount = paymentHistories.reduce((acc, val) => {
+        return acc + val.price
+      }, 0)
+      const result = totalCurrentAmount / totalMaxAmount;
       const floatedVal = Math.floor(result * 1000) / 1000;
       const ratio = floatedVal * 100;
       return {
-        ...total,
+        totalMaxAmount,
+        totalCurrentAmount,
         totalPaymentRatio: ratio,
       };
     },

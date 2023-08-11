@@ -1,3 +1,5 @@
+yarn run v1.22.19
+$ /Users/tatsuya.okawa/personal/moneyger/node_modules/.bin/prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script
 -- CreateTable
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL,
@@ -49,7 +51,6 @@ CREATE TABLE "Payment" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "maxAmount" INTEGER NOT NULL,
-    "currentAmount" INTEGER NOT NULL,
     "authorId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -98,3 +99,5 @@ ALTER TABLE "PaymentHistory" ADD CONSTRAINT "PaymentHistory_paymentId_fkey" FORE
 
 -- AddForeignKey
 ALTER TABLE "PaymentHistory" ADD CONSTRAINT "PaymentHistory_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+Done in 0.37s.

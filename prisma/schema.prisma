@@ -63,7 +63,6 @@ model Payment {
   id             Int              @id @default(autoincrement())
   name           String
   maxAmount      Int
-  currentAmount  Int
   PaymentHistory PaymentHistory[]
   author         User             @relation(fields: [authorId], references: [id])
   authorId       String
