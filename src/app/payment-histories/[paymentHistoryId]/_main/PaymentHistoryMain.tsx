@@ -13,6 +13,7 @@ import PageTitle from '@/components/common/PageTitle';
 import DeletePaymentHistoryDialog from '@/app/payment-histories/[paymentHistoryId]/_dialog/DeletePaymentHistoryDialog';
 import SecondaryButton from '@/components/common/buttons/SecondaryButton';
 import TextButton from '@/components/common/buttons/TextButton';
+import { grey } from '@/color';
 
 type Props = {
   paymentHistory: PaymentHistory;
@@ -39,7 +40,7 @@ const PaymentHistoryMain: React.FC<Props> = ({
 
   const payment = listPayments.find((p) => p.id === paymentHistory.paymentId);
   if (payment == null) {
-    return <>支払項目が見つかりません</>;
+    return <Typography variant='body1' color={grey[500]}>支払項目が見つかりません</Typography>;
   }
   return (
     <>
