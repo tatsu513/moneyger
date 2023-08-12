@@ -18,9 +18,6 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
   const dialogOpen = useCallback(() => setDialogState('open'), []);
   const dialogClose = useCallback(() => setDialogState('closed'), []);
 
-  if (payments.length === 0) {
-    return <Typography variant='body1' color={grey[500]}>データが登録されていません</Typography>
-  }
   return (
     <Box>
       <Box
@@ -32,12 +29,16 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
         <PageTitle title="家計簿" />
         <SecondaryButton label="追加する" size="small" onClick={dialogOpen} />
       </Box>
-      <List>
-        <Divider component="li" />
-        {payments.map((p) => (
-          <PaymentListItem key={p.name} {...p} />
-        ))}
-      </List>
+      {payments.length === 0 ? (
+        <Typography variant='body1' color={grey[500]}>データが登録されていません</Typography>
+      ) : (
+        <List>
+          <Divider component="li" />
+          {payments.map((p) => (
+            <PaymentListItem key={p.name} {...p} />
+          ))}
+        </List>
+      )}
       <CreatePaymentDialog dialogState={dialogState} onClose={dialogClose} />
     </Box>
   );
