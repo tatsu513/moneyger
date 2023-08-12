@@ -3,12 +3,15 @@ import { Resolvers } from '@/dao/generated/graphql';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import fs from 'fs';
 import { GraphQLError } from 'graphql';
+import isThisMonth from '@/logics/isThisMonth';
+import { DateTime } from 'luxon';
 
 const resolvers: Resolvers = {
   Query: {
     listPayments: async () => {
       const data = payments.map((p) => {
         const currentAmount = paymentHistorys.reduce((acc, val) => {
+          if (!isThisMonth(DateTime.now(), DateTime.fromJSDate(val.paymentDate))) return acc;
           return val.paymentId === p.id ? acc + val.price : acc
         }, 0)
         return {
@@ -33,12 +36,26 @@ const resolvers: Resolvers = {
     },
     // 支払履歴を全て取得
     listPaymentHistories: async () => {
-      return paymentHistorys
+      const validHistories = paymentHistorys.flatMap((h) => {
+        return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate)) ? [h] : []
+      })
+      return validHistories.map((h) => ({
+        ...h,
+        paymentDate: h.paymentDate.toISOString()
+      }))
     },
     // paymentに紐づく支払履歴一覧
     listPaymentHistoriesByPaymentId: async (_, { paymentId }) => {
-      const results = paymentHistorys.flatMap((p) => {
-        if (p.paymentId === paymentId) return p
+      const validHistories = paymentHistorys.flatMap((h) => {
+        return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate)) ? [h] : []
+      })
+      const results = validHistories.flatMap((p) => {
+        if (p.paymentId === paymentId) {
+          return [{
+            ...p,
+            paymentDate: p.paymentDate.toISOString()
+          }]
+        }
         return []
       })
       return results;
@@ -51,7 +68,10 @@ const resolvers: Resolvers = {
       if (result == null) {
         throw Error('支払履歴が見つかりません');
       }
-      return result;
+      return {
+        ...result,
+        paymentDate: result.paymentDate.toISOString()
+      };
     },
     // ダッシュボード用
     paymentSummary: async (_, _args, { user }) => {
@@ -60,7 +80,10 @@ const resolvers: Resolvers = {
         (acc, val) => acc + val.maxAmount,
         0,
       );
-      const totalCurrentAmount = paymentHistorys.reduce((acc, val) => {
+      const validHistories = paymentHistorys.flatMap((h) => {
+        return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate)) ? [h] : []
+      })
+      const totalCurrentAmount = validHistories.reduce((acc, val) => {
         return acc + val.price
       }, 0)
       const result = totalCurrentAmount / totalMaxAmount;
@@ -132,6 +155,7 @@ export default startServerAndCreateNextHandler(server, {
   },
 });
 
+const today = new Date()
 const payments = [
   {
     id: 1,
@@ -161,7 +185,7 @@ const paymentHistorys = [
     id: 100,
     note: 'スーパー',
     price: 1588,
-    paymentDate: '2023-08-07T03:12:40+09:00',
+    paymentDate: new Date(), // '2023-08-07T03:12:40+09:00',
     paymentId: 1,
     authorId: 1,
     createdAt: new Date()
@@ -170,15 +194,25 @@ const paymentHistorys = [
     id: 200,
     note: 'コンビニ',
     price: 600,
-    paymentDate: '2023-08-07T03:12:40+09:00',
+    paymentDate: new Date(),
     paymentId: 2,
     authorId: 1,
     createdAt: new Date()
-  },{
+  },
+  {
     id: 1300,
     note: '薬局',
     price: 300,
-    paymentDate: '2023-08-07T03:12:40+09:00',
+    paymentDate: new Date(),
+    paymentId: 3,
+    authorId: 1,
+    createdAt: new Date()
+  },
+  {
+    id: 999,
+    note: 'ヤマザキ',
+    price: 300,
+    paymentDate: new Date(today.setMonth(today.getMonth() + 2)),
     paymentId: 3,
     authorId: 1,
     createdAt: new Date()

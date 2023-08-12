@@ -4,15 +4,20 @@ import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import fs from 'fs';
 import prisma from '@/util/prisma';
 import { GraphQLError } from 'graphql';
+import isThisMonth from '@/logics/isThisMonth';
+import { DateTime } from 'luxon';
 
 const resolvers: Resolvers = {
   Query: {
     listPayments: async () => {
       const paymentsPromise = prisma.payment.findMany();
       const historiesPromise = prisma.paymentHistory.findMany();
-      const [payments, histories] = await Promise.all([paymentsPromise, historiesPromise])
+      const [payments, histories] = await Promise.all([paymentsPromise, historiesPromise]);
+      const validHistories = histories.flatMap((h) => {
+        return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate)) ? [h] : []
+      })
       const data = payments.map((p) => {
-        const currentAmount = histories.reduce((acc, val) => {
+        const currentAmount = validHistories.reduce((acc, val) => {
           return val.paymentId === p.id ? acc + val.price : acc
         }, 0)
         return {
@@ -44,7 +49,10 @@ const resolvers: Resolvers = {
     // 支払履歴を全て取得
     listPaymentHistories: async () => {
       const results = await prisma.paymentHistory.findMany();
-      return results.map((r) => ({
+      const validHistories = results.flatMap((r) => {
+        return isThisMonth(DateTime.now(), DateTime.fromJSDate(r.paymentDate)) ? [r] : []
+      })
+      return validHistories.map((r) => ({
         ...r,
         paymentDate: r.paymentDate.toISOString(),
       }));
@@ -54,7 +62,10 @@ const resolvers: Resolvers = {
       const results = await prisma.paymentHistory.findMany({
         where: { paymentId },
       });
-      return results.map((r) => ({
+      const validHistories = results.flatMap((r) => {
+        return isThisMonth(DateTime.now(), DateTime.fromJSDate(r.paymentDate)) ? [r] : []
+      })
+      return validHistories.map((r) => ({
         id: r.id,
         note: r.note,
         price: r.price,
@@ -84,7 +95,10 @@ const resolvers: Resolvers = {
         0
       );
       const paymentHistories = await prisma.paymentHistory.findMany();
-      const totalCurrentAmount = paymentHistories.reduce((acc, val) => {
+      const validHistories = paymentHistories.flatMap((h) => {
+        return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate)) ? [h] : []
+      })
+      const totalCurrentAmount = validHistories.reduce((acc, val) => {
         return acc + val.price
       }, 0)
       const result = totalCurrentAmount / totalMaxAmount;
