@@ -70,7 +70,7 @@ const PaymentHistoriesMain: React.FC<Props> = ({
             value={
               listPayments.find((p) => p.id === selectedPayment?.id) ?? null
             }
-            label="支払項目を選択"
+            label="すべて"
             filterOptions={filterOptions}
             getOptionLabel={getOptionLabel}
             onChange={handleChangePayment}
