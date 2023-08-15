@@ -27,7 +27,7 @@ type Props = {
   onClose: () => void;
 };
 const CreatePaymentDialog: React.FC<Props> = ({ dialogState, onClose }) => {
-  const router = useRouter()
+  const router = useRouter();
   const [name, setName] = useState('');
   const [maxAmount, setMaxAmount] = useState('');
 
@@ -75,13 +75,13 @@ const CreatePaymentDialog: React.FC<Props> = ({ dialogState, onClose }) => {
       if (result.error) {
         throw new Error('処理失敗です');
       }
-      router.refresh()
-      onClose();
+      router.refresh();
+      handleClose();
     } catch (error) {
       console.error('処理失敗です', { error });
       return;
     }
-  }, [submit, onClose, safeParseResult, name, maxAmount, router]);
+  }, [submit, handleClose, safeParseResult, name, maxAmount, router]);
   return (
     <MoneygerDialog
       open={dialogState === 'open'}

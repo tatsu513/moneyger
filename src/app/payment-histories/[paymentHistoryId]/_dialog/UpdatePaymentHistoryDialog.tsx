@@ -136,12 +136,12 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
         throw new Error('処理失敗です');
       }
       router.refresh();
-      onClose();
+      handleClose();
     } catch (error) {
       console.error('処理失敗です', { error });
       return;
     }
-  }, [submit, onClose, router, payment, note, price, paymentDate]);
+  }, [submit, handleClose, router, payment, note, price, paymentDate]);
 
   const handlePaymentChange = useCallback(
     (

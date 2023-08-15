@@ -89,12 +89,12 @@ const UpdatePaymentDialog: React.FC<Props> = ({
         throw new Error('処理失敗です');
       }
       router.refresh();
-      onClose();
+      handleClose();
     } catch (error) {
       console.error('処理失敗です', { error });
       return;
     }
-  }, [safeParseResult, payment, submit, onClose, router]);
+  }, [safeParseResult, payment, submit, handleClose, router]);
 
   return (
     <MoneygerDialog

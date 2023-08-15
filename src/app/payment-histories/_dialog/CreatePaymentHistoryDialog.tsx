@@ -134,12 +134,12 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
         throw new Error('処理失敗です');
       }
       router.refresh();
-      onClose();
+      handleClose();
     } catch (error) {
       console.error('処理失敗です', { error });
       return;
     }
-  }, [submit, onClose, payment, paymentDate, price, note, router]);
+  }, [submit, handleClose, payment, paymentDate, price, note, router]);
 
   const getOptionLabel = useCallback(
     (option: LocalPaymentsType[number]): string => option.name,
