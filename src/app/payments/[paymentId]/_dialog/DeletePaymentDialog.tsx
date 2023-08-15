@@ -56,13 +56,13 @@ const DeletePaymentDialog: React.FC<Props> = ({
       }
       events.onSuccess();
       router.refresh();
-      onClose();
+      router.push('/payments');
     } catch (error) {
       console.error('削除に失敗しました', { error });
       events.onError();
       return;
     }
-  }, [router, payment.id, checked, submit, onClose, events]);
+  }, [router, payment.id, checked, submit, events]);
   return (
     <MoneygerDialog
       open={dialogState === 'open'}

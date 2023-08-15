@@ -59,13 +59,13 @@ const DeletePaymentHistoryDialog: React.FC<Props> = ({
       }
       router.refresh();
       events.onSuccess();
-      onClose();
+      router.push('/payment-histories');
     } catch (error) {
       console.error('削除に失敗しました', { error });
       events.onError();
       return;
     }
-  }, [router, paymentHistory.id, checked, submit, onClose, events]);
+  }, [router, paymentHistory.id, checked, submit, events]);
   return (
     <MoneygerDialog
       open={dialogState === 'open'}
