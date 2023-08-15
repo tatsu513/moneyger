@@ -8,6 +8,8 @@ import MoneygerAutocomplete from '@/components/common/MoneygerAutocomplete';
 import CreatePaymentHistoryDialog from '@/app/payment-histories/_dialog/CreatePaymentHistoryDialog';
 import SecondaryButton from '@/components/common/buttons/SecondaryButton';
 import { PaymentHistory } from '@/dao/generated/preset/graphql';
+import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
+import useAlert from '@/hooks/useAlert';
 
 type ListPayment = {
   id: number;
@@ -27,6 +29,9 @@ const PaymentHistoriesMain: React.FC<Props> = ({
   const [dialogState, setDialogState] = useState<DialogState>('closed');
   const dialogOpen = useCallback(() => setDialogState('open'), []);
   const dialogClose = useCallback(() => setDialogState('closed'), []);
+
+  const { alertType, setSuccess, setError, setProcessing, setNone } =
+    useAlert();
 
   const handleChangePayment = useCallback(
     (_e: React.SyntheticEvent<Element, Event>, value: ListPayment | null) => {
@@ -52,6 +57,13 @@ const PaymentHistoriesMain: React.FC<Props> = ({
   });
   return (
     <Box>
+      <MoneygerSnackBar
+        state={alertType}
+        successMessage="支払いの登録に成功しました"
+        errorMessage="支払いの登録に失敗しました"
+        processingMessage="支払いを登録中です"
+        onClose={setNone}
+      />
       <Box>
         <Box
           mb={2}
@@ -85,6 +97,11 @@ const PaymentHistoriesMain: React.FC<Props> = ({
         dialogState={dialogState}
         listPayments={listPayments}
         onClose={dialogClose}
+        events={{
+          onSuccess: setSuccess,
+          onError: setError,
+          onProcessing: setProcessing,
+        }}
       />
     </Box>
   );

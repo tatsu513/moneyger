@@ -45,11 +45,17 @@ type Props = {
   dialogState: DialogState;
   listPayments: LocalPaymentsType;
   onClose: () => void;
+  events: {
+    onSuccess: () => void;
+    onError: () => void;
+    onProcessing: () => void;
+  };
 };
 const CreatePaymentHistoryDialog: React.FC<Props> = ({
   dialogState,
   listPayments,
   onClose,
+  events,
 }) => {
   const router = useRouter();
   const [payment, setPayment] = useState<LocalPaymentsType[number] | null>(
@@ -108,6 +114,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
     createPaymentHistoryDialogCreatePaymentDocument,
   )[1];
   const handleSubmit = useCallback(async () => {
+    events.onProcessing();
     const parseResult = createPaymentHistorySchema.safeParse({
       paymentId: payment?.id,
       paymentDate: paymentDate?.toISO(),
@@ -121,6 +128,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
         price,
         note,
       });
+      events.onError();
       return;
     }
     try {
@@ -134,12 +142,14 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
         throw new Error('処理失敗です');
       }
       router.refresh();
+      events.onSuccess();
       handleClose();
     } catch (error) {
       console.error('処理失敗です', { error });
+      events.onError();
       return;
     }
-  }, [submit, handleClose, payment, paymentDate, price, note, router]);
+  }, [submit, handleClose, payment, paymentDate, price, note, router, events]);
 
   const getOptionLabel = useCallback(
     (option: LocalPaymentsType[number]): string => option.name,

@@ -25,8 +25,17 @@ const createPaymentSchema = z.object({
 type Props = {
   dialogState: DialogState;
   onClose: () => void;
+  events: {
+    onSuccess: () => void;
+    onError: () => void;
+    onProcessing: () => void;
+  };
 };
-const CreatePaymentDialog: React.FC<Props> = ({ dialogState, onClose }) => {
+const CreatePaymentDialog: React.FC<Props> = ({
+  dialogState,
+  onClose,
+  events,
+}) => {
   const router = useRouter();
   const [name, setName] = useState('');
   const [maxAmount, setMaxAmount] = useState('');
@@ -63,8 +72,10 @@ const CreatePaymentDialog: React.FC<Props> = ({ dialogState, onClose }) => {
 
   const submit = useMutation(createPaymentDialogCreatePaymentDocument)[1];
   const handleSubmit = useCallback(async () => {
+    events.onProcessing();
     if (!safeParseResult.success) {
       console.error('入力値を確認してください', { name, maxAmount });
+      events.onError();
       return;
     }
     try {
@@ -76,12 +87,14 @@ const CreatePaymentDialog: React.FC<Props> = ({ dialogState, onClose }) => {
         throw new Error('処理失敗です');
       }
       router.refresh();
+      events.onSuccess();
       handleClose();
     } catch (error) {
       console.error('処理失敗です', { error });
+      events.onError();
       return;
     }
-  }, [submit, handleClose, safeParseResult, name, maxAmount, router]);
+  }, [submit, handleClose, safeParseResult, name, maxAmount, router, events]);
   return (
     <MoneygerDialog
       open={dialogState === 'open'}

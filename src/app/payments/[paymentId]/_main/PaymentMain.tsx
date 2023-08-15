@@ -9,6 +9,8 @@ import PageTitle from '@/components/common/PageTitle';
 import { grey } from '@/color';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import SecondaryButton from '@/components/common/buttons/SecondaryButton';
+import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
+import useAlert from '@/hooks/useAlert';
 
 type Props = {
   payment: Payment;
@@ -19,6 +21,21 @@ const PaymentMain: React.FC<Props> = ({ payment }) => {
     useState<DialogState>('closed');
   const [deleteDialogState, setDeleteDialogState] =
     useState<DialogState>(`closed`);
+
+  const {
+    alertType: updateAlertType,
+    setSuccess: updateSetSuccess,
+    setError: updateSetError,
+    setProcessing: updateSetProcessing,
+    setNone: updateSetNone,
+  } = useAlert();
+  const {
+    alertType: deleteAlertType,
+    setSuccess: deleteSetSuccess,
+    setError: deleteSetError,
+    setProcessing: deleteSetProcessing,
+    setNone: deleteSetNone,
+  } = useAlert();
 
   const updateDialogOpen = useCallback(() => {
     setUpdateDialogState('open');
@@ -32,6 +49,20 @@ const PaymentMain: React.FC<Props> = ({ payment }) => {
   }, []);
   return (
     <>
+      <MoneygerSnackBar
+        state={updateAlertType}
+        successMessage="家計簿の項目の更新に成功しました"
+        errorMessage="家計簿の項目の更新に失敗しました"
+        processingMessage="家計簿の項目を更新中です"
+        onClose={updateSetNone}
+      />
+      <MoneygerSnackBar
+        state={deleteAlertType}
+        successMessage="家計簿の項目の削除に成功しました"
+        errorMessage="家計簿の項目の削除に失敗しました"
+        processingMessage="家計簿の項目を削除です"
+        onClose={deleteSetNone}
+      />
       <Box px={2} mb={4}>
         <Box
           display="flex"
@@ -82,11 +113,21 @@ const PaymentMain: React.FC<Props> = ({ payment }) => {
         dialogState={updateDialogState}
         payment={payment}
         onClose={handleClose}
+        events={{
+          onSuccess: updateSetSuccess,
+          onError: updateSetError,
+          onProcessing: updateSetProcessing,
+        }}
       />
       <DeletePaymentDialog
         dialogState={deleteDialogState}
         payment={payment}
         onClose={handleClose}
+        events={{
+          onSuccess: deleteSetSuccess,
+          onError: deleteSetError,
+          onProcessing: deleteSetProcessing,
+        }}
       />
     </>
   );
