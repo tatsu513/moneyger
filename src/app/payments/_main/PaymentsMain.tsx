@@ -27,9 +27,9 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
     <Box>
       <MoneygerSnackBar
         state={alertType}
-        successMessage="家計簿の登録に成功しました"
-        errorMessage="家計簿の登録に失敗しました"
-        processingMessage="家計簿を登録中です"
+        successMessage="費目の登録に成功しました"
+        errorMessage="費目の登録に失敗しました"
+        processingMessage="費目を登録中..."
         onClose={setNone}
       />
       <Box
@@ -38,7 +38,7 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <PageTitle title="家計簿" />
+        <PageTitle title="費目" />
         <SecondaryButton label="追加する" size="small" onClick={dialogOpen} />
       </Box>
       {payments.length === 0 ? (

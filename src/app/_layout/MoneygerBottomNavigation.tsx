@@ -72,7 +72,7 @@ const MoneygerBottomNavigation = () => {
         />
         <BottomNavigationAction
           value={payment}
-          label={<Typography variant="bottomNavigation">家計簿</Typography>}
+          label={<Typography variant="bottomNavigation">費目</Typography>}
           icon={<SummarizeIcon />}
         />
         <BottomNavigationAction

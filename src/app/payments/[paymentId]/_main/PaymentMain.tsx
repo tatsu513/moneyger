@@ -51,16 +51,16 @@ const PaymentMain: React.FC<Props> = ({ payment }) => {
     <>
       <MoneygerSnackBar
         state={updateAlertType}
-        successMessage="家計簿の項目の更新に成功しました"
-        errorMessage="家計簿の項目の更新に失敗しました"
-        processingMessage="家計簿の項目を更新中です"
+        successMessage="費目の更新に成功しました"
+        errorMessage="費目の更新に失敗しました"
+        processingMessage="費目を更新中..."
         onClose={updateSetNone}
       />
       <MoneygerSnackBar
         state={deleteAlertType}
-        successMessage="家計簿の項目の削除に成功しました"
-        errorMessage="家計簿の項目の削除に失敗しました"
-        processingMessage="家計簿の項目を削除です"
+        successMessage="費目の削除に成功しました"
+        errorMessage="費目の削除に失敗しました"
+        processingMessage="費目を削除中..."
         onClose={deleteSetNone}
       />
       <Box px={2} mb={4}>

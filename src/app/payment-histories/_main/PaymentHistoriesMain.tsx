@@ -61,7 +61,7 @@ const PaymentHistoriesMain: React.FC<Props> = ({
         state={alertType}
         successMessage="支払いの登録に成功しました"
         errorMessage="支払いの登録に失敗しました"
-        processingMessage="支払いを登録中です"
+        processingMessage="支払いを登録中..."
         onClose={setNone}
       />
       <Box>

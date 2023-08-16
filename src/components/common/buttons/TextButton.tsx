@@ -1,3 +1,5 @@
+import { grey } from '@/color';
+import theme from '@/theme';
 import { Button } from '@mui/material';
 import React from 'react';
 
@@ -6,6 +8,7 @@ type Props = {
   fullWidth?: boolean;
   disabled?: boolean;
   startIcon?: React.ReactNode
+  size?: 'small' | 'normal'
   onClick: () => void;
 };
 const TextButton: React.FC<Props> = ({
@@ -13,6 +16,7 @@ const TextButton: React.FC<Props> = ({
   fullWidth = false,
   disabled = false,
   startIcon,
+  size = ' normal',
   onClick,
 }) => {
   return (
@@ -22,6 +26,7 @@ const TextButton: React.FC<Props> = ({
       disabled={disabled}
       onClick={onClick}
       startIcon={startIcon}
+      sx={{ color: grey[900], fontSize: size === 'normal' ? theme.typography.body1.fontSize : theme.typography.body2.fontSize }}
     >
       {label}
     </Button>
