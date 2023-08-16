@@ -117,8 +117,8 @@ const resolvers: Resolvers = {
       console.info({ note, price, paymentDate, paymentId, user }, 'createPaymentHistory called')
       return 1;
     },
-    updatePaymentHistory: async (_, { id, note, price, paymentDate }) => {
-      console.info({ id, note, price, paymentDate}, 'createPaymentHistory called')
+    updatePaymentHistory: async (_, { id, paymentId, note, price, paymentDate }) => {
+      console.info({ id, paymentId, note, price, paymentDate}, 'createPaymentHistory called')
       return id;
     },
     deletePaymentHistory: async (_, { id }) => {
@@ -200,7 +200,7 @@ const paymentHistorys = [
     createdAt: new Date()
   },
   {
-    id: 1300,
+    id: 300,
     note: '薬局',
     price: 300,
     paymentDate: new Date(),

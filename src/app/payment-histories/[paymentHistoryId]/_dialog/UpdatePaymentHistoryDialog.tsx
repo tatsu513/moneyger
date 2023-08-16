@@ -39,10 +39,18 @@ const updatePaymentHistoryDialogUpdatePaymentHistoryDocument = graphql(`
   }
 `);
 
-const updateSchema = z.object({
+const editUpdateSchema = z.object({
   id: z.number(),
   paymentId: z.number(),
   paymentDate: paymentDateType,
+  price: priceType,
+  note: noteType,
+});
+
+const updateSchema = z.object({
+  id: z.number(),
+  paymentId: z.number(),
+  paymentDate: z.string(),
   price: priceType,
   note: noteType,
 });
@@ -78,7 +86,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
     stringDateToDateTime(paymentHistory.paymentDate),
   );
 
-  const safeParseResult = updateSchema.safeParse({
+  const safeParseResult = editUpdateSchema.safeParse({
     id: paymentHistory.id,
     paymentId: payment?.id,
     paymentDate,
@@ -121,8 +129,9 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
   )[1];
   const handleSubmit = useCallback(async () => {
     events.onProcessing();
-    const parseResult = createPaymentHistorySchema.safeParse({
-      paymentId: paymentHistory.id,
+    const parseResult = updateSchema.safeParse({
+      id: paymentHistory.id,
+      paymentId: payment?.id,
       paymentDate: paymentDate?.toISO(),
       price,
       note,
@@ -137,10 +146,9 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
       events.onError();
       return;
     }
-    console.log({ parseResult })
     try {
       const result = await submit({
-        id: parseResult.data.paymentId,
+        id: parseResult.data.id,
         paymentId: parseResult.data.paymentId,
         paymentDate: parseResult.data.paymentDate,
         price: parseResult.data.price,
