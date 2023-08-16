@@ -19,7 +19,7 @@ const resolvers: Resolvers = {
           currentAmount
         }
       })
-      return data.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+      return data
     },
     payment: async (_, { paymentId }) => {
       const payment = payments.find((p) => p.id === paymentId)
@@ -40,7 +40,6 @@ const resolvers: Resolvers = {
         return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate)) ? [h] : []
       })
       return validHistories
-        .sort((a, b) => (a.paymentDate < b.paymentDate ? 1 : -1))
         .map((h) => ({
           ...h,
           paymentDate: h.paymentDate.toISOString()
@@ -52,7 +51,6 @@ const resolvers: Resolvers = {
         return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate)) ? [h] : []
       })
       const results = validHistories
-        .sort((a, b) => (a.paymentDate < b.paymentDate ? 1 : -1))
         .flatMap((p) => {
           if (p.paymentId === paymentId) {
             return [{

@@ -10,9 +10,7 @@ import { DateTime } from 'luxon';
 const resolvers: Resolvers = {
   Query: {
     listPayments: async () => {
-      const paymentsPromise = prisma.payment.findMany({
-        orderBy: { createdAt: 'desc' }
-      });
+      const paymentsPromise = prisma.payment.findMany();
       const historiesPromise = prisma.paymentHistory.findMany();
       const [payments, histories] = await Promise.all([paymentsPromise, historiesPromise]);
       const validHistories = histories.flatMap((h) => {
@@ -50,9 +48,7 @@ const resolvers: Resolvers = {
     },
     // 支払履歴を全て取得
     listPaymentHistories: async () => {
-      const results = await prisma.paymentHistory.findMany({
-        orderBy: { paymentDate: 'desc' }
-      });
+      const results = await prisma.paymentHistory.findMany();
       const validHistories = results.flatMap((r) => {
         return isThisMonth(DateTime.now(), DateTime.fromJSDate(r.paymentDate)) ? [r] : []
       })
