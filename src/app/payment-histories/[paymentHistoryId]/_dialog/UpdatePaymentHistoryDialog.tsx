@@ -165,7 +165,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
       events.onError();
       return;
     }
-  }, [submit, handleClose, router, payment, note, price, paymentDate, events]);
+  }, [submit, handleClose, paymentHistory.id, router, payment, note, price, paymentDate, events]);
 
   const handlePaymentChange = useCallback(
     (
