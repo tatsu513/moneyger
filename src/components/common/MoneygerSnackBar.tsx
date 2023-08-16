@@ -17,7 +17,6 @@ const MoneygerSnackBar: React.FC<Props> = ({
   processingMessage,
   onClose,
 }) => {
-  console.log({ state });
   return (
     <Box width="100%">
       <Snackbar

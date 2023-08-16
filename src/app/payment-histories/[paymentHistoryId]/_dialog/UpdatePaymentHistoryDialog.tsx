@@ -24,12 +24,14 @@ import { z } from 'zod';
 const updatePaymentHistoryDialogUpdatePaymentHistoryDocument = graphql(`
   mutation createPaymentHistoryDialog_UpdateHistoryPayment(
     $id: Int!
+    $paymentId: Int!
     $paymentDate: String!
     $price: Int!
     $note: String
   ) {
     updatePaymentHistory(
       id: $id
+      paymentId: $paymentId
       paymentDate: $paymentDate
       price: $price
       note: $note
@@ -39,6 +41,7 @@ const updatePaymentHistoryDialogUpdatePaymentHistoryDocument = graphql(`
 
 const updateSchema = z.object({
   id: z.number(),
+  paymentId: z.number(),
   paymentDate: paymentDateType,
   price: priceType,
   note: noteType,
@@ -77,6 +80,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
 
   const safeParseResult = updateSchema.safeParse({
     id: paymentHistory.id,
+    paymentId: payment?.id,
     paymentDate,
     price,
     note,
@@ -118,7 +122,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
   const handleSubmit = useCallback(async () => {
     events.onProcessing();
     const parseResult = createPaymentHistorySchema.safeParse({
-      paymentId: payment?.id,
+      paymentId: paymentHistory.id,
       paymentDate: paymentDate?.toISO(),
       price,
       note,
@@ -133,14 +137,17 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
       events.onError();
       return;
     }
+    console.log({ parseResult })
     try {
       const result = await submit({
         id: parseResult.data.paymentId,
+        paymentId: parseResult.data.paymentId,
         paymentDate: parseResult.data.paymentDate,
         price: parseResult.data.price,
         note: parseResult.data.note,
       });
       if (result.error) {
+        console.error({ error: result.error })
         throw new Error('処理失敗です');
       }
       router.refresh();
@@ -204,7 +211,6 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
               options={listPayments}
               noOptionsText="支払項目がありません"
               ariaLabel="支払項目の設定"
-              label="支払項目"
               getOptionLabel={getOptionLabel}
               filterOptions={filterOptions}
               onChange={handlePaymentChange}

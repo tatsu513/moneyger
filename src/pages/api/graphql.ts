@@ -163,10 +163,11 @@ const resolvers: Resolvers = {
       });
       return newData.id;
     },
-    updatePaymentHistory: async (_, { id, note, price, paymentDate }) => {
+    updatePaymentHistory: async (_, { id, paymentId ,note, price, paymentDate }) => {
       const target = await prisma.paymentHistory.update({
         where: { id },
         data: {
+          paymentId,
           note,
           price,
           paymentDate,

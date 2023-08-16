@@ -74,6 +74,7 @@ export type MutationUpdatePaymentHistoryArgs = {
   id: Scalars['Int']['input'];
   note?: InputMaybe<Scalars['String']['input']>;
   paymentDate: Scalars['String']['input'];
+  paymentId: Scalars['Int']['input'];
   price: Scalars['Int']['input'];
 };
 
@@ -294,7 +295,7 @@ export type MutationResolvers<
     ContextType,
     RequireFields<
       MutationUpdatePaymentHistoryArgs,
-      'id' | 'paymentDate' | 'price'
+      'id' | 'paymentDate' | 'paymentId' | 'price'
     >
   >;
 };
@@ -409,6 +410,7 @@ export type DeletePaymentHistoryDialog_DeletePaymentHistoryMutation = {
 export type CreatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables =
   Exact<{
     id: Scalars['Int']['input'];
+    paymentId: Scalars['Int']['input'];
     paymentDate: Scalars['String']['input'];
     price: Scalars['Int']['input'];
     note?: InputMaybe<Scalars['String']['input']>;
@@ -450,20 +452,6 @@ export type CreatePaymentHistoryDialog_CreatePaymentHistoryMutationVariables =
 
 export type CreatePaymentHistoryDialog_CreatePaymentHistoryMutation = {
   createPaymentHistory: number;
-};
-
-export type ListPaymentHistoriesQueryVariables = Exact<{
-  paymentId: Scalars['Int']['input'];
-}>;
-
-export type ListPaymentHistoriesQuery = {
-  listPaymentHistoriesByPaymentId: Array<{
-    id: number;
-    paymentId: number;
-    paymentDate: string;
-    note?: string | null;
-    price: number;
-  }>;
 };
 
 export type PaymentHistoriesPageQueryVariables = Exact<{
@@ -562,12 +550,14 @@ export const DeletePaymentHistoryDialog_DeletePaymentHistoryDocument = gql`
 export const CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument = gql`
   mutation createPaymentHistoryDialog_UpdateHistoryPayment(
     $id: Int!
+    $paymentId: Int!
     $paymentDate: String!
     $price: Int!
     $note: String
   ) {
     updatePaymentHistory(
       id: $id
+      paymentId: $paymentId
       paymentDate: $paymentDate
       price: $price
       note: $note
@@ -606,17 +596,6 @@ export const CreatePaymentHistoryDialog_CreatePaymentHistoryDocument = gql`
       price: $price
       note: $note
     )
-  }
-`;
-export const ListPaymentHistoriesDocument = gql`
-  query listPaymentHistories($paymentId: Int!) {
-    listPaymentHistoriesByPaymentId(paymentId: $paymentId) {
-      id
-      paymentId
-      paymentDate
-      note
-      price
-    }
   }
 `;
 export const PaymentHistoriesPageDocument = gql`
@@ -789,21 +768,6 @@ export function getSdk(
           ),
         'createPaymentHistoryDialog_CreatePaymentHistory',
         'mutation',
-      );
-    },
-    listPaymentHistories(
-      variables: ListPaymentHistoriesQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<ListPaymentHistoriesQuery> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<ListPaymentHistoriesQuery>(
-            ListPaymentHistoriesDocument,
-            variables,
-            { ...requestHeaders, ...wrappedRequestHeaders },
-          ),
-        'listPaymentHistories',
-        'query',
       );
     },
     paymentHistoriesPage(

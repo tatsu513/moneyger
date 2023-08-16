@@ -68,6 +68,7 @@ export type MutationUpdatePaymentHistoryArgs = {
   id: Scalars['Int']['input'];
   note?: InputMaybe<Scalars['String']['input']>;
   paymentDate: Scalars['String']['input'];
+  paymentId: Scalars['Int']['input'];
   price: Scalars['Int']['input'];
 };
 
@@ -135,6 +136,7 @@ export type DeletePaymentHistoryDialog_DeletePaymentHistoryMutation = {
 export type CreatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables =
   Exact<{
     id: Scalars['Int']['input'];
+    paymentId: Scalars['Int']['input'];
     paymentDate: Scalars['String']['input'];
     price: Scalars['Int']['input'];
     note?: InputMaybe<Scalars['String']['input']>;
@@ -176,20 +178,6 @@ export type CreatePaymentHistoryDialog_CreatePaymentHistoryMutationVariables =
 
 export type CreatePaymentHistoryDialog_CreatePaymentHistoryMutation = {
   createPaymentHistory: number;
-};
-
-export type ListPaymentHistoriesQueryVariables = Exact<{
-  paymentId: Scalars['Int']['input'];
-}>;
-
-export type ListPaymentHistoriesQuery = {
-  listPaymentHistoriesByPaymentId: Array<{
-    id: number;
-    paymentId: number;
-    paymentDate: string;
-    note?: string | null;
-    price: number;
-  }>;
 };
 
 export type PaymentHistoriesPageQueryVariables = Exact<{
@@ -375,6 +363,17 @@ export const CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument = {
           kind: 'VariableDefinition',
           variable: {
             kind: 'Variable',
+            name: { kind: 'Name', value: 'paymentId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
             name: { kind: 'Name', value: 'paymentDate' },
           },
           type: {
@@ -415,6 +414,14 @@ export const CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument = {
                 value: {
                   kind: 'Variable',
                   name: { kind: 'Name', value: 'id' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'paymentId' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'paymentId' },
                 },
               },
               {
@@ -636,61 +643,6 @@ export const CreatePaymentHistoryDialog_CreatePaymentHistoryDocument = {
 } as unknown as DocumentNode<
   CreatePaymentHistoryDialog_CreatePaymentHistoryMutation,
   CreatePaymentHistoryDialog_CreatePaymentHistoryMutationVariables
->;
-export const ListPaymentHistoriesDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'listPaymentHistories' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'paymentId' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'listPaymentHistoriesByPaymentId' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'paymentId' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'paymentId' },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'paymentId' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'paymentDate' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'note' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'price' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  ListPaymentHistoriesQuery,
-  ListPaymentHistoriesQueryVariables
 >;
 export const PaymentHistoriesPageDocument = {
   kind: 'Document',
