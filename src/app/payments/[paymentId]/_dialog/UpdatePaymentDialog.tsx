@@ -32,11 +32,17 @@ type Props = {
   dialogState: DialogState;
   payment: Payment;
   onClose: () => void;
+  events: {
+    onSuccess: () => void;
+    onError: () => void;
+    onProcessing: () => void;
+  };
 };
 const UpdatePaymentDialog: React.FC<Props> = ({
   dialogState,
   payment,
   onClose,
+  events,
 }) => {
   const router = useRouter();
   const [name, setName] = useState(payment.name);
@@ -75,8 +81,10 @@ const UpdatePaymentDialog: React.FC<Props> = ({
 
   const submit = useMutation(updatePaymentDialogUpdatePaymentDocument)[1];
   const handleSubmit = useCallback(async () => {
+    events.onProcessing();
     if (!safeParseResult.success) {
       console.error('入力値を確認してください', { payment });
+      events.onError();
       return;
     }
     try {
@@ -88,13 +96,15 @@ const UpdatePaymentDialog: React.FC<Props> = ({
       if (result.error) {
         throw new Error('処理失敗です');
       }
+      events.onSuccess();
       router.refresh();
-      onClose();
+      handleClose();
     } catch (error) {
       console.error('処理失敗です', { error });
+      events.onError();
       return;
     }
-  }, [safeParseResult, payment, submit, onClose, router]);
+  }, [safeParseResult, payment, submit, handleClose, router, events]);
 
   return (
     <MoneygerDialog

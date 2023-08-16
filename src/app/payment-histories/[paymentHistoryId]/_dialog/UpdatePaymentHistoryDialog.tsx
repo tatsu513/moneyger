@@ -54,12 +54,18 @@ type Props = {
   paymentHistory: PaymentHistory;
   listPayments: LocalPaymentType[];
   onClose: () => void;
+  events: {
+    onSuccess: () => void;
+    onError: () => void;
+    onProcessing: () => void;
+  };
 };
 const UpdatePaymentHistoryDialog: React.FC<Props> = ({
   dialogState,
   paymentHistory,
   listPayments,
   onClose,
+  events,
 }) => {
   const router = useRouter();
   const [payment, setPayment] = useState<LocalPaymentType | null>(listPayments.find((p) => p.id === paymentHistory.paymentId) ?? null);
@@ -110,6 +116,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
     updatePaymentHistoryDialogUpdatePaymentHistoryDocument,
   )[1];
   const handleSubmit = useCallback(async () => {
+    events.onProcessing();
     const parseResult = createPaymentHistorySchema.safeParse({
       paymentId: payment?.id,
       paymentDate: paymentDate?.toISO(),
@@ -123,6 +130,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
         price,
         note,
       });
+      events.onError();
       return;
     }
     try {
@@ -136,12 +144,14 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
         throw new Error('処理失敗です');
       }
       router.refresh();
-      onClose();
+      events.onSuccess();
+      handleClose();
     } catch (error) {
       console.error('処理失敗です', { error });
+      events.onError();
       return;
     }
-  }, [submit, onClose, router, payment, note, price, paymentDate]);
+  }, [submit, handleClose, router, payment, note, price, paymentDate, events]);
 
   const handlePaymentChange = useCallback(
     (

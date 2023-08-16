@@ -26,11 +26,17 @@ type Props = {
   dialogState: DialogState;
   payment: Payment;
   onClose: () => void;
+  events: {
+    onSuccess: () => void;
+    onError: () => void;
+    onProcessing: () => void;
+  };
 };
 const DeletePaymentDialog: React.FC<Props> = ({
   dialogState,
   payment,
   onClose,
+  events,
 }) => {
   const router = useRouter();
   const [checked, setChecked] = useState(false);
@@ -41,19 +47,22 @@ const DeletePaymentDialog: React.FC<Props> = ({
 
   const submit = useMutation(deletePaymentDialogDeletePaymentDocument)[1];
   const handleSubmit = useCallback(async () => {
+    events.onProcessing();
     if (!checked) return;
     try {
       const result = await submit({ id: payment.id });
       if (result.error) {
         throw new Error('削除に失敗しました');
       }
+      events.onSuccess();
       router.refresh();
-      onClose();
+      router.push('/payments');
     } catch (error) {
       console.error('削除に失敗しました', { error });
+      events.onError();
       return;
     }
-  }, [router, payment.id, checked, submit, onClose]);
+  }, [router, payment.id, checked, submit, events]);
   return (
     <MoneygerDialog
       open={dialogState === 'open'}

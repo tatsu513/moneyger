@@ -14,6 +14,8 @@ import DeletePaymentHistoryDialog from '@/app/payment-histories/[paymentHistoryI
 import SecondaryButton from '@/components/common/buttons/SecondaryButton';
 import TextButton from '@/components/common/buttons/TextButton';
 import { grey } from '@/color';
+import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
+import useAlert from '@/hooks/useAlert';
 
 type Props = {
   paymentHistory: PaymentHistory;
@@ -27,6 +29,20 @@ const PaymentHistoryMain: React.FC<Props> = ({
     useState<DialogState>('closed');
   const [deleteDialogState, setDeleteDialogState] =
     useState<DialogState>('closed');
+  const {
+    alertType: updateAlertType,
+    setSuccess: updateSetSuccess,
+    setError: updateSetError,
+    setProcessing: updateSetProcessing,
+    setNone: updateSetNone,
+  } = useAlert();
+  const {
+    alertType: deleteAlertType,
+    setSuccess: deleteSetSuccess,
+    setError: deleteSetError,
+    setProcessing: deleteSetProcessing,
+    setNone: deleteSetNone,
+  } = useAlert();
   const updateDialogOpen = useCallback(() => {
     setUpdateDialogState('open');
   }, []);
@@ -40,10 +56,28 @@ const PaymentHistoryMain: React.FC<Props> = ({
 
   const payment = listPayments.find((p) => p.id === paymentHistory.paymentId);
   if (payment == null) {
-    return <Typography variant='body1' color={grey[500]}>支払項目が見つかりません</Typography>;
+    return (
+      <Typography variant="body1" color={grey[500]}>
+        支払項目が見つかりません
+      </Typography>
+    );
   }
   return (
     <>
+      <MoneygerSnackBar
+        state={updateAlertType}
+        successMessage="支払いの更新に成功しました"
+        errorMessage="支払いの更新に失敗しました"
+        processingMessage="支払いを更新中です"
+        onClose={updateSetNone}
+      />
+      <MoneygerSnackBar
+        state={deleteAlertType}
+        successMessage="支払いの削除に成功しました"
+        errorMessage="支払いの削除に失敗しました"
+        processingMessage="支払いを削除です"
+        onClose={deleteSetNone}
+      />
       <Box
         display="flex"
         justifyContent="space-between"
@@ -75,11 +109,21 @@ const PaymentHistoryMain: React.FC<Props> = ({
         paymentHistory={paymentHistory}
         listPayments={listPayments}
         onClose={closeDialog}
+        events={{
+          onSuccess: updateSetSuccess,
+          onError: updateSetError,
+          onProcessing: updateSetProcessing,
+        }}
       />
       <DeletePaymentHistoryDialog
         dialogState={deleteDialogState}
         paymentHistory={paymentHistory}
         onClose={closeDialog}
+        events={{
+          onSuccess: deleteSetSuccess,
+          onError: deleteSetError,
+          onProcessing: deleteSetProcessing,
+        }}
       />
     </>
   );
