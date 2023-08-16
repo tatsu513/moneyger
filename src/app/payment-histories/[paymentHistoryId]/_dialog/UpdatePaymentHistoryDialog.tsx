@@ -62,7 +62,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
   onClose,
 }) => {
   const router = useRouter();
-  const [payment, setPayment] = useState<LocalPaymentType | null>(null);
+  const [payment, setPayment] = useState<LocalPaymentType | null>(listPayments.find((p) => p.id === paymentHistory.paymentId) ?? null);
   const [price, setPrice] = useState(paymentHistory.price.toString());
   const [note, setNote] = useState(paymentHistory.note);
   const [paymentDate, setPaymentDate] = useState<DateTime | null>(
