@@ -104,6 +104,9 @@ const initialTheme = createTheme({
     sideMenuBold: {
       fontSize: fontSize.XXXS,
     },
+    toggleButton: {
+      fontSize: fontSize.XXXS,
+    },
     dashboardTitle: {
       fontSize: fontSize.XS,
     },
@@ -311,6 +314,7 @@ declare module '@mui/material/styles' {
     totalPrice?: React.CSSProperties;
     sideMenu?: React.CSSProperties;
     sideMenuBold?: React.CSSProperties;
+    toggleButton?: React.CSSProperties;
     dashboardTitle?: React.CSSProperties;
     tableHead?: React.CSSProperties;
     tableBody?: React.CSSProperties;
@@ -344,6 +348,7 @@ declare module '@mui/material/Typography' {
     totalPrice: true;
     sideMenu: true;
     sideMenuBold: true;
+    toggleButton: true;
     dashboardTitle: true;
     tableHead: true;
     tableBody: true;

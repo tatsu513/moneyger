@@ -19,7 +19,7 @@ const resolvers: Resolvers = {
           currentAmount
         }
       })
-      return data
+      return data.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
     },
     payment: async (_, { paymentId }) => {
       const payment = payments.find((p) => p.id === paymentId)
@@ -39,25 +39,29 @@ const resolvers: Resolvers = {
       const validHistories = paymentHistorys.flatMap((h) => {
         return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate)) ? [h] : []
       })
-      return validHistories.map((h) => ({
-        ...h,
-        paymentDate: h.paymentDate.toISOString()
-      }))
+      return validHistories
+        .sort((a, b) => (a.paymentDate < b.paymentDate ? 1 : -1))
+        .map((h) => ({
+          ...h,
+          paymentDate: h.paymentDate.toISOString()
+        }))
     },
     // paymentに紐づく支払履歴一覧
     listPaymentHistoriesByPaymentId: async (_, { paymentId }) => {
       const validHistories = paymentHistorys.flatMap((h) => {
         return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate)) ? [h] : []
       })
-      const results = validHistories.flatMap((p) => {
-        if (p.paymentId === paymentId) {
-          return [{
-            ...p,
-            paymentDate: p.paymentDate.toISOString()
-          }]
-        }
-        return []
-      })
+      const results = validHistories
+        .sort((a, b) => (a.paymentDate < b.paymentDate ? 1 : -1))
+        .flatMap((p) => {
+          if (p.paymentId === paymentId) {
+            return [{
+              ...p,
+              paymentDate: p.paymentDate.toISOString()
+            }]
+          }
+          return []
+        })
       return results;
     },
     // 支払履歴を1件取得
@@ -160,14 +164,14 @@ const payments = [
   {
     id: 1,
     name: 'テスト1',
-    maxAmount: 100000,
+    maxAmount: 80000,
     authorId: 10,
     createdAt: new Date()
   },
   {
     id: 2,
     name: 'テスト2',
-    maxAmount: 80000,
+    maxAmount: 100000,
     authorId: 1,
     createdAt: new Date()
   },
@@ -185,7 +189,7 @@ const paymentHistorys = [
     id: 100,
     note: 'スーパー',
     price: 1588,
-    paymentDate: new Date(), // '2023-08-07T03:12:40+09:00',
+    paymentDate: new Date(today.setDate(today.getDate() + 1)), // '2023-08-07T03:12:40+09:00',
     paymentId: 1,
     authorId: 1,
     createdAt: new Date()

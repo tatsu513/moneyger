@@ -10,7 +10,9 @@ import { DateTime } from 'luxon';
 const resolvers: Resolvers = {
   Query: {
     listPayments: async () => {
-      const paymentsPromise = prisma.payment.findMany();
+      const paymentsPromise = prisma.payment.findMany({
+        orderBy: { createdAt: 'desc' }
+      });
       const historiesPromise = prisma.paymentHistory.findMany();
       const [payments, histories] = await Promise.all([paymentsPromise, historiesPromise]);
       const validHistories = histories.flatMap((h) => {
@@ -48,30 +50,35 @@ const resolvers: Resolvers = {
     },
     // 支払履歴を全て取得
     listPaymentHistories: async () => {
-      const results = await prisma.paymentHistory.findMany();
+      const results = await prisma.paymentHistory.findMany({
+        orderBy: { paymentDate: 'desc' }
+      });
       const validHistories = results.flatMap((r) => {
         return isThisMonth(DateTime.now(), DateTime.fromJSDate(r.paymentDate)) ? [r] : []
       })
-      return validHistories.map((r) => ({
-        ...r,
-        paymentDate: r.paymentDate.toISOString(),
+      return validHistories
+        .map((r) => ({
+          ...r,
+          paymentDate: r.paymentDate.toISOString(),
       }));
     },
     // paymentに紐づく支払履歴一覧
     listPaymentHistoriesByPaymentId: async (_, { paymentId }) => {
       const results = await prisma.paymentHistory.findMany({
         where: { paymentId },
+        orderBy: { paymentDate: 'desc' }
       });
       const validHistories = results.flatMap((r) => {
         return isThisMonth(DateTime.now(), DateTime.fromJSDate(r.paymentDate)) ? [r] : []
       })
-      return validHistories.map((r) => ({
-        id: r.id,
-        note: r.note,
-        price: r.price,
-        paymentDate: r.paymentDate.toISOString(),
-        paymentId,
-      }));
+      return validHistories
+        .map((r) => ({
+          id: r.id,
+          note: r.note,
+          price: r.price,
+          paymentDate: r.paymentDate.toISOString(),
+          paymentId,
+        }));
     },
     // 支払履歴を1件取得
     paymentHistory: async (_, { paymentHistoryId }) => {
