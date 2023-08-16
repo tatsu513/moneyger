@@ -8,7 +8,6 @@ import { graphql } from '@/dao/generated/preset';
 import { PaymentHistory } from '@/dao/generated/preset/graphql';
 import stringDateToDateTime from '@/logics/stringDateToDateTime';
 import {
-  createPaymentHistorySchema,
   noteType,
   paymentDateType,
   priceType,
