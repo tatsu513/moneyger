@@ -221,6 +221,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
               getOptionLabel={getOptionLabel}
               filterOptions={filterOptions}
               onChange={handlePaymentChange}
+              size='small'
             />
           </Box>
           <Box mb={3}>
@@ -241,6 +242,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
               fullWidth
               onChange={handleChangePrice}
               placeholder="10000"
+              size='small'
             />
           </Box>
 
@@ -253,7 +255,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
               fullWidth
               onChange={handleChangeNote}
               multiline
-              rows={4}
+              rows={3}
               placeholder="メモ"
             />
           </Box>

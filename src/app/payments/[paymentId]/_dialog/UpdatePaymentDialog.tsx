@@ -136,6 +136,7 @@ const UpdatePaymentDialog: React.FC<Props> = ({
               fullWidth
               onChange={handleChangeName}
               placeholder="食費"
+              size='small'
             />
           </Box>
           <Box>
@@ -147,6 +148,7 @@ const UpdatePaymentDialog: React.FC<Props> = ({
               fullWidth
               onChange={handleChangeMaxAmount}
               placeholder="10000"
+              size='small'
             />
           </Box>
         </>

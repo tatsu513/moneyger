@@ -15,6 +15,7 @@ const MoneygerDatePicker: React.FC<Props> = ({ value, onChange }) => {
       sx={{ width: '100%' }}
       closeOnSelect
       disableFuture
+      slotProps={{ textField: { size: 'small' } }}
     />
   );
 };
