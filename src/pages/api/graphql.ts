@@ -202,20 +202,19 @@ export default startServerAndCreateNextHandler(server, {
     if (typeof callerUserId !== 'string') {
       throw new GraphQLError('GOT INVALID CALLER USER ID');
     }
-    // 実際のデータを取得する時は以下を使う
-    // const user = await prisma.user.findUnique({
-    //   where: { id: callerUserId },
-    // });
-    // if (user == null) {
-    //   throw new GraphQLError('UNREGISTERED USER');
-    // }
+    const user = await prisma.user.findUnique({
+      where: { id: callerUserId },
+    });
+    if (user == null) {
+      throw new GraphQLError('user undifined');
+    }
     return {
       user: {
         id: callerUserId,
-        name: 'test',
-        email: 'test@email.com',
-        emailVerified: new Date(),
-        image: '#',
+        name: user.name,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        image: user.image,
       },
     };
   },
