@@ -5,7 +5,7 @@ import {
   PaymentHistoryPageListPaymentsQuery,
 } from '@/dao/generated/preset/graphql';
 import DialogState from '@/types/DialogState';
-import { Box, Divider, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import UpdatePaymentHistoryDialog from '@/app/payment-histories/[paymentHistoryId]/_dialog/UpdatePaymentHistoryDialog';
 import PrismaDateToFrontendDateStr from '@/logics/PrismaDateToFrontendDateStr';

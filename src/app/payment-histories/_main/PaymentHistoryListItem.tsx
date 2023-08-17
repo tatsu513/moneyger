@@ -1,8 +1,7 @@
 'use client';
-import { Divider, ListItem, ListItemButton, Typography } from '@mui/material';
+import { ListItem, ListItemButton, Typography } from '@mui/material';
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import PrismaDateToFrontendDateStr from '@/logics/PrismaDateToFrontendDateStr';
 
 type Props = {
   id: number;

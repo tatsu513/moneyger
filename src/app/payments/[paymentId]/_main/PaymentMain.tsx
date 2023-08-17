@@ -1,13 +1,12 @@
 'use client';
 import React, { useCallback, useState } from 'react';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import UpdatePaymentDialog from '@/app/payments/[paymentId]/_dialog/UpdatePaymentDialog';
 import DialogState from '@/types/DialogState';
 import DeletePaymentDialog from '@/app/payments/[paymentId]/_dialog/DeletePaymentDialog';
 import { Payment } from '@/dao/generated/preset/graphql';
 import PageTitle from '@/components/common/PageTitle';
 import { grey } from '@/color';
-import { Delete as DeleteIcon } from '@mui/icons-material';
 import SecondaryButton from '@/components/common/buttons/SecondaryButton';
 import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
 import useAlert from '@/hooks/useAlert';

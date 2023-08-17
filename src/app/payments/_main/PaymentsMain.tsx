@@ -7,7 +7,6 @@ import DialogState from '@/types/DialogState';
 import CreatePaymentDialog from '@/app/payments/_dialog/CreatePaymentDialog';
 import { Payment } from '@/dao/generated/preset/graphql';
 import PaymentListItem from '@/app/payments/_main/PaymentListItem';
-import SecondaryButton from '@/components/common/buttons/SecondaryButton';
 import { grey } from '@/color';
 import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
 import useAlert from '@/hooks/useAlert';

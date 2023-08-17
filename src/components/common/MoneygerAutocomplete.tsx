@@ -62,7 +62,7 @@ const MoneygerAutocomplete = <T,>({
         />
       );
     },
-    [value, ariaLabel, label, errorMessage],
+    [value, ariaLabel, label, errorMessage, size],
   );
 
   const renderOption = useCallback(
