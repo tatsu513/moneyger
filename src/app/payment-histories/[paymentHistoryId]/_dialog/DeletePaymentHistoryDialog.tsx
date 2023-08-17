@@ -70,7 +70,7 @@ const DeletePaymentHistoryDialog: React.FC<Props> = ({
     <MoneygerDialog
       open={dialogState === 'open'}
       onClose={onClose}
-      title="支払項目を削除"
+      title="費目を削除"
       fullWidth
       actions={
         <Box display="flex" justifyContent="flex-end" gap={1}>

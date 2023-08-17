@@ -191,7 +191,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
     <MoneygerDialog
       open={dialogState === 'open'}
       onClose={handleClose}
-      title="内容を編集"
+      title="支払いを編集"
       fullWidth
       actions={
         <Box display="flex" justifyContent="flex-end" gap={1}>
@@ -210,14 +210,14 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
         <>
           <Box mb={3}>
             <Typography variant="body1" mb={1}>
-              支払項目
+              費目
             </Typography>
             <MoneygerAutocomplete
               id="payment-history-category"
               value={payment}
               options={listPayments}
-              noOptionsText="支払項目がありません"
-              ariaLabel="支払項目の設定"
+              noOptionsText="費目がありません"
+              ariaLabel="費目の設定"
               getOptionLabel={getOptionLabel}
               filterOptions={filterOptions}
               onChange={handlePaymentChange}

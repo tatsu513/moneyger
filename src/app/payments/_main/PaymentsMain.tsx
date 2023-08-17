@@ -75,7 +75,7 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
         justifyContent="space-between"
       >
         <PageTitle title="費目" />
-        <PrimaryButton label="費目を追加" size="small" onClick={dialogOpen} />
+        <PrimaryButton label="追加" size="small" onClick={dialogOpen} />
       </Box>
 
       <Box display="flex" alignItems="center" justifyContent="space-between">

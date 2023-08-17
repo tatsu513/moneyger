@@ -29,8 +29,8 @@ const PaymentWithSuspense: React.FC<Props> = ({ paymentId, onClickDelete }) => {
   const [{ data }] = useQuery(val);
   const payment = data?.payment;
   if (payment == null) {
-    console.error('収支項目を取得できませんでした');
-    throw new Error('収支項目を取得できませんでした');
+    console.error('費目を取得できませんでした');
+    throw new Error('費目を取得できませんでした');
   }
   return (
     <>

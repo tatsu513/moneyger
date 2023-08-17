@@ -165,21 +165,21 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
     <MoneygerDialog
       open={dialogState === 'open'}
       onClose={onClose}
-      title="支払項目を追加"
+      title="費目を追加"
       fullScreen
       TransitionComponent={Transition}
     >
       <Box mb={3}>
         <Typography variant="body1" mb={1}>
-          支払項目
+          費目
         </Typography>
         <MoneygerAutocomplete
           id="payment-history-category"
           value={payment}
           options={listPayments}
-          noOptionsText="支払項目がありません"
-          ariaLabel="支払項目の設定"
-          label="支払項目"
+          noOptionsText="費目がありません"
+          ariaLabel="費目の設定"
+          label="費目"
           getOptionLabel={getOptionLabel}
           filterOptions={filterOptions}
           onChange={handlePaymentChange}

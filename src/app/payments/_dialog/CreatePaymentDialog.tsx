@@ -99,13 +99,13 @@ const CreatePaymentDialog: React.FC<Props> = ({
     <MoneygerDialog
       open={dialogState === 'open'}
       onClose={onClose}
-      title="支払項目を追加"
+      title="費目を追加"
       fullScreen
       TransitionComponent={Transition}
     >
       <Box mb={3}>
         <Typography variant="body1" mb={1}>
-          名称
+          費目名
         </Typography>
         <TextField
           value={name}
@@ -127,7 +127,7 @@ const CreatePaymentDialog: React.FC<Props> = ({
       </Box>
       <Box display="flex" flexDirection="column" columnGap={2}>
         <PrimaryButton
-          label="追加する"
+          label="追加"
           disabled={!safeParseResult.success}
           onClick={handleSubmit}
         />

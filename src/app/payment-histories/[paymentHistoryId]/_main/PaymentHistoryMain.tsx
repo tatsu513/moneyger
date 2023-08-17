@@ -59,7 +59,7 @@ const PaymentHistoryMain: React.FC<Props> = ({
   if (payment == null) {
     return (
       <Typography variant="body1" color={grey[500]}>
-        支払項目が見つかりません
+        費目が見つかりません
       </Typography>
     );
   }

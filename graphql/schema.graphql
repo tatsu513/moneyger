@@ -1,7 +1,7 @@
 type Query {
   # 作業日誌一覧
   listPayments: [Payment!]!
-  # 項目1つを取得
+  # 費目1つを取得
   payment(paymentId: Int!): Payment
   # 支払履歴を全て取得
   listPaymentHistories: [PaymentHistory!]!
@@ -27,7 +27,7 @@ type PaymentSummary {
 type Payment {
   # ID
   id: Int!
-  # 項目名
+  # 費目名
   name: String!
   # 上限金額
   maxAmount: Int!
@@ -44,16 +44,16 @@ type PaymentHistory {
   price: Int!
   # 支払日
   paymentDate: String!
-  # 収支項目ID
+  # 費目ID
   paymentId: Int!
 }
 
 type Mutation {
-  # 収支項目の作成
+  # 費目の作成
   createPayment(name: String!, maxAmount: Int!): Int!
-  # 収支項目の更新
+  # 費目の更新
   updatePayment(id: Int!, name: String!, maxAmount: Int!): Int!
-  # 収支項目の削除
+  # 費目の削除
   deletePayment(id: Int!): Int!
   # 支払履歴を作成
   createPaymentHistory(

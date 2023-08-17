@@ -72,7 +72,7 @@ const PaymentHistoriesMain: React.FC<Props> = ({
           justifyContent="space-between"
         >
           <PageTitle title="支払い" />
-          <PrimaryButton label="支払いを追加" size="small" onClick={dialogOpen} />
+          <PrimaryButton label="追加" size="small" onClick={dialogOpen} />
         </Box>
 
         <Box mb={2}>
@@ -82,7 +82,7 @@ const PaymentHistoriesMain: React.FC<Props> = ({
             value={
               listPayments.find((p) => p.id === selectedPayment?.id) ?? null
             }
-            label="支払いを絞り込み"
+            label="絞り込み"
             filterOptions={filterOptions}
             getOptionLabel={getOptionLabel}
             onChange={handleChangePayment}
