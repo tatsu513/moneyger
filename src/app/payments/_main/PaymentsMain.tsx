@@ -18,7 +18,7 @@ type Props = {
   payments: Payment[];
 };
 const PaymentsMain: React.FC<Props> = ({ payments }) => {
-  const [orderBy, setOrderBy] = useState<TabState>('MAX');
+  const [orderBy, setOrderBy] = useState<TabState>('ROOM');
   const [sort, setSort] = useState<'decs' | 'asc'>('decs')
   const [dialogState, setDialogState] = useState<DialogState>('closed');
   const { alertType, setSuccess, setError, setProcessing, setNone } =
