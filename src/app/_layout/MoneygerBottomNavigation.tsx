@@ -77,7 +77,7 @@ const MoneygerBottomNavigation = () => {
         />
         <BottomNavigationAction
           value={paymentHistory}
-          label={<Typography variant="bottomNavigation">お支払い</Typography>}
+          label={<Typography variant="bottomNavigation">支払い</Typography>}
           icon={<PaymentsIcon />}
         />
       </BottomNavigation>

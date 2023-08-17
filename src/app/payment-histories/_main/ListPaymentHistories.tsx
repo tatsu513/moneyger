@@ -1,9 +1,10 @@
 'use client';
 import { useMemo } from 'react';
-import { List, Typography } from '@mui/material';
+import { Box, Divider, List, Typography } from '@mui/material';
 import PaymentHistoryListItem from '@/app/payment-histories/_main/PaymentHistoryListItem';
 import { PaymentHistory } from '@/dao/generated/preset/graphql';
 import { grey } from '@/color';
+import PrismaDateToFrontendDateStr from '@/logics/PrismaDateToFrontendDateStr';
 
 type Props = {
   paymentId: number | null;
@@ -14,22 +15,41 @@ const ListPaymentHistories: React.FC<Props> = ({ paymentId, initialState }) => {
   const listPayments = useMemo(() => {
     if (paymentId == null) return initialState;
     return initialState.flatMap((s) => {
-      return s.paymentId === paymentId ? s : [];
+      return s.paymentId === paymentId ? [s] : [];
     });
   }, [paymentId, initialState]);
+  const listPaymentsPerDate = useMemo(() => {
+    const map: Map<string, PaymentHistory[]> = new Map();
+    listPayments.forEach((p) => {
+      const date = p.paymentDate;
+      const histories = listPayments.flatMap((p2) => p2.paymentDate === date ? [p2] : [])
+      map.set(date, histories)
+    })
+    return map
+  }, [listPayments])
+
   if (listPayments.length === 0) {
     return <Typography variant='body1' color={grey[500]}>データがありません</Typography>;
   }
   return (
     <List>
-      {listPayments.map((p) => (
-        <PaymentHistoryListItem
-          key={p.id}
-          id={p.id}
-          paymentDate={p.paymentDate}
-          note={p.note ?? null}
-          price={p.price}
-        />
+      {[...listPaymentsPerDate].map(([key, values]: [string, PaymentHistory[]]) => (
+        <>
+          <Box px={1} py={0.5} mb={1} bgcolor={grey[50]} sx={{ borderRadius: 1}} textAlign="center">
+            <Typography variant='caption' key={key} mb={0.5}>{PrismaDateToFrontendDateStr(key)}</Typography>
+          </Box>
+          {values.map((v, i) => (
+            <>
+              <PaymentHistoryListItem
+                key={v.id}
+                id={v.id}
+                note={v.note ?? null}
+                price={v.price}
+              />
+              {values.length !== i + 1 && <Divider />}
+            </>
+          ))}
+        </>
       ))}
     </List>
   );

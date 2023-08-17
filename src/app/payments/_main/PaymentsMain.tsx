@@ -13,6 +13,7 @@ import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
 import useAlert from '@/hooks/useAlert';
 import MoneygerToggleButtonGroup, { TabState } from '@/app/payments/_main/MoneygerToggleButtonGroup';
 import {Sort as SortIcon} from '@mui/icons-material';
+import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 
 type Props = {
   payments: Payment[];
@@ -75,16 +76,23 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
         justifyContent="space-between"
       >
         <PageTitle title="費目" />
-        <SecondaryButton label="追加する" size="small" onClick={dialogOpen} />
+        <PrimaryButton label="費目を追加" size="small" onClick={dialogOpen} />
       </Box>
 
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Typography variant='caption' color={grey[500]}>並び順</Typography>
         <Box>
-          <MoneygerToggleButtonGroup value={orderBy} onChangeOrderBy={handleChangeOrderBy}/>
-          <IconButton aria-label="sort" color="primary" onClick={handleChangeSort}>
+          <IconButton
+            aria-label="sort" 
+            color="primary"
+            onClick={handleChangeSort}
+            sx={{
+              transform: sort === 'decs' ? 'rotate(0deg)' : 'rotate(180deg)'
+            }}
+          >
             <SortIcon/>
           </IconButton>
+          <MoneygerToggleButtonGroup value={orderBy} onChangeOrderBy={handleChangeOrderBy}/>
         </Box>
       </Box>
 

@@ -6,14 +6,12 @@ import PrismaDateToFrontendDateStr from '@/logics/PrismaDateToFrontendDateStr';
 
 type Props = {
   id: number;
-  paymentDate: string;
   note: string | null;
   price: number;
 };
 
 const PaymentHistoryListItem: React.FC<Props> = ({
   id,
-  paymentDate,
   note,
   price,
 }) => {
@@ -28,10 +26,10 @@ const PaymentHistoryListItem: React.FC<Props> = ({
   }, [router, id]);
 
   return (
-    <ListItem divider disablePadding>
+    <ListItem disablePadding>
       <ListItemButton
         sx={{
-          px: 2,
+          px: 0,
           py: 1,
           display: 'flex',
           flexDirection: 'column',
@@ -39,15 +37,11 @@ const PaymentHistoryListItem: React.FC<Props> = ({
         }}
         onClick={handleClick}
       >
-        <Typography variant="caption" mb={1}>
-          {PrismaDateToFrontendDateStr(paymentDate)}
-        </Typography>
-        <Typography variant="h3" mb={0.5}>
+        <Typography variant="h3Bold" mb={0.5}>
           {price.toLocaleString()}円
         </Typography>
         <Typography variant="body1">{note ?? '-'}</Typography>
       </ListItemButton>
-      <Divider />
     </ListItem>
   );
 };

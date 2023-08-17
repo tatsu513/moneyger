@@ -39,7 +39,6 @@ export default async function page() {
       throw result.error;
     }
     const payments = paymentsSchema.parse(result.data?.listPayments);
-    console.log({ payments });
     return <PaymentsMain payments={payments} />;
   } catch (error) {
     console.error({ error });

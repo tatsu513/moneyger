@@ -10,6 +10,7 @@ import SecondaryButton from '@/components/common/buttons/SecondaryButton';
 import { PaymentHistory } from '@/dao/generated/preset/graphql';
 import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
 import useAlert from '@/hooks/useAlert';
+import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 
 type ListPayment = {
   id: number;
@@ -71,8 +72,8 @@ const PaymentHistoriesMain: React.FC<Props> = ({
           alignItems="center"
           justifyContent="space-between"
         >
-          <PageTitle title="お支払い" />
-          <SecondaryButton label="追加する" size="small" onClick={dialogOpen} />
+          <PageTitle title="支払い" />
+          <PrimaryButton label="支払いを追加" size="small" onClick={dialogOpen} />
         </Box>
 
         <Box mb={2}>
@@ -82,10 +83,11 @@ const PaymentHistoriesMain: React.FC<Props> = ({
             value={
               listPayments.find((p) => p.id === selectedPayment?.id) ?? null
             }
-            label="すべて"
+            label="支払いを絞り込み"
             filterOptions={filterOptions}
             getOptionLabel={getOptionLabel}
             onChange={handleChangePayment}
+            size='small'
           />
         </Box>
       </Box>

@@ -15,6 +15,8 @@ import { grey } from '@/color';
 import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
 import useAlert from '@/hooks/useAlert';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
+import RowContentsBlock from '@/components/common/RowContentsBlock';
+import PageTitle from '@/components/common/PageTitle';
 
 type Props = {
   paymentHistory: PaymentHistory;
@@ -77,10 +79,14 @@ const PaymentHistoryMain: React.FC<Props> = ({
         processingMessage="支払いを削除中..."
         onClose={deleteSetNone}
       />
-      <ContentBlock title="費目" body={payment?.name ?? '-'}/>
-      <ContentBlock title="支払日" body={PrismaDateToFrontendDateStr(paymentHistory.paymentDate)}/>
-      <ContentBlock title="金額" body={paymentHistory.price.toLocaleString() + '円'}/>
-      <ContentBlock title="メモ" body={paymentHistory.note ?? '-'}/>
+      <Box mb={2}>
+        <PageTitle title="支払い詳細" />
+      </Box>
+      
+      <RowContentsBlock title="費目" body={payment?.name ?? '-'}/>
+      <RowContentsBlock title="支払日" body={PrismaDateToFrontendDateStr(paymentHistory.paymentDate)}/>
+      <RowContentsBlock title="金額" body={paymentHistory.price.toLocaleString() + '円'}/>
+      <RowContentsBlock title="メモ" body={paymentHistory.note ?? '-'}/>
 
       <Box textAlign="center" display="flex" columnGap={1} mt={2}>
         <Box flex={1}>
@@ -117,19 +123,3 @@ const PaymentHistoryMain: React.FC<Props> = ({
 };
 
 export default PaymentHistoryMain;
-
-type ContentBlockProps = {
-  title: string;
-  body: string
-}
-const ContentBlock: React.FC<ContentBlockProps> = ({ title, body }) => {
-  return (
-    <>
-      <Box my={2} display="flex" alignItems="center" justifyContent="space-between">
-        <Typography variant="body2" flex={1}>{title}</Typography>
-        <Typography variant="body1" flex={5} textAlign="right">{body}</Typography>
-      </Box>
-      <Divider />
-    </>
-  )
-}
