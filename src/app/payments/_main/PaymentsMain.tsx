@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useMemo, useState } from 'react';
-import { Box, Divider, IconButton, List, Typography } from '@mui/material';
+import { Box, IconButton, List, Typography } from '@mui/material';
 import PageTitle from '@/components/common/PageTitle';
 import DialogState from '@/types/DialogState';
 import CreatePaymentDialog from '@/app/payments/_dialog/CreatePaymentDialog';
