@@ -39,7 +39,7 @@ const PaymentHistoryListItem: React.FC<Props> = ({
         <Typography variant="h3Bold" mb={0.5}>
           {price.toLocaleString()}円
         </Typography>
-        <Typography variant="body1">{note ?? '-'}</Typography>
+        <Typography variant="body1">{!note ? '-' : note}</Typography>
       </ListItemButton>
     </ListItem>
   );
