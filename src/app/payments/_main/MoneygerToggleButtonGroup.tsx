@@ -33,7 +33,7 @@ const MoneygerToggleButtonGroup: React.FC<Props> = ({ value, onChangeOrderBy }) 
     >
       <ToggleButton value="MAX" size='small'><Typography variant='toggleButton'>上限</Typography></ToggleButton>
       <ToggleButton value="CURRENT" size='small'><Typography variant='toggleButton'>支払済</Typography></ToggleButton>
-      <ToggleButton value="ROOM" size='small'><Typography variant='toggleButton'>可能額</Typography></ToggleButton>
+      <ToggleButton value="ROOM" size='small'><Typography variant='toggleButton'>残り</Typography></ToggleButton>
     </ToggleButtonGroup>
   );
 };

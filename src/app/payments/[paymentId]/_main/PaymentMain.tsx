@@ -70,7 +70,7 @@ const PaymentMain: React.FC<Props> = ({ payment }) => {
           <PageTitle title={payment.name} />
         </Box>
 
-        <RowContentsBlock title="使用可能額" body={(payment.maxAmount - payment.currentAmount).toLocaleString() + '円'}/>
+        <RowContentsBlock title="残り" body={(payment.maxAmount - payment.currentAmount).toLocaleString() + '円'}/>
         <RowContentsBlock title="上限" body={(payment.maxAmount - payment.currentAmount).toLocaleString() + '円'}/>
         <RowContentsBlock title="支払済" body={(payment.currentAmount.toLocaleString()) + '円'}/>
 
