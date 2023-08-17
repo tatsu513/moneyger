@@ -78,8 +78,7 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
         <PrimaryButton label="追加" size="small" onClick={dialogOpen} />
       </Box>
 
-      <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Typography variant='caption' color={grey[500]}>並び順</Typography>
+      <Box display="flex" alignItems="center" justifyContent="flex-end">
         <Box>
           <IconButton
             aria-label="sort" 
@@ -101,7 +100,6 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
         </Typography>
       ) : (
         <List>
-          <Divider component="li" />
           {sortedPayments.map((p) => (
             <PaymentListItem key={p.name} {...p} />
           ))}
