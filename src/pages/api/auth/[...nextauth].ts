@@ -1,27 +1,24 @@
-/* eslint-disable */
-import { CustomSession } from '@/types/sessionType';
+/* eslint-disable consistent-default-export-name/default-export-match-filename */
 import prisma from '@/util/prisma';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { NextApiHandler } from 'next';
-import NextAuth, { NextAuthOptions, Session } from 'next-auth';
-import { AdapterUser } from 'next-auth/adapters';
-import { JWT } from 'next-auth/jwt';
-import GoogleProvider from 'next-auth/providers/google';
+import NextAuth, { NextAuthOptions } from 'next-auth';
+import * as GoogleProvider from 'next-auth/providers/google';
 
 const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options);
 
 export const options: NextAuthOptions = {
   providers: [
-    GoogleProvider({
+    GoogleProvider.default({
       clientId: process.env.GOOGLE_CLIENT_ID ?? '',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
     }),
   ],
   callbacks: {
     async session({ session, user }) {
-      const localSession: CustomSession = JSON.parse(JSON.stringify(session));
-      localSession.user.id = user.id;
-      return localSession;
+      const localSessiojn = session;
+      localSessiojn.user.id = user.id;
+      return localSessiojn;
     },
   },
   adapter: PrismaAdapter(prisma),
