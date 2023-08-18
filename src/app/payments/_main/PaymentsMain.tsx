@@ -11,7 +11,7 @@ import { grey } from '@/color';
 import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
 import useAlert from '@/hooks/useAlert';
 import MoneygerToggleButtonGroup, { TabState } from '@/app/payments/_main/MoneygerToggleButtonGroup';
-import SortIcon from '@mui/icons-material/Sort';
+import * as SortIcon from '@mui/icons-material/Sort';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 
 type Props = {
@@ -88,7 +88,7 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
               transform: sort === 'decs' ? 'rotate(0deg)' : 'rotate(180deg)'
             }}
           >
-            <SortIcon/>
+            <SortIcon.default />
           </IconButton>
           <MoneygerToggleButtonGroup value={orderBy} onChangeOrderBy={handleChangeOrderBy}/>
         </Box>

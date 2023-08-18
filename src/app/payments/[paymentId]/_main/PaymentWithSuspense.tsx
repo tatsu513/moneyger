@@ -5,7 +5,7 @@ import getUrqlVariables from '@/util/getUrqlVariables';
 import { Box, IconButton, Typography } from '@mui/material';
 import React, { useMemo } from 'react';
 import { useQuery } from 'urql';
-import DeleteIcon from '@mui/icons-material/Delete';
+import * as DeleteIcon from '@mui/icons-material/Delete';
 
 const paymentWithSuspenseDocument = graphql(`
   query payment($paymentId: Int!) {
@@ -43,7 +43,7 @@ const PaymentWithSuspense: React.FC<Props> = ({ paymentId, onClickDelete }) => {
         <PageTitle title={payment.name} />
         <Box color={grey[500]}>
           <IconButton size="small" color="inherit" onClick={onClickDelete}>
-            <DeleteIcon />
+            <DeleteIcon.default />
           </IconButton>
         </Box>
       </Box>

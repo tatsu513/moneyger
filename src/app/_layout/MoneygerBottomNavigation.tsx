@@ -7,9 +7,9 @@ import {
   Divider,
   Typography,
 } from '@mui/material';
-import PaymentsIcon from '@mui/icons-material/Payments';
-import SummarizeIcon from '@mui/icons-material/Summarize';
-import HomeIcon from '@mui/icons-material/Home';
+import * as PaymentsIcon from '@mui/icons-material/Payments';
+import * as SummarizeIcon from '@mui/icons-material/Summarize';
+import * as HomeIcon from '@mui/icons-material/Home';
 import { z } from 'zod';
 import { usePathname, useRouter } from 'next/navigation';
 
@@ -66,17 +66,17 @@ const MoneygerBottomNavigation = () => {
         <BottomNavigationAction
           value={home}
           label={<Typography variant="bottomNavigation">ホーム</Typography>}
-          icon={<HomeIcon />}
+          icon={<HomeIcon.default />}
         />
         <BottomNavigationAction
           value={payment}
           label={<Typography variant="bottomNavigation">費目</Typography>}
-          icon={<SummarizeIcon />}
+          icon={<SummarizeIcon.default />}
         />
         <BottomNavigationAction
           value={paymentHistory}
           label={<Typography variant="bottomNavigation">支払い</Typography>}
-          icon={<PaymentsIcon />}
+          icon={<PaymentsIcon.default />}
         />
       </BottomNavigation>
     </Box>
