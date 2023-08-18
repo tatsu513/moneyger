@@ -14,9 +14,7 @@ type Props = {
 const ListPaymentHistories: React.FC<Props> = ({ paymentId, initialState }) => {
   const listPayments = useMemo(() => {
     if (paymentId == null) return initialState;
-    return initialState.flatMap((s) => {
-      return s.paymentId === paymentId ? [s] : [];
-    });
+    return initialState.flatMap((s) => s.paymentId === paymentId ? [s] : []);
   }, [paymentId, initialState]);
   const listPaymentsPerDate = useMemo(() => {
     const map: Map<string, PaymentHistory[]> = new Map();
@@ -34,12 +32,12 @@ const ListPaymentHistories: React.FC<Props> = ({ paymentId, initialState }) => {
   return (
     <List>
       {[...listPaymentsPerDate].map(([key, values]: [string, PaymentHistory[]]) => (
-        <>
+        <Box key={key}>
           <Box px={1} py={0.5} mb={1} bgcolor={grey[50]} sx={{ borderRadius: 1}} textAlign="center">
-            <Typography variant='caption' key={key} mb={0.5}>{PrismaDateToFrontendDateStr(key)}</Typography>
+            <Typography variant='caption' mb={0.5}>{PrismaDateToFrontendDateStr(key)}</Typography>
           </Box>
           {values.map((v, i) => (
-            <>
+            <Box key={`${v.id}-${i}`}>
               <PaymentHistoryListItem
                 key={v.id}
                 id={v.id}
@@ -47,9 +45,9 @@ const ListPaymentHistories: React.FC<Props> = ({ paymentId, initialState }) => {
                 price={v.price}
               />
               {values.length !== i + 1 && <Divider />}
-            </>
+            </Box>
           ))}
-        </>
+        </Box>
       ))}
     </List>
   );

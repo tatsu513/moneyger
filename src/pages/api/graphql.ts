@@ -48,7 +48,11 @@ const resolvers: Resolvers = {
     },
     // 支払履歴を全て取得
     listPaymentHistories: async () => {
-      const results = await prisma.paymentHistory.findMany();
+      const results = await prisma.paymentHistory.findMany({
+        orderBy: {
+          paymentDate: 'desc'
+        }
+      });
       const validHistories = results.flatMap((r) => {
         return isThisMonth(DateTime.now(), DateTime.fromJSDate(r.paymentDate)) ? [r] : []
       })
