@@ -55,7 +55,6 @@ const DeletePaymentDialog: React.FC<Props> = ({
         throw new Error('削除に失敗しました');
       }
       events.onSuccess();
-      router.refresh();
       router.push('/payments');
     } catch (error) {
       console.error('削除に失敗しました', { error });
