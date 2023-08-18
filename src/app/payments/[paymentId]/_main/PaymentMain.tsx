@@ -71,8 +71,8 @@ const PaymentMain: React.FC<Props> = ({ payment }) => {
         </Box>
 
         <RowContentsBlock title="残り" body={(payment.maxAmount - payment.currentAmount).toLocaleString() + '円'}/>
-        <RowContentsBlock title="上限" body={(payment.maxAmount - payment.currentAmount).toLocaleString() + '円'}/>
-        <RowContentsBlock title="支払済" body={(payment.currentAmount.toLocaleString()) + '円'}/>
+        <RowContentsBlock title="上限" body={payment.maxAmount.toLocaleString() + '円'}/>
+        <RowContentsBlock title="支払済" body={payment.currentAmount.toLocaleString() + '円'}/>
 
         <Box textAlign="center" display="flex" columnGap={1} mt={4}>
           <Box flex={1}>
