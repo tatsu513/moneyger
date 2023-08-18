@@ -7,11 +7,9 @@ import {
   Divider,
   Typography,
 } from '@mui/material';
-import {
-  Payments as PaymentsIcon,
-  Summarize as SummarizeIcon,
-  Home as HomeIcon,
-} from '@mui/icons-material';
+import PaymentsIcon from '@mui/icons-material/Payments';
+import SummarizeIcon from '@mui/icons-material/Summarize';
+import HomeIcon from '@mui/icons-material/Home';
 import { z } from 'zod';
 import { usePathname, useRouter } from 'next/navigation';
 

@@ -11,7 +11,7 @@ import { grey } from '@/color';
 import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
 import useAlert from '@/hooks/useAlert';
 import MoneygerToggleButtonGroup, { TabState } from '@/app/payments/_main/MoneygerToggleButtonGroup';
-import {Sort as SortIcon} from '@mui/icons-material';
+import SortIcon from '@mui/icons-material/Sort';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 
 type Props = {

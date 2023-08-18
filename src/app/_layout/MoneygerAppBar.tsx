@@ -9,7 +9,7 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import { AccountCircle } from '@mui/icons-material';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import React, { useCallback, useState } from 'react';
 import { grey } from '@/color';
 import { signOut } from 'next-auth/react';
