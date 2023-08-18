@@ -20,7 +20,7 @@ import { ThemeProvider } from '@emotion/react';
 import theme from '@/theme';
 import { CssBaseline } from '@mui/material';
 import { ShardEnvs } from '@/util/shardEnvs';
-import { SessionProvider, useSession } from 'next-auth/react';
+import { SessionProvider } from 'next-auth/react';
 
 Settings.defaultLocale = 'ja-JP';
 Settings.defaultZone = 'Asia/Tokyo';
@@ -49,7 +49,6 @@ const Providers: React.FC<PropsWithChildren> = ({ children }) => {
 export default Providers;
 
 const UrqlProviderWrapper: React.FC<PropsWithChildren> = ({ children }) => {
-  const { data: session } = useSession();
   const ssr = ssrExchange({
     isClient: !isServerSide,
   });
@@ -69,7 +68,7 @@ const UrqlProviderWrapper: React.FC<PropsWithChildren> = ({ children }) => {
       return {
         headers: {
           authorization: 'Bearer token',
-          'caller-user-id': session?.user.id ?? '',
+          'caller-user-id': 'cll6sv0560000kz08gavj116i',
         },
         credentials: 'include',
       };
