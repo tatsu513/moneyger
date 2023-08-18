@@ -115,19 +115,15 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
   )[1];
   const handleSubmit = useCallback(async () => {
     events.onProcessing();
-    const parseResult = createPaymentHistorySchema.safeParse({
+    const data = {
       paymentId: payment?.id,
       paymentDate: paymentDate?.toISO(),
-      price,
+      price: Number(price),
       note,
-    });
+    }
+    const parseResult = createPaymentHistorySchema.safeParse({ ...data });
     if (!parseResult.success) {
-      console.error('入力値を確認してください', {
-        payment,
-        paymentDate: paymentDate,
-        price,
-        note,
-      });
+      console.error('入力値を確認してください', { err: parseResult.error, data });
       events.onError();
       return;
     }
