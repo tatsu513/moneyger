@@ -30,7 +30,7 @@ const MoneygerSnackBar: React.FC<Props> = ({
       >
         <Box width="100%">
           {state === 'success' && (
-            <SuccessSnackAlert message={successMessage} onClose={onClose} />
+            <SuccessSnackAlert message={successMessage} onClose={onClose}/>
           )}
           {state === 'error' && (
             <ErrorSnackAlert message={errorMessage} onClose={onClose} />
@@ -58,6 +58,7 @@ const SuccessSnackAlert: React.FC<SnackBarProps> = ({ message, onClose }) => {
     <Alert
       onClose={onClose}
       severity="success"
+      icon={<></>}
       sx={{ width: '100%', backgroundColor: green[900], color: grey[0] }}
     >
       {message}
@@ -70,6 +71,7 @@ const ErrorSnackAlert: React.FC<SnackBarProps> = ({ message, onClose }) => {
     <Alert
       onClose={onClose}
       severity="error"
+      icon={<></>}
       sx={{ width: '100%', backgroundColor: red[900], color: grey[0] }}
     >
       {message}
@@ -85,6 +87,7 @@ const ProcessingSnackAlert: React.FC<SnackBarProps> = ({
     <Alert
       onClose={onClose}
       severity="info"
+      icon={<></>}
       sx={{ width: '100%', backgroundColor: grey[500], color: grey[0] }}
     >
       {message}

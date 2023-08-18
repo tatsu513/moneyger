@@ -105,6 +105,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
 
   const handleClose = useCallback(() => {
     onClose();
+    setPayment(null)
     setPaymentDate(null);
     setPrice('');
     setNote('');
