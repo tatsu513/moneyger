@@ -23,7 +23,7 @@ const schema = z.object({
   }),
 });
 
-export default async function Home() {
+export default async function page() {
   const { cookie } = await checkSessionOnServer('/');
   const { getClient } = registerRscUrqlClient(cookie);
   try {
@@ -34,6 +34,7 @@ export default async function Home() {
     if (result.error) {
       throw result.error;
     }
+    console.log({ data: result.data })
     const summary = schema.parse(result.data);
     return <TopMain summary={summary} />;
   } catch (error) {
