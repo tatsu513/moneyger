@@ -27,8 +27,8 @@ const paymentsSchema = z.array(
 );
 
 export default async function page() {
-  const { session, cookie } = await checkSessionOnServer('/payments');
-  const { getClient } = registerRscUrqlClient(session, cookie);
+  const { cookie } = await checkSessionOnServer('/payments');
+  const { getClient } = registerRscUrqlClient(cookie);
   try {
     const result = await getClient().query(
       paymentsPageDocument,

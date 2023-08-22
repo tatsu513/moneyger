@@ -136,13 +136,13 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
         note: parseResult.data.note,
       });
       if (result.error) {
-        throw new Error('処理失敗です');
+        throw new Error('支払いの作成に失敗しました');
       }
       router.refresh();
       events.onSuccess();
       handleClose();
     } catch (error) {
-      console.error('処理失敗です', { error });
+      console.error('支払いの作成に失敗しました', { error });
       events.onError();
       return;
     }

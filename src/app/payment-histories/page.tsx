@@ -41,8 +41,8 @@ const fetchDataSchema = z.object({
 });
 
 export default async function Home() {
-  const { session, cookie } = await checkSessionOnServer('/payment-histories');
-  const { getClient } = registerRscUrqlClient(session, cookie);
+  const { cookie } = await checkSessionOnServer('/payment-histories');
+  const { getClient } = registerRscUrqlClient(cookie);
   try {
     const res = await getClient().query(paymentHistoriesPageDocument, {});
     if (res.error) throw res.error;

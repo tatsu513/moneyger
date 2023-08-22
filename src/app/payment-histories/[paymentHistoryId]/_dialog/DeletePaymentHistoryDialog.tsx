@@ -55,12 +55,12 @@ const DeletePaymentHistoryDialog: React.FC<Props> = ({
     try {
       const result = await submit({ id: paymentHistory.id });
       if (result.error) {
-        throw new Error('削除に失敗しました');
+        throw new Error('支払いの削除に失敗しました');
       }
       events.onSuccess();
       router.push('/payment-histories');
     } catch (error) {
-      console.error('削除に失敗しました', { error });
+      console.error('支払いの削除に失敗しました', { error });
       events.onError();
       return;
     }

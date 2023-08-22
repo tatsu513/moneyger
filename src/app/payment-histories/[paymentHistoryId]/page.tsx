@@ -52,10 +52,10 @@ export default async function Home({
   params: { paymentHistoryId: unknown };
 }) {
   const paymentHistoryId = pageParamSchema.parse(params).paymentHistoryId;
-  const { session, cookie } = await checkSessionOnServer(
+  const { cookie } = await checkSessionOnServer(
     `payment-histories/${paymentHistoryId}/`,
   );
-  const { getClient } = registerRscUrqlClient(session, cookie);
+  const { getClient } = registerRscUrqlClient(cookie);
   try {
     const res = await getClient().query(paymentHistoryPageDocument, {
       paymentHistoryId,

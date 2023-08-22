@@ -52,12 +52,12 @@ const DeletePaymentDialog: React.FC<Props> = ({
     try {
       const result = await submit({ id: payment.id });
       if (result.error) {
-        throw new Error('削除に失敗しました');
+        throw new Error('費目の削除に失敗しました');
       }
       events.onSuccess();
       router.push('/payments');
     } catch (error) {
-      console.error('削除に失敗しました', { error });
+      console.error('費目の削除に失敗しました', { error });
       events.onError();
       return;
     }

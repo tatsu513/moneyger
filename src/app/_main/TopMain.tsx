@@ -53,9 +53,7 @@ type ItemBlockProps = {
 const ItemBlock: React.FC<ItemBlockProps> = ({ label, body }) => {
   return (
     <>
-      <Grid item xs={6}>
-        {label}
-      </Grid>
+      <Grid item xs={6}>{label}</Grid>
       <Grid item xs={6} textAlign="right">
         <Typography variant="body1Bold">{body}</Typography>
       </Grid>

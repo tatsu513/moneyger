@@ -5,6 +5,8 @@ import fs from 'fs';
 import { GraphQLError } from 'graphql';
 import isThisMonth from '@/logics/isThisMonth';
 import { DateTime } from 'luxon';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 
 const resolvers: Resolvers = {
   Query: {
@@ -140,19 +142,14 @@ const server = new ApolloServer({
 });
 
 export default startServerAndCreateNextHandler(server, {
-  context: async (req) => {
-    const callerUserId = req.headers['caller-user-id'];
-    if (typeof callerUserId !== 'string') {
-      throw new GraphQLError('GOT INVALID CALLER USER ID');
+  context: async (req, res) => {
+    const session = await getServerSession(req, res, authOptions);
+    if (session == null) {
+      throw new GraphQLError('session is null in the graphql server');
     }
+    const { id, name, email, emailVerified, image } = session.user
     return {
-      user: {
-        id: callerUserId,
-        name: 'test',
-        email: 'test@email.com',
-        emailVerified: new Date(),
-        image: '#',
-      },
+      user: { id, name, email, emailVerified, image },
     };
   },
 });

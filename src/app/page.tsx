@@ -24,13 +24,12 @@ const schema = z.object({
 });
 
 export default async function Home() {
-  const { session, cookie } = await checkSessionOnServer('/');
-  const { getClient } = registerRscUrqlClient(session, cookie);
+  const { cookie } = await checkSessionOnServer('/');
+  const { getClient } = registerRscUrqlClient(cookie);
   try {
     const result = await getClient().query(
       topPageDocument,
       {},
-      { suspense: true },
     );
     if (result.error) {
       throw result.error;

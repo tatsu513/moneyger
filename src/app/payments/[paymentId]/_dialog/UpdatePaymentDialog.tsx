@@ -94,13 +94,13 @@ const UpdatePaymentDialog: React.FC<Props> = ({
         maxAmount: safeParseResult.data.maxAmount,
       });
       if (result.error) {
-        throw new Error('処理失敗です');
+        throw new Error('費目の更新に失敗しました');
       }
       events.onSuccess();
       router.refresh();
       handleClose();
     } catch (error) {
-      console.error('処理失敗です', { error });
+      console.error('費目の更新に失敗しました', { error });
       events.onError();
       return;
     }

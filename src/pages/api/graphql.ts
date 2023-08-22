@@ -6,6 +6,8 @@ import prisma from '@/util/prisma';
 import { GraphQLError } from 'graphql';
 import isThisMonth from '@/logics/isThisMonth';
 import { DateTime } from 'luxon';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 
 const resolvers: Resolvers = {
   Query: {
@@ -201,25 +203,14 @@ const server = new ApolloServer({
 });
 
 export default startServerAndCreateNextHandler(server, {
-  context: async (req) => {
-    const callerUserId = req.headers['caller-user-id'];
-    if (typeof callerUserId !== 'string') {
-      throw new GraphQLError('GOT INVALID CALLER USER ID');
+  context: async (req, res) => {
+    const session = await getServerSession(req, res, authOptions);
+    if (session == null) {
+      throw new GraphQLError('session is null in the graphql server');
     }
-    const user = await prisma.user.findUnique({
-      where: { id: callerUserId },
-    });
-    if (user == null) {
-      throw new GraphQLError('user undifined');
-    }
+    const { id, name, email, emailVerified, image } = session.user
     return {
-      user: {
-        id: callerUserId,
-        name: user.name,
-        email: user.email,
-        emailVerified: user.emailVerified,
-        image: user.image,
-      },
+      user: { id, name, email, emailVerified, image },
     };
   },
 });
