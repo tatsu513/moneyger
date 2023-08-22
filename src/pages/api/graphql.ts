@@ -110,9 +110,7 @@ const resolvers: Resolvers = {
       const totalCurrentAmount = validHistories.reduce((acc, val) => {
         return acc + val.price
       }, 0)
-      const result = totalCurrentAmount / totalMaxAmount;
-      const floatedVal = Math.floor(result * 1000) / 1000;
-      const ratio = floatedVal * 100;
+      const ratio = Math.floor((totalCurrentAmount / totalMaxAmount) * 100);
       return {
         totalMaxAmount,
         totalCurrentAmount,
