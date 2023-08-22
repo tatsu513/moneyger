@@ -198,14 +198,14 @@
     node-fetch "^2.6.1"
 
 "@as-integrations/next@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@as-integrations/next/-/next-2.0.1.tgz#2ff01dc75c2d460defe87533b6c5c7c2dc05d4c7"
-  integrity sha512-smtgZPkpWT0iOkSdH28BnOy69jZd6ILGiI3C56d3+6czbTwtcV2sgb2zweRqSd3vBzDPvA4mHkjsJZY7cXlZEA==
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@as-integrations/next/-/next-2.0.2.tgz#b29ef3df03ef0a0c24f40f06132a1f16879f27f7"
+  integrity sha512-nznFAbWpgB60aF44vLfy9AieYY0t9yv4QqYX0DfPQ24Qa9qny/6uUdKoDpDC0MLWSBLC64XVfzaNylJUpiXVUA==
 
 "@babel/cli@^7.21.0":
-  version "7.22.6"
-  resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.22.6.tgz#63f5be2a0abd587ccfbdc93424fa85f43142cc53"
-  integrity sha512-Be3/RfEDmkMRGT1+ru5nTkfcvWz5jDOYg1V9rXqTz2u9Qt96O1ryboGvxVBp7wOnYWDB8DNHIWb6DThrpudfOw==
+  version "7.22.10"
+  resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.22.10.tgz#25e4bbd8d0a0d8b4b389e1b5e2d7a238bd4c1b75"
+  integrity sha512-rM9ZMmaII630zGvtMtQ3P4GyHs28CHLYE9apLG7L8TgaSqcfoIGrlLSLsh4Q8kDTdZQQEXZm1M0nQtOvU/2heg==
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.17"
     commander "^4.0.1"
