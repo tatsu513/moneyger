@@ -2275,10 +2275,10 @@
     prop-types "^15.8.1"
     react-transition-group "^4.4.5"
 
-"@neondatabase/serverless@0.4.19":
-  version "0.4.19"
-  resolved "https://registry.yarnpkg.com/@neondatabase/serverless/-/serverless-0.4.19.tgz#8df963048838560f9dca84a7af3e5b2efa4160ad"
-  integrity sha512-atzpP9uBLrWPokXZdVy2iNPmmxVx51HXhrEObDb4KXmsyGEkGhCcb6cs51LA/oyXwjJUeB4AreOoVgMcPAIv5g==
+"@neondatabase/serverless@0.5.6":
+  version "0.5.6"
+  resolved "https://registry.yarnpkg.com/@neondatabase/serverless/-/serverless-0.5.6.tgz#e79b58f8ccd8995e4b6f94d86cbe2622172dd563"
+  integrity sha512-Ru0lG6W/nQtHRkDFVQFF+1PJYx8wd3jereln0Ep0YkiHey50hjTLVUycQoE4X977605pXMuFWORweuktzph+Xg==
   dependencies:
     "@types/pg" "8.6.6"
 
@@ -2680,15 +2680,20 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
-"@types/node@*", "@types/node@>=12.12.47", "@types/node@>=13.7.0":
-  version "20.4.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.4.2.tgz#129cc9ae69f93824f92fac653eebfb4812ab4af9"
-  integrity sha512-Dd0BYtWgnWJKwO1jkmTrzofjK2QXXcai0dmtzvIBhcA+RsG5h8R3xlyta0kGOZRNfL9GuRtb1knmPEhQrePCEw==
+"@types/node@*":
+  version "20.5.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.5.1.tgz#178d58ee7e4834152b0e8b4d30cbfab578b9bb30"
+  integrity sha512-4tT2UrL5LBqDwoed9wZ6N3umC4Yhz3W3FloMmiiG4JwmUJWpie0c7lcnUNd4gtMKuDEO4wRVS8B6Xa0uMRsMKg==
 
 "@types/node@20.4.1":
   version "20.4.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.4.1.tgz#a6033a8718653c50ac4962977e14d0f984d9527d"
   integrity sha512-JIzsAvJeA/5iY6Y/OxZbv1lUcc8dNSE77lb2gnBH+/PJ3lFR1Ccvgwl5JWnHAkNHcRsT0TbpVOsiMKZ1F/yyJg==
+
+"@types/node@>=12.12.47", "@types/node@>=13.7.0":
+  version "20.4.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.4.2.tgz#129cc9ae69f93824f92fac653eebfb4812ab4af9"
+  integrity sha512-Dd0BYtWgnWJKwO1jkmTrzofjK2QXXcai0dmtzvIBhcA+RsG5h8R3xlyta0kGOZRNfL9GuRtb1knmPEhQrePCEw==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
@@ -2965,11 +2970,11 @@
   integrity sha512-1GAv+SHGL6GuhotvjVhek1Z4ZJ7C9Jh04P9KQUkLCaNKYXMLhfcgkpyJsMUpFsfHQkT1HRTjtajF2L09hpKSHg==
 
 "@vercel/postgres@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@vercel/postgres/-/postgres-0.4.0.tgz#e5683f3a29e49f23569937751cb0749f15915bb5"
-  integrity sha512-GemRRKvLi90BC511WQzt5tfVLPNOQ9eNbbbaPquSgasm5ogfWLtjJSbNUD4jYEbs9IxbNovKqr0H0CAjJzOAyw==
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@vercel/postgres/-/postgres-0.4.1.tgz#b3aeaeb4f300f7463ab546b34af6680b412c17fa"
+  integrity sha512-rYlNnaXrr2/NWK/OodhAUyed0bomaizKKC8XXjNYv8I1K3m75oocP4IGTcBpZe76VCrHuaKW5d6jLQnuRRoNKg==
   dependencies:
-    "@neondatabase/serverless" "0.4.19"
+    "@neondatabase/serverless" "0.5.6"
     bufferutil "4.0.7"
     utf-8-validate "6.0.3"
     ws "8.13.0"
