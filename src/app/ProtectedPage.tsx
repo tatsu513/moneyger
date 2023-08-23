@@ -11,7 +11,7 @@ const ProtectedPage: React.FC<ProtectedPageProps> = ({ children }) => {
   const pathname = usePathname();
 
   // もしログインページかログアウトページならそのまま表示
-  if (pathname === '/login' || pathname === '/logout') {
+  if (pathname === '/auth/login' || pathname === '/auth/logout') {
     return <>{children}</>;
   }
 
