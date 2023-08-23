@@ -21,7 +21,7 @@ import theme from '@/theme';
 import { CssBaseline } from '@mui/material';
 import { ShardEnvs } from '@/util/shardEnvs';
 import { SessionProvider } from 'next-auth/react';
-import ProtectedPage from '@/app/ProtectedPage';
+// import ProtectedPage from '@/app/ProtectedPage';
 
 Settings.defaultLocale = 'ja-JP';
 Settings.defaultZone = 'Asia/Tokyo';
@@ -58,9 +58,10 @@ const Providers: React.FC<PropsWithChildren> = ({ children }) => {
           dateFormats={LOCALIZATION_FORMATS}
         >
           <UrqlProvider client={client} ssr={ssr}>
-            <ProtectedPage>
+            {children}
+            {/* <ProtectedPage>
               {children}
-            </ProtectedPage>
+            </ProtectedPage> */}
           </UrqlProvider>
         </LocalizationProvider>
       </ThemeProvider>

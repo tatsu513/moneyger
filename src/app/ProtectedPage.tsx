@@ -15,7 +15,7 @@ const ProtectedPage: React.FC<ProtectedPageProps> = ({ children }) => {
     return <>{children}</>;
   }
 
-  // セッション情報読み込み中
+  // セッション情報読込中
   if (status === 'loading') return <CommonLoading />;
 
   // ログインしていない
