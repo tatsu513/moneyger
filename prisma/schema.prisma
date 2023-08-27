@@ -42,7 +42,6 @@ model User {
   emailVerified  DateTime?
   image          String?
   accounts       Account[]
-  Group          Group[]
   Payment        Payment[]
   PaymentHistory PaymentHistory[]
   sessions       Session[]
@@ -76,11 +75,4 @@ model PaymentHistory {
   createdAt   DateTime @default(now())
   author      User     @relation(fields: [authorId], references: [id])
   payment     Payment  @relation(fields: [paymentId], references: [id])
-}
-
-model Group {
-  id       Int    @id @default(autoincrement())
-  name     String
-  memberId String
-  member   User   @relation(fields: [memberId], references: [id])
 }
