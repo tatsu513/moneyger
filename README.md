@@ -46,7 +46,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
   - これで生成されたmigration fileが本番へ反映される
   - yarn dotenv -e .env.development.local yarn prisma migrate dev --create-only
 - ローカルのDBを確認するplaygroundを起動
-  - yarn dotenv -e .env.development.local yarn prisma studio dev
+  - yarn dotenv -e .env.development.local yarn prisma studio
 - schemaの検証
   - yarn dotenv -e .env.development.local prisma validate
 - schemaのフォーマット
