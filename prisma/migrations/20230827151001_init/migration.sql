@@ -68,15 +68,6 @@ CREATE TABLE "PaymentHistory" (
     CONSTRAINT "PaymentHistory_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "Group" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "memberId" TEXT NOT NULL,
-
-    CONSTRAINT "Group_pkey" PRIMARY KEY ("id")
-);
-
 -- CreateIndex
 CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
 
@@ -106,7 +97,3 @@ ALTER TABLE "PaymentHistory" ADD CONSTRAINT "PaymentHistory_authorId_fkey" FOREI
 
 -- AddForeignKey
 ALTER TABLE "PaymentHistory" ADD CONSTRAINT "PaymentHistory_paymentId_fkey" FOREIGN KEY ("paymentId") REFERENCES "Payment"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Group" ADD CONSTRAINT "Group_memberId_fkey" FOREIGN KEY ("memberId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
