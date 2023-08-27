@@ -3,6 +3,7 @@ import { PaymentSummaryQuery } from '@/dao/generated/preset/graphql';
 import getPriceColorAndBgColor from '@/logics/getPriceColorAndBgColor';
 import { Box, Grid, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
+import { useSession } from 'next-auth/react';
 import React from 'react';
 
 type Props = {
@@ -16,6 +17,9 @@ const TopMain: React.FC<Props> = ({ summary }) => {
   const day = today.day;
   const ondOfMonth = today.endOf('month').day;
   const { color, bgColor } = getPriceColorAndBgColor(diff);
+
+  const { data: session } = useSession();
+  console.log({ session });
   return (
     <>
       <Box textAlign="center" mb={3}>
@@ -53,7 +57,9 @@ type ItemBlockProps = {
 const ItemBlock: React.FC<ItemBlockProps> = ({ label, body }) => {
   return (
     <>
-      <Grid item xs={6}>{label}</Grid>
+      <Grid item xs={6}>
+        {label}
+      </Grid>
       <Grid item xs={6} textAlign="right">
         <Typography variant="body1Bold">{body}</Typography>
       </Grid>

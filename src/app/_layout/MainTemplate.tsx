@@ -18,7 +18,7 @@ const MainTemplate: React.FC<PropsWithChildren> = ({ children }) => {
       pb="env(safe-area-inset-bottom)"
       pl="env(safe-area-inset-left)"
     >
-      <MoneygerAppBar />
+      <MoneygerAppBar isAuthPage={false} />
       <Box display="flex" flexDirection="column" height="calc(100% - 56px)">
         <Box flex={1} p={2} sx={{ overflowY: 'scroll' }}>
           {children}

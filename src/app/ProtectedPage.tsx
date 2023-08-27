@@ -1,6 +1,8 @@
+'use client';
 import CommonLoading from '@/components/common/CommonLoading';
-import { signIn, useSession } from 'next-auth/react';
-import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { redirect, usePathname } from 'next/navigation';
+import MainTemplate from '@/app/_layout/MainTemplate';
 
 type ProtectedPageProps = {
   children: React.ReactNode;
@@ -20,12 +22,9 @@ const ProtectedPage: React.FC<ProtectedPageProps> = ({ children }) => {
 
   // ログインしていない
   if (session == null) {
-    signIn().catch((error) => {
-      console.log({ err: error }, 'Failed to sign in')
-    });
-    return <></>;
+    redirect(`/auth/login?callbackUrl=${pathname}`);
   }
-  return <>{children}</>;
+  return <MainTemplate>{children}</MainTemplate>;
 };
 
 export default ProtectedPage;

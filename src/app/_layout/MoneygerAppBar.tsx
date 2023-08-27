@@ -16,7 +16,10 @@ import { signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
-const MoneygerAppBar = () => {
+type Props = {
+  isAuthPage: boolean;
+};
+const MoneygerAppBar: React.FC<Props> = ({ isAuthPage }) => {
   const pathname = usePathname();
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);
   const isAuthPath = pathname?.startsWith('/auth') ?? false;
@@ -59,23 +62,25 @@ const MoneygerAppBar = () => {
                 <IconButton color="inherit" onClick={handleMenu}>
                   <AccountCircle fontSize="medium" />
                 </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchor}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={!!anchor}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleLogout}>ログアウト</MenuItem>
-                </Menu>
+                {!isAuthPage && (
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchor}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={!!anchor}
+                    onClose={handleClose}
+                  >
+                    <MenuItem onClick={handleLogout}>ログアウト</MenuItem>
+                  </Menu>
+                )}
               </Box>
             )}
           </Box>

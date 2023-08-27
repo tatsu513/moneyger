@@ -8,39 +8,48 @@ import isThisMonth from '@/logics/isThisMonth';
 import { DateTime } from 'luxon';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { GraphQLError } from 'graphql/error';
 
 const resolvers: Resolvers = {
   Query: {
     listPayments: async () => {
       const paymentsPromise = prisma.payment.findMany();
       const historiesPromise = prisma.paymentHistory.findMany();
-      const [payments, histories] = await Promise.all([paymentsPromise, historiesPromise]);
+      const [payments, histories] = await Promise.all([
+        paymentsPromise,
+        historiesPromise,
+      ]);
       const validHistories = histories.flatMap((h) => {
-        return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate)) ? [h] : []
-      })
+        return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate))
+          ? [h]
+          : [];
+      });
       const data = payments.map((p) => {
         const currentAmount = validHistories.reduce((acc, val) => {
-          return val.paymentId === p.id ? acc + val.price : acc
-        }, 0)
+          return val.paymentId === p.id ? acc + val.price : acc;
+        }, 0);
         return {
           ...p,
-          currentAmount
-        }
-      })
-      return data
+          currentAmount,
+        };
+      });
+      return data;
     },
     payment: async (_, { paymentId }) => {
       const paymentPromise = prisma.payment.findUnique({
         where: { id: paymentId },
       });
       const historiesPromise = prisma.paymentHistory.findMany({
-        where: { paymentId }
-      })
-      const [payment, histories] = await Promise.all([paymentPromise, historiesPromise]);
+        where: { paymentId },
+      });
+      const [payment, histories] = await Promise.all([
+        paymentPromise,
+        historiesPromise,
+      ]);
       if (payment == null) return null;
       const currentAmount = histories.reduce((acc, val) => {
-        return val.paymentId === payment.id ? acc + val.price : acc
-      }, 0)
+        return val.paymentId === payment.id ? acc + val.price : acc;
+      }, 0);
       return {
         id: payment.id,
         name: payment.name,
@@ -52,35 +61,37 @@ const resolvers: Resolvers = {
     listPaymentHistories: async () => {
       const results = await prisma.paymentHistory.findMany({
         orderBy: {
-          paymentDate: 'desc'
-        }
+          paymentDate: 'desc',
+        },
       });
       const validHistories = results.flatMap((r) => {
-        return isThisMonth(DateTime.now(), DateTime.fromJSDate(r.paymentDate)) ? [r] : []
-      })
-      return validHistories
-        .map((r) => ({
-          ...r,
-          paymentDate: r.paymentDate.toISOString(),
+        return isThisMonth(DateTime.now(), DateTime.fromJSDate(r.paymentDate))
+          ? [r]
+          : [];
+      });
+      return validHistories.map((r) => ({
+        ...r,
+        paymentDate: r.paymentDate.toISOString(),
       }));
     },
     // paymentに紐づく支払履歴一覧
     listPaymentHistoriesByPaymentId: async (_, { paymentId }) => {
       const results = await prisma.paymentHistory.findMany({
         where: { paymentId },
-        orderBy: { paymentDate: 'desc' }
+        orderBy: { paymentDate: 'desc' },
       });
       const validHistories = results.flatMap((r) => {
-        return isThisMonth(DateTime.now(), DateTime.fromJSDate(r.paymentDate)) ? [r] : []
-      })
-      return validHistories
-        .map((r) => ({
-          id: r.id,
-          note: r.note,
-          price: r.price,
-          paymentDate: r.paymentDate.toISOString(),
-          paymentId,
-        }));
+        return isThisMonth(DateTime.now(), DateTime.fromJSDate(r.paymentDate))
+          ? [r]
+          : [];
+      });
+      return validHistories.map((r) => ({
+        id: r.id,
+        note: r.note,
+        price: r.price,
+        paymentDate: r.paymentDate.toISOString(),
+        paymentId,
+      }));
     },
     // 支払履歴を1件取得
     paymentHistory: async (_, { paymentHistoryId }) => {
@@ -96,20 +107,21 @@ const resolvers: Resolvers = {
       };
     },
     // ダッシュボード用
-    paymentSummary: async (_, _args, { user }) => {
-      console.log({ user });
+    paymentSummary: async (_, _args) => {
       const listPayments = await prisma.payment.findMany();
       const totalMaxAmount = listPayments.reduce(
         (acc, val) => acc + val.maxAmount,
-        0
+        0,
       );
       const paymentHistories = await prisma.paymentHistory.findMany();
       const validHistories = paymentHistories.flatMap((h) => {
-        return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate)) ? [h] : []
-      })
+        return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate))
+          ? [h]
+          : [];
+      });
       const totalCurrentAmount = validHistories.reduce((acc, val) => {
-        return acc + val.price
-      }, 0)
+        return acc + val.price;
+      }, 0);
       const ratio = Math.floor((totalCurrentAmount / totalMaxAmount) * 100);
       return {
         totalMaxAmount,
@@ -124,6 +136,7 @@ const resolvers: Resolvers = {
         data: {
           name,
           maxAmount,
+          currentAmount: 0,
           author: {
             connect: {
               id: user.id,
@@ -170,7 +183,10 @@ const resolvers: Resolvers = {
       });
       return newData.id;
     },
-    updatePaymentHistory: async (_, { id, paymentId ,note, price, paymentDate }) => {
+    updatePaymentHistory: async (
+      _,
+      { id, paymentId, note, price, paymentDate },
+    ) => {
       const target = await prisma.paymentHistory.update({
         where: { id },
         data: {
@@ -204,12 +220,12 @@ export default startServerAndCreateNextHandler(server, {
   context: async (req, res) => {
     const session = await getServerSession(req, res, authOptions);
     if (session == null) {
-      console.error('session is null')
-      // throw new GraphQLError('session is null in the graphql server');
+      console.error('session is null');
+      throw new GraphQLError('session is null in the graphql server');
     }
-    // const { id, name, email, emailVerified, image } = session.user
+    const { id, name, email, emailVerified, image } = session.user;
     return {
-      user: { id: 'cll6sv0560000kz08gavj116i', name: 'name', email: 'email', emailVerified: new Date(), image: '#' },
+      user: { id, name, email, emailVerified, image },
     };
   },
 });
