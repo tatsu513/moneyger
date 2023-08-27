@@ -32,3 +32,30 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Prisma
+
+ローカル環境のコマンド
+
+- Prismaクライアントの作成
+  - yarn dotenv -e .env.development.local yarn prisma generate
+- migration fileをローカルアプリ内に反映
+  - 修正中や検証中はこちらを使用
+  - yarn dotenv -e .env.development.local yarn prisma db push
+- schemaを元にmigrationファイルを作成
+  - これで生成されたmigration fileが本番へ反映される
+  - yarn dotenv -e .env.development.local yarn prisma migrate dev --create-only
+- ローカルのDBを確認するplaygroundを起動
+  - yarn dotenv -e .env.development.local yarn prisma studio dev
+- schemaの検証
+  - yarn dotenv -e .env.development.local prisma validate
+- schemaのフォーマット
+  - yarn dotenv -e .env.development.local prisma format
+
+### schema更新
+
+TBC
+https://www.prisma.io/docs/guides/migrate/developing-with-prisma-migrate/add-prisma-migrate-to-a-project#baseline-your-production-environment
+
+- yarn dotenv -e .env.development.local yarn prisma db pull
+- schemaを更新
