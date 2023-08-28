@@ -21,7 +21,7 @@ import theme from '@/theme';
 import { CssBaseline } from '@mui/material';
 import { ShardEnvs } from '@/util/shardEnvs';
 import { SessionProvider } from 'next-auth/react';
-import ProtectedPage from '@/app/ProtectedPage';
+// import ProtectedPage from '@/app/ProtectedPage';
 
 Settings.defaultLocale = 'ja-JP';
 Settings.defaultZone = 'Asia/Tokyo';
@@ -42,7 +42,14 @@ const client = createClient({
     ssr,
   ],
   requestPolicy: 'cache-first',
-  fetchOptions: () => ({ credentials: 'include' }),
+  fetchOptions: () => {
+    return {
+      headers: {
+        authorization: 'Bearer token',
+      },
+      credentials: 'include',
+    };
+  },
   suspense: true,
 });
 
@@ -57,8 +64,8 @@ const Providers: React.FC<PropsWithChildren> = ({ children }) => {
           dateFormats={LOCALIZATION_FORMATS}
         >
           <UrqlProvider client={client} ssr={ssr}>
-            {/* {children} */}
-            <ProtectedPage>{children}</ProtectedPage>
+            {children}
+            {/* <ProtectedPage>{children}</ProtectedPage> */}
           </UrqlProvider>
         </LocalizationProvider>
       </ThemeProvider>

@@ -8,7 +8,7 @@ import isThisMonth from '@/logics/isThisMonth';
 import { DateTime } from 'luxon';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { GraphQLError } from 'graphql/error';
+// import { GraphQLError } from 'graphql/error';
 
 const resolvers: Resolvers = {
   Query: {
@@ -108,21 +108,28 @@ const resolvers: Resolvers = {
     },
     // ダッシュボード用
     paymentSummary: async (_, _args) => {
+      console.log('paymentSummary called');
       const listPayments = await prisma.payment.findMany();
+      console.log({ listPayments });
       const totalMaxAmount = listPayments.reduce(
         (acc, val) => acc + val.maxAmount,
         0,
       );
+      console.log({ totalMaxAmount });
       const paymentHistories = await prisma.paymentHistory.findMany();
+      console.log({ paymentHistories });
       const validHistories = paymentHistories.flatMap((h) => {
         return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate))
           ? [h]
           : [];
       });
+      console.log({ validHistories });
       const totalCurrentAmount = validHistories.reduce((acc, val) => {
         return acc + val.price;
       }, 0);
+      console.log({ totalCurrentAmount });
       const ratio = Math.floor((totalCurrentAmount / totalMaxAmount) * 100);
+      console.log({ ratio });
       return {
         totalMaxAmount,
         totalCurrentAmount,
@@ -220,11 +227,17 @@ export default startServerAndCreateNextHandler(server, {
     const session = await getServerSession(req, res, authOptions);
     if (session == null) {
       console.error('session is null');
-      throw new GraphQLError('session is null in the graphql server');
+      // throw new GraphQLError('session is null in the graphql server');
     }
-    const { id, name, email, emailVerified, image } = session.user;
+    // const { id, name, email, emailVerified, image } = session.user;
     return {
-      user: { id, name, email, emailVerified, image },
+      user: {
+        id: 'id',
+        name: 'name',
+        email: 'email',
+        emailVerified: new Date(),
+        image: '',
+      },
     };
   },
 });

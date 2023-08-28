@@ -27,18 +27,15 @@ export default async function page() {
   const { cookie } = await checkSessionOnServer('/');
   const { getClient } = registerRscUrqlClient(cookie);
   try {
-    const result = await getClient().query(
-      topPageDocument,
-      {},
-    );
+    const result = await getClient().query(topPageDocument, {});
     if (result.error) {
+      console.error({ error: result.error, message: 'fetch失敗' });
       throw result.error;
     }
-    console.log({ data: result.data })
     const summary = schema.parse(result.data);
     return <TopMain summary={summary} />;
   } catch (error) {
-    console.error({ error });
+    console.error({ error, page: '/' });
     notFound();
   }
 }
