@@ -54,7 +54,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ### schema更新
 
-TBC
+TB
 https://www.prisma.io/docs/guides/migrate/developing-with-prisma-migrate/add-prisma-migrate-to-a-project#baseline-your-production-environment
 
 - yarn dotenv -e .env.development.local yarn prisma db pull
