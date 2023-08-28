@@ -108,21 +108,28 @@ const resolvers: Resolvers = {
     },
     // ダッシュボード用
     paymentSummary: async (_, _args) => {
+      console.log('paymentSummary called');
       const listPayments = await prisma.payment.findMany();
+      console.log({ listPayments });
       const totalMaxAmount = listPayments.reduce(
         (acc, val) => acc + val.maxAmount,
         0,
       );
+      console.log({ totalMaxAmount });
       const paymentHistories = await prisma.paymentHistory.findMany();
+      console.log({ paymentHistories });
       const validHistories = paymentHistories.flatMap((h) => {
         return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate))
           ? [h]
           : [];
       });
+      console.log({ validHistories });
       const totalCurrentAmount = validHistories.reduce((acc, val) => {
         return acc + val.price;
       }, 0);
+      console.log({ totalCurrentAmount });
       const ratio = Math.floor((totalCurrentAmount / totalMaxAmount) * 100);
+      console.log({ ratio });
       return {
         totalMaxAmount,
         totalCurrentAmount,
