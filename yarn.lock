@@ -2377,7 +2377,7 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.8.tgz#6b79032e760a0899cd4204710beede972a3a185f"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
-"@prisma/client@^5.2.0":
+"@prisma/client@^5.1.1":
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/@prisma/client/-/client-5.2.0.tgz#cbfdd440614b38736563a7999f39922fcde0ed50"
   integrity sha512-AiTjJwR4J5Rh6Z/9ZKrBBLel3/5DzUNntMohOy7yObVnVoTNVFi2kvpLZlFuKO50d7yDspOtW6XBpiAd0BVXbQ==
@@ -5374,9 +5374,9 @@ lru-cache@^7.10.1, lru-cache@^7.14.1:
   integrity sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==
 
 luxon@^3.3.0:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/luxon/-/luxon-3.4.1.tgz#9147374b2c539e7893f906c420e9b080b59c5457"
-  integrity sha512-2USspxOCXWGIKHwuQ9XElxPPYrDOJHDQ5DQ870CoD+CxJbBnRDIBCfhioUJJjct7BKOy80Ia8cVstIcIMb/0+Q==
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-3.4.2.tgz#f5bcab779f3d6a943ee7c8621c2b416bc10abd24"
+  integrity sha512-uBoAVCVcajsrqy3pv7eo5jEUz1oeLmCcnMv8n4AJpT5hbpN9lUssAXibNElpbLce3Mhm9dyBzwYLs9zctM/0tA==
 
 make-dir@^2.1.0:
   version "2.1.0"
@@ -6011,7 +6011,7 @@ pretty-format@^3.8.0:
   resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-3.8.0.tgz#bfbed56d5e9a776645f4b1ff7aa1a3ac4fa3c385"
   integrity sha512-WuxUnVtlWL1OfZFQFuqvnvs6MiAGk9UNsBostyBOB0Is9wb5uRESevA6rnl/rkksXaGX3GzZhPup5d6Vp1nFew==
 
-prisma@^5.2.0:
+prisma@^5.1.1:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/prisma/-/prisma-5.2.0.tgz#a302dc2635cdec1d22d552ece837fb29a03563b9"
   integrity sha512-FfFlpjVCkZwrqxDnP4smlNYSH1so+CbfjgdpioFzGGqlQAEm6VHAYSzV7jJgC3ebtY9dNOhDMS2+4/1DDSM7bQ==
