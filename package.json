@@ -4,10 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && prisma migrate deploy && next build",
+    "build": "prisma generate && prisma db push && next build",
     "start": "next start",
     "lint": "next lint",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "dev.generate": "dotenv -e .env.development.local -- yarn prisma generate dev",
+    "dev.migrate": "dotenv -e .env.development.local -- yarn prisma migrate dev",
+    "dev.studio": "dotenv -e .env.development.local -- yarn prisma studio dev",
+    "dev.migrate-reset": "dotenv -e .env.development.local -- yarn prisma migrate reset dev",
+    "codegen": "graphql-codegen --config codegen.ts",
+    "postinstall": "yarn dev.generate",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "dependencies": {
     "@apollo/server": "^4.7.5",

@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,14 +18,15 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String?
-  access_token      String?
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?
+  id_token          String? @db.Text
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -42,10 +46,10 @@ model User {
   emailVerified  DateTime?
   image          String?
   accounts       Account[]
-  Group          Group[]
+  sessions       Session[]
   Payment        Payment[]
   PaymentHistory PaymentHistory[]
-  sessions       Session[]
+  Group          Group[]
 }
 
 model VerificationToken {
@@ -60,10 +64,10 @@ model Payment {
   id             Int              @id @default(autoincrement())
   name           String
   maxAmount      Int
+  PaymentHistory PaymentHistory[]
+  author         User             @relation(fields: [authorId], references: [id])
   authorId       String
   createdAt      DateTime         @default(now())
-  author         User             @relation(fields: [authorId], references: [id])
-  PaymentHistory PaymentHistory[]
 }
 
 model PaymentHistory {
@@ -71,16 +75,16 @@ model PaymentHistory {
   note        String?
   price       Int
   paymentDate DateTime
+  payment     Payment  @relation(fields: [paymentId], references: [id])
   paymentId   Int
+  author      User     @relation(fields: [authorId], references: [id])
   authorId    String
   createdAt   DateTime @default(now())
-  author      User     @relation(fields: [authorId], references: [id])
-  payment     Payment  @relation(fields: [paymentId], references: [id])
 }
 
 model Group {
   id       Int    @id @default(autoincrement())
   name     String
-  memberId String
   member   User   @relation(fields: [memberId], references: [id])
+  memberId String
 }
