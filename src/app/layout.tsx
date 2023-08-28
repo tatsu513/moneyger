@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Providers from '@/app/Providers';
+import MainTemplate from '@/app/_layout/MainTemplate';
 
 export const metadata: Metadata = {
   title: 'moneyger',
@@ -20,7 +21,9 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <MainTemplate>{children}</MainTemplate>
+        </Providers>
       </body>
     </html>
   );
