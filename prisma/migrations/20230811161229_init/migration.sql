@@ -1,5 +1,3 @@
-yarn run v1.22.19
-$ /Users/ookawatatsuya/Desktop/moneyger/node_modules/.bin/prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script
 -- CreateTable
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL,
@@ -111,5 +109,3 @@ ALTER TABLE "PaymentHistory" ADD CONSTRAINT "PaymentHistory_authorId_fkey" FOREI
 
 -- AddForeignKey
 ALTER TABLE "Group" ADD CONSTRAINT "Group_memberId_fkey" FOREIGN KEY ("memberId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
-Done in 0.82s.
