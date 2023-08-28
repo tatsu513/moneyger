@@ -3,7 +3,6 @@ import { PaymentSummaryQuery } from '@/dao/generated/preset/graphql';
 import getPriceColorAndBgColor from '@/logics/getPriceColorAndBgColor';
 import { Box, Grid, Typography } from '@mui/material';
 import { DateTime } from 'luxon';
-import { useSession } from 'next-auth/react';
 import React from 'react';
 
 type Props = {
@@ -17,9 +16,6 @@ const TopMain: React.FC<Props> = ({ summary }) => {
   const day = today.day;
   const ondOfMonth = today.endOf('month').day;
   const { color, bgColor } = getPriceColorAndBgColor(diff);
-
-  const { data: session } = useSession();
-  console.log({ session });
   return (
     <>
       <Box textAlign="center" mb={3}>
