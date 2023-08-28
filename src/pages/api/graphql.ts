@@ -8,7 +8,7 @@ import isThisMonth from '@/logics/isThisMonth';
 import { DateTime } from 'luxon';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { GraphQLError } from 'graphql/error';
+// import { GraphQLError } from 'graphql/error';
 
 const resolvers: Resolvers = {
   Query: {
@@ -220,11 +220,17 @@ export default startServerAndCreateNextHandler(server, {
     const session = await getServerSession(req, res, authOptions);
     if (session == null) {
       console.error('session is null');
-      throw new GraphQLError('session is null in the graphql server');
+      // throw new GraphQLError('session is null in the graphql server');
     }
-    const { id, name, email, emailVerified, image } = session.user;
+    // const { id, name, email, emailVerified, image } = session.user;
     return {
-      user: { id, name, email, emailVerified, image },
+      user: {
+        id: 'id',
+        name: 'name',
+        email: 'email',
+        emailVerified: new Date(),
+        image: '',
+      },
     };
   },
 });
