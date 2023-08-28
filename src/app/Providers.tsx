@@ -42,7 +42,14 @@ const client = createClient({
     ssr,
   ],
   requestPolicy: 'cache-first',
-  fetchOptions: () => ({ credentials: 'include' }),
+  fetchOptions: () => {
+    return {
+      headers: {
+        authorization: 'Bearer token',
+      },
+      credentials: 'include',
+    };
+  },
   suspense: true,
 });
 
