@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["datetime", "moneyger", "Typenames"]
+  "cSpell.words": ["datetime", "moneyger", "Typenames"],
+  "typescript.preferences.importModuleSpecifier": "non-relative"
 }
