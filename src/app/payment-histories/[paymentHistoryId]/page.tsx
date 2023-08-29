@@ -3,7 +3,7 @@ import registerRscUrqlClient from '@/util/registerRscUrqlClient';
 import { z } from 'zod';
 import { notFound } from 'next/navigation';
 import PaymentHistoryMain from '@/app/payment-histories/[paymentHistoryId]/_main/PaymentHistoryMain';
-import { nameType } from '@/models/payment';
+import { nameType } from '@/models/category';
 import checkSessionOnServer from '@/util/checkSessionOnServer';
 
 const paymentHistoryPageDocument = graphql(`
@@ -18,9 +18,9 @@ const paymentHistoryPageDocument = graphql(`
   }
 `);
 
-const paymentHistoryPageListPaymentsDocument = graphql(`
-  query paymentHistoryPageListPayments {
-    listPayments {
+const paymentHistoryPageListCategoriesDocument = graphql(`
+  query paymentHistoryPageListCategories {
+    listCategories {
       id
       name
     }
@@ -62,19 +62,19 @@ export default async function Home({
     });
     if (res.error) throw res.error;
 
-    const listPaymentsRes = await getClient().query(
-      paymentHistoryPageListPaymentsDocument,
+    const listCategoriesRes = await getClient().query(
+      paymentHistoryPageListCategoriesDocument,
       {},
     );
-    if (listPaymentsRes.error) throw listPaymentsRes.error;
+    if (listCategoriesRes.error) throw listCategoriesRes.error;
     const result = paymentHistorySchema.parse(res.data?.paymentHistory);
     const listPaymentResult = paymentSchema.parse(
-      listPaymentsRes.data?.listPayments,
+      listCategoriesRes.data?.listCategories,
     );
     return (
       <PaymentHistoryMain
         paymentHistory={result}
-        listPayments={listPaymentResult}
+        listCategories={listPaymentResult}
       />
     );
   } catch (e) {

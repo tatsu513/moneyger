@@ -2,7 +2,7 @@
 
 import {
   PaymentHistory,
-  PaymentHistoryPageListPaymentsQuery,
+  PaymentHistoryPageListCategoriesQuery,
 } from '@/dao/generated/preset/graphql';
 import DialogState from '@/types/DialogState';
 import { Box, Typography } from '@mui/material';
@@ -20,11 +20,11 @@ import PageTitle from '@/components/common/PageTitle';
 
 type Props = {
   paymentHistory: PaymentHistory;
-  listPayments: PaymentHistoryPageListPaymentsQuery['listPayments'];
+  listCategories: PaymentHistoryPageListCategoriesQuery['listCategories'];
 };
 const PaymentHistoryMain: React.FC<Props> = ({
   paymentHistory,
-  listPayments,
+  listCategories,
 }) => {
   const [updateDialogState, setUpdateDialogState] =
     useState<DialogState>('closed');
@@ -55,8 +55,10 @@ const PaymentHistoryMain: React.FC<Props> = ({
     setDeleteDialogState('closed');
   }, []);
 
-  const payment = listPayments.find((p) => p.id === paymentHistory.paymentId);
-  if (payment == null) {
+  const category = listCategories.find(
+    (p) => p.id === paymentHistory.paymentId,
+  );
+  if (category == null) {
     return (
       <Typography variant="body1" color={grey[500]}>
         費目が見つかりません
@@ -82,25 +84,31 @@ const PaymentHistoryMain: React.FC<Props> = ({
       <Box mb={2}>
         <PageTitle title="支払い詳細" />
       </Box>
-      
-      <RowContentsBlock title="費目" body={payment?.name ?? '-'}/>
-      <RowContentsBlock title="支払日" body={PrismaDateToFrontendDateStr(paymentHistory.paymentDate)}/>
-      <RowContentsBlock title="金額" body={paymentHistory.price.toLocaleString() + '円'}/>
-      <RowContentsBlock title="メモ" body={paymentHistory.note ?? '-'}/>
+
+      <RowContentsBlock title="費目" body={category?.name ?? '-'} />
+      <RowContentsBlock
+        title="支払日"
+        body={PrismaDateToFrontendDateStr(paymentHistory.paymentDate)}
+      />
+      <RowContentsBlock
+        title="金額"
+        body={paymentHistory.price.toLocaleString() + '円'}
+      />
+      <RowContentsBlock title="メモ" body={paymentHistory.note ?? '-'} />
 
       <Box textAlign="center" display="flex" columnGap={1} mt={2}>
         <Box flex={1}>
-        <PrimaryButton label="編集" fullWidth onClick={updateDialogOpen} />
+          <PrimaryButton label="編集" fullWidth onClick={updateDialogOpen} />
         </Box>
         <Box flex={1}>
-        <SecondaryButton label="削除" fullWidth onClick={deleteDialogOpen} />
+          <SecondaryButton label="削除" fullWidth onClick={deleteDialogOpen} />
         </Box>
       </Box>
 
       <UpdatePaymentHistoryDialog
         dialogState={updateDialogState}
         paymentHistory={paymentHistory}
-        listPayments={listPayments}
+        listCategories={listCategories}
         onClose={closeDialog}
         events={{
           onSuccess: updateSetSuccess,

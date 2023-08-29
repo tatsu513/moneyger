@@ -3,8 +3,8 @@ import MoneygerDialog from '@/components/common/MoneygerDialog';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 import TextButton from '@/components/common/buttons/TextButton';
 import { graphql } from '@/dao/generated/preset';
-import { Payment } from '@/dao/generated/preset/graphql';
-import { maxAmountType, nameType } from '@/models/payment';
+import { Category } from '@/dao/generated/preset/graphql';
+import { maxAmountType, nameType } from '@/models/category';
 import DialogState from '@/types/DialogState';
 import { Box, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
@@ -12,8 +12,8 @@ import React, { ChangeEvent, useCallback, useState } from 'react';
 import { useMutation } from 'urql';
 import { z } from 'zod';
 
-const updatePaymentDialogUpdatePaymentDocument = graphql(`
-  mutation createPaymentDialog_UpdatePayment(
+const updateCategoryDialogUpdateCategoryDocument = graphql(`
+  mutation createCategoryDialog_UpdateCategory(
     $id: Int!
     $name: String!
     $maxAmount: Int!
@@ -30,7 +30,7 @@ const updateSchema = z.object({
 
 type Props = {
   dialogState: DialogState;
-  payment: Payment;
+  category: Category;
   onClose: () => void;
   events: {
     onSuccess: () => void;
@@ -38,18 +38,18 @@ type Props = {
     onProcessing: () => void;
   };
 };
-const UpdatePaymentDialog: React.FC<Props> = ({
+const UpdateCategoryDialog: React.FC<Props> = ({
   dialogState,
-  payment,
+  category,
   onClose,
   events,
 }) => {
   const router = useRouter();
-  const [name, setName] = useState(payment.name);
-  const [maxAmount, setMaxAmount] = useState(payment.maxAmount.toString());
+  const [name, setName] = useState(category.name);
+  const [maxAmount, setMaxAmount] = useState(category.maxAmount.toString());
 
   const safeParseResult = updateSchema.safeParse({
-    id: payment.id,
+    id: category.id,
     name,
     maxAmount,
   });
@@ -75,15 +75,15 @@ const UpdatePaymentDialog: React.FC<Props> = ({
 
   const handleClose = useCallback(() => {
     onClose();
-    setName(payment.name);
-    setMaxAmount(payment.maxAmount.toString());
-  }, [payment, onClose]);
+    setName(category.name);
+    setMaxAmount(category.maxAmount.toString());
+  }, [category, onClose]);
 
-  const submit = useMutation(updatePaymentDialogUpdatePaymentDocument)[1];
+  const submit = useMutation(updateCategoryDialogUpdateCategoryDocument)[1];
   const handleSubmit = useCallback(async () => {
     events.onProcessing();
     if (!safeParseResult.success) {
-      console.error('入力値を確認してください', { payment });
+      console.error('入力値を確認してください', { category });
       events.onError();
       return;
     }
@@ -104,7 +104,7 @@ const UpdatePaymentDialog: React.FC<Props> = ({
       events.onError();
       return;
     }
-  }, [safeParseResult, payment, submit, handleClose, router, events]);
+  }, [safeParseResult, category, submit, handleClose, router, events]);
 
   return (
     <MoneygerDialog
@@ -123,7 +123,7 @@ const UpdatePaymentDialog: React.FC<Props> = ({
         </Box>
       }
     >
-      {payment == null ? (
+      {category == null ? (
         <CommonLoading />
       ) : (
         <>
@@ -136,7 +136,7 @@ const UpdatePaymentDialog: React.FC<Props> = ({
               fullWidth
               onChange={handleChangeName}
               placeholder="食費"
-              size='small'
+              size="small"
             />
           </Box>
           <Box>
@@ -148,7 +148,7 @@ const UpdatePaymentDialog: React.FC<Props> = ({
               fullWidth
               onChange={handleChangeMaxAmount}
               placeholder="10000"
-              size='small'
+              size="small"
             />
           </Box>
         </>
@@ -157,4 +157,4 @@ const UpdatePaymentDialog: React.FC<Props> = ({
   );
 };
 
-export default UpdatePaymentDialog;
+export default UpdateCategoryDialog;

@@ -18,7 +18,7 @@ type Props = {
   maxAmount: number;
 };
 
-const PaymentListItem: React.FC<Props> = ({
+const CategoriesListItem: React.FC<Props> = ({
   id,
   name,
   currentAmount,
@@ -30,7 +30,9 @@ const PaymentListItem: React.FC<Props> = ({
   const sign = diff === 0 ? '' : diff > 0 ? '+' : '-';
 
   const handleClick = useCallback(() => {
-    router.push(`/payments/[paymentId]`.replace('[paymentId]', id.toString()));
+    router.push(
+      `/categories/[categoryId]`.replace('[categoryId]', id.toString()),
+    );
   }, [router, id]);
   return (
     <ListItem divider disablePadding>
@@ -50,8 +52,9 @@ const PaymentListItem: React.FC<Props> = ({
             {sign + diff.toLocaleString()}円
           </Typography>
           <Typography variant="body2">
-          上限:
-            {getDisplayPrice(maxAmount)}円／支払済:{currentAmount.toLocaleString()}円
+            上限:
+            {getDisplayPrice(maxAmount)}円／支払済:
+            {currentAmount.toLocaleString()}円
           </Typography>
         </Box>
       </ListItemButton>
@@ -60,4 +63,4 @@ const PaymentListItem: React.FC<Props> = ({
   );
 };
 
-export default PaymentListItem;
+export default CategoriesListItem;

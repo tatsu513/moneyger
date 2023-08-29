@@ -11,19 +11,19 @@ import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
 import useAlert from '@/hooks/useAlert';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 
-type ListPayment = {
+type ListCategory = {
   id: number;
   name: string;
 };
 type Props = {
-  listPayments: ListPayment[];
+  listCategories: ListCategory[];
   listPaymentHistories: PaymentHistory[];
 };
 const PaymentHistoriesMain: React.FC<Props> = ({
-  listPayments,
+  listCategories,
   listPaymentHistories,
 }) => {
-  const [selectedPayment, setSelectedPayment] = useState<ListPayment | null>(
+  const [selectedPayment, setSelectedPayment] = useState<ListCategory | null>(
     null,
   );
   const [dialogState, setDialogState] = useState<DialogState>('closed');
@@ -34,26 +34,26 @@ const PaymentHistoriesMain: React.FC<Props> = ({
     useAlert();
 
   const handleChangePayment = useCallback(
-    (_e: React.SyntheticEvent<Element, Event>, value: ListPayment | null) => {
+    (_e: React.SyntheticEvent<Element, Event>, value: ListCategory | null) => {
       const paymentId = value?.id;
-      const target = listPayments.find((p) => p.id === paymentId);
+      const target = listCategories.find((p) => p.id === paymentId);
       if (target == null) {
         setSelectedPayment(null);
         return;
       }
       setSelectedPayment({ id: target.id, name: target.name });
     },
-    [listPayments],
+    [listCategories],
   );
 
   const getOptionLabel = useCallback(
-    (option: ListPayment): string => option.name,
+    (option: ListCategory): string => option.name,
     [],
   );
 
   const filterOptions = createFilterOptions({
     matchFrom: 'any',
-    stringify: (payment: ListPayment) => payment.name,
+    stringify: (payment: ListCategory) => payment.name,
   });
   return (
     <Box>
@@ -78,15 +78,15 @@ const PaymentHistoriesMain: React.FC<Props> = ({
         <Box mb={2}>
           <MoneygerAutocomplete
             id="payment-histories-payment"
-            options={listPayments}
+            options={listCategories}
             value={
-              listPayments.find((p) => p.id === selectedPayment?.id) ?? null
+              listCategories.find((p) => p.id === selectedPayment?.id) ?? null
             }
             label="絞り込み"
             filterOptions={filterOptions}
             getOptionLabel={getOptionLabel}
             onChange={handleChangePayment}
-            size='small'
+            size="small"
           />
         </Box>
       </Box>
@@ -96,7 +96,7 @@ const PaymentHistoriesMain: React.FC<Props> = ({
       />
       <CreatePaymentHistoryDialog
         dialogState={dialogState}
-        listPayments={listPayments}
+        listCategories={listCategories}
         onClose={dialogClose}
         events={{
           onSuccess: setSuccess,
