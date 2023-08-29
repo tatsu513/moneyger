@@ -12,11 +12,11 @@ import { authOptions } from '@/pages/api/auth/[...nextauth]';
 
 const resolvers: Resolvers = {
   Query: {
-    listPayments: async () => {
-      const paymentsPromise = prisma.payment.findMany();
+    listCategories: async () => {
+      const categoriesPromise = prisma.payment.findMany();
       const historiesPromise = prisma.paymentHistory.findMany();
-      const [payments, histories] = await Promise.all([
-        paymentsPromise,
+      const [categories, histories] = await Promise.all([
+        categoriesPromise,
         historiesPromise,
       ]);
       const validHistories = histories.flatMap((h) => {
@@ -24,7 +24,7 @@ const resolvers: Resolvers = {
           ? [h]
           : [];
       });
-      const data = payments.map((p) => {
+      const data = categories.map((p) => {
         const currentAmount = validHistories.reduce((acc, val) => {
           return val.paymentId === p.id ? acc + val.price : acc;
         }, 0);
@@ -35,26 +35,26 @@ const resolvers: Resolvers = {
       });
       return data;
     },
-    payment: async (_, { paymentId }) => {
-      const paymentPromise = prisma.payment.findUnique({
-        where: { id: paymentId },
+    category: async (_, { categoryId }) => {
+      const categoryPromise = prisma.payment.findUnique({
+        where: { id: categoryId },
       });
       const historiesPromise = prisma.paymentHistory.findMany({
-        where: { paymentId },
+        where: { paymentId: categoryId },
       });
-      const [payment, histories] = await Promise.all([
-        paymentPromise,
+      const [category, histories] = await Promise.all([
+        categoryPromise,
         historiesPromise,
       ]);
-      if (payment == null) return null;
+      if (category == null) return null;
       const currentAmount = histories.reduce((acc, val) => {
-        return val.paymentId === payment.id ? acc + val.price : acc;
+        return val.paymentId === category.id ? acc + val.price : acc;
       }, 0);
       return {
-        id: payment.id,
-        name: payment.name,
+        id: category.id,
+        name: category.name,
         currentAmount,
-        maxAmount: payment.maxAmount,
+        maxAmount: category.maxAmount,
       };
     },
     // 支払履歴を全て取得
@@ -109,9 +109,8 @@ const resolvers: Resolvers = {
     // ダッシュボード用
     paymentSummary: async (_, _args) => {
       console.log('paymentSummary called');
-      const listPayments = await prisma.payment.findMany();
-      console.log({ listPayments });
-      const totalMaxAmount = listPayments.reduce(
+      const listCategories = await prisma.payment.findMany();
+      const totalMaxAmount = listCategories.reduce(
         (acc, val) => acc + val.maxAmount,
         0,
       );

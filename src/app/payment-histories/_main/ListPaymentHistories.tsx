@@ -12,43 +12,60 @@ type Props = {
 };
 
 const ListPaymentHistories: React.FC<Props> = ({ paymentId, initialState }) => {
-  const listPayments = useMemo(() => {
+  const listPaymentHistories = useMemo(() => {
     if (paymentId == null) return initialState;
-    return initialState.flatMap((s) => s.paymentId === paymentId ? [s] : []);
+    return initialState.flatMap((s) => (s.paymentId === paymentId ? [s] : []));
   }, [paymentId, initialState]);
-  const listPaymentsPerDate = useMemo(() => {
+  const listPaymentHistoriesPerDate = useMemo(() => {
     const map: Map<string, PaymentHistory[]> = new Map();
-    listPayments.forEach((p) => {
+    listPaymentHistories.forEach((p) => {
       const date = p.paymentDate;
-      const histories = listPayments.flatMap((p2) => p2.paymentDate === date ? [p2] : [])
-      map.set(date, histories)
-    })
-    return map
-  }, [listPayments])
+      const histories = listPaymentHistories.flatMap((p2) =>
+        p2.paymentDate === date ? [p2] : [],
+      );
+      map.set(date, histories);
+    });
+    return map;
+  }, [listPaymentHistories]);
 
-  if (listPayments.length === 0) {
-    return <Typography variant='body1' color={grey[500]}>データがありません</Typography>;
+  if (listPaymentHistories.length === 0) {
+    return (
+      <Typography variant="body1" color={grey[500]}>
+        データがありません
+      </Typography>
+    );
   }
   return (
     <List>
-      {[...listPaymentsPerDate].map(([key, values]: [string, PaymentHistory[]]) => (
-        <Box key={key}>
-          <Box px={1} py={0.5} mb={1} bgcolor={grey[50]} sx={{ borderRadius: 1}} textAlign="center">
-            <Typography variant='caption' mb={0.5}>{PrismaDateToFrontendDateStr(key)}</Typography>
-          </Box>
-          {values.map((v, i) => (
-            <Box key={`${v.id}-${i}`}>
-              <PaymentHistoryListItem
-                key={v.id}
-                id={v.id}
-                note={v.note ?? null}
-                price={v.price}
-              />
-              {values.length !== i + 1 && <Divider />}
+      {[...listPaymentHistoriesPerDate].map(
+        ([key, values]: [string, PaymentHistory[]]) => (
+          <Box key={key}>
+            <Box
+              px={1}
+              py={0.5}
+              mb={1}
+              bgcolor={grey[50]}
+              sx={{ borderRadius: 1 }}
+              textAlign="center"
+            >
+              <Typography variant="caption" mb={0.5}>
+                {PrismaDateToFrontendDateStr(key)}
+              </Typography>
             </Box>
-          ))}
-        </Box>
-      ))}
+            {values.map((v, i) => (
+              <Box key={`${v.id}-${i}`}>
+                <PaymentHistoryListItem
+                  key={v.id}
+                  id={v.id}
+                  note={v.note ?? null}
+                  price={v.price}
+                />
+                {values.length !== i + 1 && <Divider />}
+              </Box>
+            ))}
+          </Box>
+        ),
+      )}
     </List>
   );
 };

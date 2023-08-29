@@ -2,13 +2,13 @@ import PaymentHistoriesMain from '@/app/payment-histories/_main/PaymentHistories
 import { graphql } from '@/dao/generated/preset';
 import registerRscUrqlClient from '@/util/registerRscUrqlClient';
 import { z } from 'zod';
-import { nameType } from '@/models/payment';
+import { nameType } from '@/models/category';
 import { notFound } from 'next/navigation';
 import checkSessionOnServer from '@/util/checkSessionOnServer';
 
 const paymentHistoriesPageDocument = graphql(`
   query paymentHistoriesPage {
-    listPayments {
+    listCategories {
       id
       name
     }
@@ -23,7 +23,7 @@ const paymentHistoriesPageDocument = graphql(`
 `);
 
 const fetchDataSchema = z.object({
-  listPayments: z.array(
+  listCategories: z.array(
     z.object({
       id: z.number(),
       name: nameType,
@@ -49,7 +49,7 @@ export default async function Home() {
     const result = fetchDataSchema.parse(res.data);
     return (
       <PaymentHistoriesMain
-        listPayments={result.listPayments}
+        listCategories={result.listCategories}
         listPaymentHistories={result.listPaymentHistories}
       />
     );
