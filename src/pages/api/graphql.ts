@@ -13,7 +13,7 @@ import { authOptions } from '@/pages/api/auth/[...nextauth]';
 const resolvers: Resolvers = {
   Query: {
     listCategories: async () => {
-      const categoriesPromise = prisma.payment.findMany();
+      const categoriesPromise = prisma.category.findMany();
       const historiesPromise = prisma.paymentHistory.findMany();
       const [categories, histories] = await Promise.all([
         categoriesPromise,
@@ -36,7 +36,7 @@ const resolvers: Resolvers = {
       return data;
     },
     category: async (_, { categoryId }) => {
-      const categoryPromise = prisma.payment.findUnique({
+      const categoryPromise = prisma.category.findUnique({
         where: { id: categoryId },
       });
       const historiesPromise = prisma.paymentHistory.findMany({
@@ -109,7 +109,7 @@ const resolvers: Resolvers = {
     // ダッシュボード用
     paymentSummary: async (_, _args) => {
       console.log('paymentSummary called');
-      const listCategories = await prisma.payment.findMany();
+      const listCategories = await prisma.category.findMany();
       const totalMaxAmount = listCategories.reduce(
         (acc, val) => acc + val.maxAmount,
         0,
@@ -138,7 +138,7 @@ const resolvers: Resolvers = {
   },
   Mutation: {
     createPayment: async (_, { name, maxAmount }, { user }) => {
-      const newPayment = await prisma.payment.create({
+      const newPayment = await prisma.category.create({
         data: {
           name,
           maxAmount,
@@ -152,14 +152,14 @@ const resolvers: Resolvers = {
       return newPayment.id;
     },
     updatePayment: async (_, { id, name, maxAmount }) => {
-      const target = await prisma.payment.update({
+      const target = await prisma.category.update({
         where: { id },
         data: { name, maxAmount },
       });
       return target.id;
     },
     deletePayment: async (_, { id }) => {
-      const target = await prisma.payment.delete({
+      const target = await prisma.category.delete({
         where: { id },
       });
       return target.id;
