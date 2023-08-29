@@ -14,9 +14,9 @@ import { z } from 'zod';
 import { usePathname, useRouter } from 'next/navigation';
 
 const home = 'home';
-const payment = 'Payment';
+const category = 'Category';
 const paymentHistory = 'paymentHistory';
-const navigationSchema = z.enum([home, payment, paymentHistory]);
+const navigationSchema = z.enum([home, category, paymentHistory]);
 type NavigationType = z.infer<typeof navigationSchema>;
 
 const MoneygerBottomNavigation = () => {
@@ -28,8 +28,8 @@ const MoneygerBottomNavigation = () => {
     if (/payment-histories/.test(pathname)) {
       return paymentHistory;
     }
-    if (/payments/.test(pathname)) {
-      return payment;
+    if (/categories/.test(pathname)) {
+      return category;
     }
     return home;
   }, [pathname]);
@@ -45,8 +45,8 @@ const MoneygerBottomNavigation = () => {
         case home:
           router.push('/');
           break;
-        case payment:
-          router.push('/payments');
+        case category:
+          router.push('/categories');
           break;
         case paymentHistory:
           router.push('/payment-histories');
@@ -69,7 +69,7 @@ const MoneygerBottomNavigation = () => {
           icon={<HomeIcon.default />}
         />
         <BottomNavigationAction
-          value={payment}
+          value={category}
           label={<Typography variant="bottomNavigation">費目</Typography>}
           icon={<SummarizeIcon.default />}
         />
