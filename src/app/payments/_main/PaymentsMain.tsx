@@ -91,26 +91,26 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
         <PrimaryButton label="追加" size="small" onClick={dialogOpen} />
       </Box>
 
-      <Box display="flex" alignItems="center" justifyContent="flex-end">
-        <Box>
-          <IconButton
-            aria-label="sort"
-            color="primary"
-            onClick={handleChangeSort}
-            sx={{
-              transform: sort === 'decs' ? 'rotate(0deg)' : 'rotate(180deg)',
-            }}
-          >
-            <SortIcon.default />
-          </IconButton>
-          {sortedPayments.length > 0 && (
+      {sortedPayments.length > 0 && (
+        <Box display="flex" alignItems="center" justifyContent="flex-end">
+          <Box>
+            <IconButton
+              aria-label="sort"
+              color="primary"
+              onClick={handleChangeSort}
+              sx={{
+                transform: sort === 'decs' ? 'rotate(0deg)' : 'rotate(180deg)',
+              }}
+            >
+              <SortIcon.default />
+            </IconButton>
             <MoneygerToggleButtonGroup
               value={orderBy}
               onChangeOrderBy={handleChangeOrderBy}
             />
-          )}
+          </Box>
         </Box>
-      </Box>
+      )}
 
       {sortedPayments.length === 0 ? (
         <Typography variant="body1" color={grey[500]}>
