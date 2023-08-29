@@ -8,9 +8,9 @@ import { DateTime } from 'luxon';
 
 const resolvers: Resolvers = {
   Query: {
-    listPayments: async () => {
-      const data = payments.map((p) => {
-        const currentAmount = paymentHistorys.reduce((acc, val) => {
+    listCategories: async () => {
+      const data = categories.map((p) => {
+        const currentAmount = paymentHistories.reduce((acc, val) => {
           if (
             !isThisMonth(DateTime.now(), DateTime.fromJSDate(val.paymentDate))
           )
@@ -24,10 +24,10 @@ const resolvers: Resolvers = {
       });
       return data;
     },
-    payment: async (_, { paymentId }) => {
-      const payment = payments.find((p) => p.id === paymentId);
+    category: async (_, { categoryId }) => {
+      const payment = categories.find((p) => p.id === categoryId);
       if (payment == null) return null;
-      const currentAmount = paymentHistorys.reduce((acc, val) => {
+      const currentAmount = paymentHistories.reduce((acc, val) => {
         return val.paymentId === payment.id ? acc + val.price : acc;
       }, 0);
       return {
@@ -39,7 +39,7 @@ const resolvers: Resolvers = {
     },
     // 支払履歴を全て取得
     listPaymentHistories: async () => {
-      const validHistories = paymentHistorys.flatMap((h) => {
+      const validHistories = paymentHistories.flatMap((h) => {
         return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate))
           ? [h]
           : [];
@@ -51,7 +51,7 @@ const resolvers: Resolvers = {
     },
     // paymentに紐づく支払履歴一覧
     listPaymentHistoriesByPaymentId: async (_, { paymentId }) => {
-      const validHistories = paymentHistorys.flatMap((h) => {
+      const validHistories = paymentHistories.flatMap((h) => {
         return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate))
           ? [h]
           : [];
@@ -71,7 +71,7 @@ const resolvers: Resolvers = {
     },
     // 支払履歴を1件取得
     paymentHistory: async (_, { paymentHistoryId }) => {
-      const result = paymentHistorys.find((p) => {
+      const result = paymentHistories.find((p) => {
         return p.id === paymentHistoryId;
       });
       if (result == null) {
@@ -84,11 +84,11 @@ const resolvers: Resolvers = {
     },
     // ダッシュボード用
     paymentSummary: async (_, _args) => {
-      const totalMaxAmount = payments.reduce(
+      const totalMaxAmount = categories.reduce(
         (acc, val) => acc + val.maxAmount,
         0,
       );
-      const validHistories = paymentHistorys.flatMap((h) => {
+      const validHistories = paymentHistories.flatMap((h) => {
         return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate))
           ? [h]
           : [];
@@ -175,7 +175,7 @@ export default startServerAndCreateNextHandler(server, {
 });
 
 const today = new Date();
-const payments = [
+const categories = [
   {
     id: 1,
     name: 'テスト1',
@@ -199,7 +199,7 @@ const payments = [
   },
 ];
 
-const paymentHistorys = [
+const paymentHistories = [
   {
     id: 100,
     note: 'スーパー',

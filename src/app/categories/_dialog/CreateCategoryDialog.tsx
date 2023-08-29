@@ -2,7 +2,7 @@ import MoneygerDialog from '@/components/common/MoneygerDialog';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 import TextButton from '@/components/common/buttons/TextButton';
 import { graphql } from '@/dao/generated/preset';
-import { maxAmountType, nameType } from '@/models/payment';
+import { maxAmountType, nameType } from '@/models/category';
 import DialogState from '@/types/DialogState';
 import { Box, Slide, TextField, Typography } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
@@ -11,13 +11,16 @@ import React, { ChangeEvent, useCallback, useState } from 'react';
 import { useMutation } from 'urql';
 import { z } from 'zod';
 
-const createPaymentDialogCreatePaymentDocument = graphql(`
-  mutation createPaymentDialog_CreatePayment($name: String!, $maxAmount: Int!) {
+const createCategoryDialogCreateCategoryDocument = graphql(`
+  mutation createCategoryDialog_CreateCategory(
+    $name: String!
+    $maxAmount: Int!
+  ) {
     createPayment(name: $name, maxAmount: $maxAmount)
   }
 `);
 
-const createPaymentSchema = z.object({
+const createCategorySchema = z.object({
   name: nameType,
   maxAmount: maxAmountType,
 });
@@ -31,7 +34,7 @@ type Props = {
     onProcessing: () => void;
   };
 };
-const CreatePaymentDialog: React.FC<Props> = ({
+const CreateCategoryDialog: React.FC<Props> = ({
   dialogState,
   onClose,
   events,
@@ -40,7 +43,7 @@ const CreatePaymentDialog: React.FC<Props> = ({
   const [name, setName] = useState('');
   const [maxAmount, setMaxAmount] = useState('');
 
-  const safeParseResult = createPaymentSchema.safeParse({
+  const safeParseResult = createCategorySchema.safeParse({
     name,
     maxAmount,
   });
@@ -70,7 +73,7 @@ const CreatePaymentDialog: React.FC<Props> = ({
     setMaxAmount('');
   }, [onClose]);
 
-  const submit = useMutation(createPaymentDialogCreatePaymentDocument)[1];
+  const submit = useMutation(createCategoryDialogCreateCategoryDocument)[1];
   const handleSubmit = useCallback(async () => {
     events.onProcessing();
     if (!safeParseResult.success) {
@@ -112,7 +115,7 @@ const CreatePaymentDialog: React.FC<Props> = ({
           fullWidth
           onChange={handleChangeName}
           placeholder="食費"
-          size='small'
+          size="small"
         />
       </Box>
       <Box mb={3}>
@@ -124,7 +127,7 @@ const CreatePaymentDialog: React.FC<Props> = ({
           fullWidth
           onChange={handleChangeMaxAmount}
           placeholder="10000"
-          size='small'
+          size="small"
         />
       </Box>
       <Box display="flex" flexDirection="column" columnGap={2}>
@@ -139,7 +142,7 @@ const CreatePaymentDialog: React.FC<Props> = ({
   );
 };
 
-export default CreatePaymentDialog;
+export default CreateCategoryDialog;
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {

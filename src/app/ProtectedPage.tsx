@@ -2,7 +2,6 @@
 import CommonLoading from '@/components/common/CommonLoading';
 import { useSession } from 'next-auth/react';
 import { redirect, usePathname } from 'next/navigation';
-import MainTemplate from '@/app/_layout/MainTemplate';
 
 type ProtectedPageProps = {
   children: React.ReactNode;
@@ -24,7 +23,7 @@ const ProtectedPage: React.FC<ProtectedPageProps> = ({ children }) => {
   if (session == null) {
     redirect(`/auth/login?callbackUrl=${pathname}`);
   }
-  return <MainTemplate>{children}</MainTemplate>;
+  return <>{children}</>;
 };
 
 export default ProtectedPage;

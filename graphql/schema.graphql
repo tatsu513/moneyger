@@ -1,8 +1,8 @@
 type Query {
   # 作業日誌一覧
-  listPayments: [Payment!]!
+  listCategories: [Category!]!
   # 費目1つを取得
-  payment(paymentId: Int!): Payment
+  category(categoryId: Int!): Category
   # 支払履歴を全て取得
   listPaymentHistories: [PaymentHistory!]!
   # paymentごとの支払履歴一覧
@@ -23,8 +23,8 @@ type PaymentSummary {
   totalPaymentRatio: Float!
 }
 
-# 作業日誌情報
-type Payment {
+# 費目
+type Category {
   # ID
   id: Int!
   # 費目名

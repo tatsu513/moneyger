@@ -3,7 +3,7 @@ import MoneygerDialog from '@/components/common/MoneygerDialog';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 import TextButton from '@/components/common/buttons/TextButton';
 import { graphql } from '@/dao/generated/preset';
-import { Payment } from '@/dao/generated/preset/graphql';
+import { Category } from '@/dao/generated/preset/graphql';
 import DialogState from '@/types/DialogState';
 import {
   Box,
@@ -16,15 +16,15 @@ import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useCallback, useState } from 'react';
 import { useMutation } from 'urql';
 
-const deletePaymentDialogDeletePaymentDocument = graphql(`
-  mutation deletePaymentDialog_DeletePayment($id: Int!) {
+const deleteCategoryDialogDeleteCategoryDocument = graphql(`
+  mutation deleteCategoryDialog_DeleteCategory($id: Int!) {
     deletePayment(id: $id)
   }
 `);
 
 type Props = {
   dialogState: DialogState;
-  payment: Payment;
+  category: Category;
   onClose: () => void;
   events: {
     onSuccess: () => void;
@@ -32,9 +32,9 @@ type Props = {
     onProcessing: () => void;
   };
 };
-const DeletePaymentDialog: React.FC<Props> = ({
+const DeleteCategoryDialog: React.FC<Props> = ({
   dialogState,
-  payment,
+  category,
   onClose,
   events,
 }) => {
@@ -45,23 +45,23 @@ const DeletePaymentDialog: React.FC<Props> = ({
     setChecked(e.target.checked);
   }, []);
 
-  const submit = useMutation(deletePaymentDialogDeletePaymentDocument)[1];
+  const submit = useMutation(deleteCategoryDialogDeleteCategoryDocument)[1];
   const handleSubmit = useCallback(async () => {
     events.onProcessing();
     if (!checked) return;
     try {
-      const result = await submit({ id: payment.id });
+      const result = await submit({ id: category.id });
       if (result.error) {
         throw new Error('費目の削除に失敗しました');
       }
       events.onSuccess();
-      router.push('/payments');
+      router.push('/categories');
     } catch (error) {
       console.error('費目の削除に失敗しました', { error });
       events.onError();
       return;
     }
-  }, [router, payment.id, checked, submit, events]);
+  }, [router, category.id, checked, submit, events]);
   return (
     <MoneygerDialog
       open={dialogState === 'open'}
@@ -79,7 +79,7 @@ const DeletePaymentDialog: React.FC<Props> = ({
         </Box>
       }
     >
-      {payment == null ? (
+      {category == null ? (
         <CommonLoading />
       ) : (
         <Box>
@@ -87,13 +87,13 @@ const DeletePaymentDialog: React.FC<Props> = ({
             以下のカテゴリを削除します。
           </Typography>
           <Typography variant="body1" mb={0.5}>
-            名称：{payment.name}
+            名称：{category.name}
           </Typography>
           <Typography variant="body1" mb={2}>
-            上限：{payment.maxAmount.toLocaleString()}円
+            上限：{category.maxAmount.toLocaleString()}円
           </Typography>
           <Typography variant="body1" mb={2}>
-            支払済：{payment.currentAmount.toLocaleString()}円
+            支払済：{category.currentAmount.toLocaleString()}円
           </Typography>
           <FormGroup>
             <FormControlLabel
@@ -111,4 +111,4 @@ const DeletePaymentDialog: React.FC<Props> = ({
   );
 };
 
-export default DeletePaymentDialog;
+export default DeleteCategoryDialog;
