@@ -10,7 +10,9 @@ import PaymentListItem from '@/app/payments/_main/PaymentListItem';
 import { grey } from '@/color';
 import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
 import useAlert from '@/hooks/useAlert';
-import MoneygerToggleButtonGroup, { TabState } from '@/app/payments/_main/MoneygerToggleButtonGroup';
+import MoneygerToggleButtonGroup, {
+  TabState,
+} from '@/app/payments/_main/MoneygerToggleButtonGroup';
 import * as SortIcon from '@mui/icons-material/Sort';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 
@@ -19,7 +21,7 @@ type Props = {
 };
 const PaymentsMain: React.FC<Props> = ({ payments }) => {
   const [orderBy, setOrderBy] = useState<TabState>('ROOM');
-  const [sort, setSort] = useState<'decs' | 'asc'>('decs')
+  const [sort, setSort] = useState<'decs' | 'asc'>('decs');
   const [dialogState, setDialogState] = useState<DialogState>('closed');
   const { alertType, setSuccess, setError, setProcessing, setNone } =
     useAlert();
@@ -29,35 +31,46 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
       case 'MAX': {
         return sort === 'decs'
           ? payments.sort((a, b) => (a.maxAmount < b.maxAmount ? 1 : -1))
-          : payments.sort((a, b) => (a.maxAmount > b.maxAmount ? 1 : -1))
+          : payments.sort((a, b) => (a.maxAmount > b.maxAmount ? 1 : -1));
       }
       case 'CURRENT': {
         return sort === 'decs'
-          ? payments.sort((a, b) => (a.currentAmount < b.currentAmount ? 1 : -1))
-          : payments.sort((a, b) => (a.currentAmount > b.currentAmount ? 1 : -1))
+          ? payments.sort((a, b) =>
+              a.currentAmount < b.currentAmount ? 1 : -1,
+            )
+          : payments.sort((a, b) =>
+              a.currentAmount > b.currentAmount ? 1 : -1,
+            );
       }
       case 'ROOM': {
         return sort === 'decs'
-          ? payments.sort((a, b) => ((a.maxAmount - a.currentAmount) < (b.maxAmount - b.currentAmount) ? 1 : -1))
-          : payments.sort((a, b) => ((a.maxAmount - a.currentAmount) > (b.maxAmount - b.currentAmount) ? 1 : -1))
+          ? payments.sort((a, b) =>
+              a.maxAmount - a.currentAmount < b.maxAmount - b.currentAmount
+                ? 1
+                : -1,
+            )
+          : payments.sort((a, b) =>
+              a.maxAmount - a.currentAmount > b.maxAmount - b.currentAmount
+                ? 1
+                : -1,
+            );
       }
     }
   }, [orderBy, sort, payments]);
-
 
   const dialogOpen = useCallback(() => setDialogState('open'), []);
   const dialogClose = useCallback(() => setDialogState('closed'), []);
 
   const handleChangeOrderBy = useCallback((value: TabState) => {
-    setOrderBy(value)
-  }, [])
+    setOrderBy(value);
+  }, []);
   const handleChangeSort = useCallback(() => {
     if (sort === 'decs') {
       setSort('asc');
-      return
+      return;
     }
     if (sort === 'asc') setSort('decs');
-  }, [sort, setSort])
+  }, [sort, setSort]);
 
   return (
     <Box>
@@ -81,16 +94,21 @@ const PaymentsMain: React.FC<Props> = ({ payments }) => {
       <Box display="flex" alignItems="center" justifyContent="flex-end">
         <Box>
           <IconButton
-            aria-label="sort" 
+            aria-label="sort"
             color="primary"
             onClick={handleChangeSort}
             sx={{
-              transform: sort === 'decs' ? 'rotate(0deg)' : 'rotate(180deg)'
+              transform: sort === 'decs' ? 'rotate(0deg)' : 'rotate(180deg)',
             }}
           >
             <SortIcon.default />
           </IconButton>
-          <MoneygerToggleButtonGroup value={orderBy} onChangeOrderBy={handleChangeOrderBy}/>
+          {sortedPayments.length > 0 && (
+            <MoneygerToggleButtonGroup
+              value={orderBy}
+              onChangeOrderBy={handleChangeOrderBy}
+            />
+          )}
         </Box>
       </Box>
 
