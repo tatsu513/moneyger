@@ -25,16 +25,16 @@ const resolvers: Resolvers = {
       return data;
     },
     category: async (_, { categoryId }) => {
-      const payment = categories.find((p) => p.id === categoryId);
-      if (payment == null) return null;
+      const category = categories.find((p) => p.id === categoryId);
+      if (category == null) return null;
       const currentAmount = paymentHistories.reduce((acc, val) => {
-        return val.paymentId === payment.id ? acc + val.price : acc;
+        return val.paymentId === category.id ? acc + val.price : acc;
       }, 0);
       return {
-        id: payment.id,
-        name: payment.name,
+        id: category.id,
+        name: category.name,
         currentAmount,
-        maxAmount: payment.maxAmount,
+        maxAmount: category.maxAmount,
       };
     },
     // 支払履歴を全て取得

@@ -47,7 +47,7 @@ model User {
   image          String?
   accounts       Account[]
   sessions       Session[]
-  Payment        Payment[]
+  Payment        Category[]
   PaymentHistory PaymentHistory[]
   Group          Group[]
 }
@@ -60,7 +60,7 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Payment {
+model Category {
   id             Int              @id @default(autoincrement())
   name           String
   maxAmount      Int
@@ -75,7 +75,7 @@ model PaymentHistory {
   note        String?
   price       Int
   paymentDate DateTime
-  payment     Payment  @relation(fields: [paymentId], references: [id])
+  payment     Category  @relation(fields: [paymentId], references: [id])
   paymentId   Int
   author      User     @relation(fields: [authorId], references: [id])
   authorId    String
