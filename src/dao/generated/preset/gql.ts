@@ -23,7 +23,7 @@ const documents = {
     types.CreateCategoryDialog_CreateCategoryDocument,
   '\n  query categories {\n    listCategories {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n':
     types.CategoriesDocument,
-  '\n  query paymentSummary {\n    paymentSummary {\n      totalMaxAmount\n      totalCurrentAmount\n      totalPaymentRatio\n    }\n  }\n':
+  '\n  query paymentSummary {\n    paymentSummary {\n      totalMaxAmount\n      totalCurrentAmount\n      totalPaymentRatio\n    }\n    listCategories {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n':
     types.PaymentSummaryDocument,
   '\n  mutation deletePaymentHistoryDialog_DeletePaymentHistory($id: Int!) {\n    deletePaymentHistory(id: $id)\n  }\n':
     types.DeletePaymentHistoryDialog_DeletePaymentHistoryDocument,
@@ -87,8 +87,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query paymentSummary {\n    paymentSummary {\n      totalMaxAmount\n      totalCurrentAmount\n      totalPaymentRatio\n    }\n  }\n',
-): (typeof documents)['\n  query paymentSummary {\n    paymentSummary {\n      totalMaxAmount\n      totalCurrentAmount\n      totalPaymentRatio\n    }\n  }\n'];
+  source: '\n  query paymentSummary {\n    paymentSummary {\n      totalMaxAmount\n      totalCurrentAmount\n      totalPaymentRatio\n    }\n    listCategories {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n',
+): (typeof documents)['\n  query paymentSummary {\n    paymentSummary {\n      totalMaxAmount\n      totalCurrentAmount\n      totalPaymentRatio\n    }\n    listCategories {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

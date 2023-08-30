@@ -173,6 +173,12 @@ export type PaymentSummaryQuery = {
     totalCurrentAmount: number;
     totalPaymentRatio: number;
   };
+  listCategories: Array<{
+    id: number;
+    name: string;
+    maxAmount: number;
+    currentAmount: number;
+  }>;
 };
 
 export type DeletePaymentHistoryDialog_DeletePaymentHistoryMutationVariables =
@@ -544,6 +550,22 @@ export const PaymentSummaryDocument = {
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'totalPaymentRatio' },
+                },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'listCategories' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'maxAmount' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'currentAmount' },
                 },
               ],
             },
