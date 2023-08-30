@@ -1,9 +1,9 @@
 'use client';
 import CategoriesSummary from '@/app/_main/CategoriesSummary';
 import TotalSummary from '@/app/_main/TotalSummary';
-import { grey } from '@/color';
+import ContentTitle from '@/components/common/ContentTitle';
 import { PaymentSummaryQuery } from '@/dao/generated/preset/graphql';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import React from 'react';
 
 type Props = {
@@ -14,7 +14,7 @@ const TopMain: React.FC<Props> = ({ summary }) => {
     <>
       <TotalSummary paymentSummary={summary.paymentSummary} />
       <Box my={4}>
-        <Typography variant='body1' bgcolor={grey[50]} p={0.5} textAlign="center" sx={{ borderRadius: 1 }}>費目</Typography>
+        <ContentTitle title="費目" />
         <CategoriesSummary listCategories={summary.listCategories} />
       </Box>
     </>

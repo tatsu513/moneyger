@@ -5,12 +5,14 @@ type Props = {
   label: string;
   size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;
+  startIcon?: React.ReactNode
   onClick: () => void;
 };
 const SecondaryButton: React.FC<Props> = ({
   label,
   size,
   fullWidth,
+  startIcon,
   onClick,
 }) => {
   return (
@@ -19,6 +21,7 @@ const SecondaryButton: React.FC<Props> = ({
       fullWidth={fullWidth}
       size={size}
       onClick={onClick}
+      startIcon={startIcon}
     >
       {label}
     </Button>
