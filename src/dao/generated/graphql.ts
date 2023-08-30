@@ -447,6 +447,12 @@ export type PaymentSummaryQuery = {
     totalCurrentAmount: number;
     totalPaymentRatio: number;
   };
+  listCategories: Array<{
+    id: number;
+    name: string;
+    maxAmount: number;
+    currentAmount: number;
+  }>;
 };
 
 export type DeletePaymentHistoryDialog_DeletePaymentHistoryMutationVariables =
@@ -568,6 +574,12 @@ export const PaymentSummaryDocument = gql`
       totalMaxAmount
       totalCurrentAmount
       totalPaymentRatio
+    }
+    listCategories {
+      id
+      name
+      maxAmount
+      currentAmount
     }
   }
 `;
