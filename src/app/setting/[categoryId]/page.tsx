@@ -1,4 +1,4 @@
-import CategoryMain from '@/app/categories/[categoryId]/_main/CategoryMain';
+import CategoryMain from '@/app/setting/[categoryId]/_main/CategoryMain';
 import { graphql } from '@/dao/generated/preset';
 import { currentAmountType, maxAmountType, nameType } from '@/models/category';
 import checkSessionOnServer from '@/util/checkSessionOnServer';

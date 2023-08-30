@@ -388,57 +388,6 @@ export type Resolvers<ContextType = Context> = {
   Query?: QueryResolvers<ContextType>;
 };
 
-export type DeleteCategoryDialog_DeleteCategoryMutationVariables = Exact<{
-  id: Scalars['Int']['input'];
-}>;
-
-export type DeleteCategoryDialog_DeleteCategoryMutation = {
-  deleteCategory: number;
-};
-
-export type CreateCategoryDialog_UpdateCategoryMutationVariables = Exact<{
-  id: Scalars['Int']['input'];
-  name: Scalars['String']['input'];
-  maxAmount: Scalars['Int']['input'];
-}>;
-
-export type CreateCategoryDialog_UpdateCategoryMutation = {
-  updateCategory: number;
-};
-
-export type CategoryPageQueryVariables = Exact<{
-  categoryId: Scalars['Int']['input'];
-}>;
-
-export type CategoryPageQuery = {
-  category?: {
-    id: number;
-    name: string;
-    maxAmount: number;
-    currentAmount: number;
-  } | null;
-};
-
-export type CreateCategoryDialog_CreateCategoryMutationVariables = Exact<{
-  name: Scalars['String']['input'];
-  maxAmount: Scalars['Int']['input'];
-}>;
-
-export type CreateCategoryDialog_CreateCategoryMutation = {
-  createCategory: number;
-};
-
-export type CategoriesQueryVariables = Exact<{ [key: string]: never }>;
-
-export type CategoriesQuery = {
-  listCategories: Array<{
-    id: number;
-    name: string;
-    maxAmount: number;
-    currentAmount: number;
-  }>;
-};
-
 export type PaymentSummaryQueryVariables = Exact<{ [key: string]: never }>;
 
 export type PaymentSummaryQuery = {
@@ -526,48 +475,52 @@ export type PaymentHistoriesPageQuery = {
   }>;
 };
 
-export const DeleteCategoryDialog_DeleteCategoryDocument = gql`
-  mutation deleteCategoryDialog_DeleteCategory($id: Int!) {
-    deleteCategory(id: $id)
-  }
-`;
-export const CreateCategoryDialog_UpdateCategoryDocument = gql`
-  mutation createCategoryDialog_UpdateCategory(
-    $id: Int!
-    $name: String!
-    $maxAmount: Int!
-  ) {
-    updateCategory(id: $id, name: $name, maxAmount: $maxAmount)
-  }
-`;
-export const CategoryPageDocument = gql`
-  query categoryPage($categoryId: Int!) {
-    category(categoryId: $categoryId) {
-      id
-      name
-      maxAmount
-      currentAmount
-    }
-  }
-`;
-export const CreateCategoryDialog_CreateCategoryDocument = gql`
-  mutation createCategoryDialog_CreateCategory(
-    $name: String!
-    $maxAmount: Int!
-  ) {
-    createCategory(name: $name, maxAmount: $maxAmount)
-  }
-`;
-export const CategoriesDocument = gql`
-  query categories {
-    listCategories {
-      id
-      name
-      maxAmount
-      currentAmount
-    }
-  }
-`;
+export type DeleteCategoryDialog_DeleteCategoryMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+export type DeleteCategoryDialog_DeleteCategoryMutation = {
+  deleteCategory: number;
+};
+
+export type CreateCategoryDialog_UpdateCategoryMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
+  maxAmount: Scalars['Int']['input'];
+}>;
+
+export type CreateCategoryDialog_UpdateCategoryMutation = {
+  updateCategory: number;
+};
+
+export type CategoryPageQueryVariables = Exact<{
+  categoryId: Scalars['Int']['input'];
+}>;
+
+export type CategoryPageQuery = {
+  category?: {
+    id: number;
+    name: string;
+    maxAmount: number;
+    currentAmount: number;
+  } | null;
+};
+
+export type CreateCategoryDialog_CreateCategoryMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+  maxAmount: Scalars['Int']['input'];
+}>;
+
+export type CreateCategoryDialog_CreateCategoryMutation = {
+  createCategory: number;
+};
+
+export type CategoriesPageQueryVariables = Exact<{ [key: string]: never }>;
+
+export type CategoriesPageQuery = {
+  listCategories: Array<{ id: number; name: string; maxAmount: number }>;
+};
+
 export const PaymentSummaryDocument = gql`
   query paymentSummary {
     paymentSummary {
@@ -654,6 +607,47 @@ export const PaymentHistoriesPageDocument = gql`
     }
   }
 `;
+export const DeleteCategoryDialog_DeleteCategoryDocument = gql`
+  mutation deleteCategoryDialog_DeleteCategory($id: Int!) {
+    deleteCategory(id: $id)
+  }
+`;
+export const CreateCategoryDialog_UpdateCategoryDocument = gql`
+  mutation createCategoryDialog_UpdateCategory(
+    $id: Int!
+    $name: String!
+    $maxAmount: Int!
+  ) {
+    updateCategory(id: $id, name: $name, maxAmount: $maxAmount)
+  }
+`;
+export const CategoryPageDocument = gql`
+  query categoryPage($categoryId: Int!) {
+    category(categoryId: $categoryId) {
+      id
+      name
+      maxAmount
+      currentAmount
+    }
+  }
+`;
+export const CreateCategoryDialog_CreateCategoryDocument = gql`
+  mutation createCategoryDialog_CreateCategory(
+    $name: String!
+    $maxAmount: Int!
+  ) {
+    createCategory(name: $name, maxAmount: $maxAmount)
+  }
+`;
+export const CategoriesPageDocument = gql`
+  query categoriesPage {
+    listCategories {
+      id
+      name
+      maxAmount
+    }
+  }
+`;
 
 export type SdkFunctionWrapper = <T>(
   action: (requestHeaders?: Record<string, string>) => Promise<T>,
@@ -672,79 +666,6 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper,
 ) {
   return {
-    deleteCategoryDialog_DeleteCategory(
-      variables: DeleteCategoryDialog_DeleteCategoryMutationVariables,
-      requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<DeleteCategoryDialog_DeleteCategoryMutation> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<DeleteCategoryDialog_DeleteCategoryMutation>(
-            DeleteCategoryDialog_DeleteCategoryDocument,
-            variables,
-            { ...requestHeaders, ...wrappedRequestHeaders },
-          ),
-        'deleteCategoryDialog_DeleteCategory',
-        'mutation',
-      );
-    },
-    createCategoryDialog_UpdateCategory(
-      variables: CreateCategoryDialog_UpdateCategoryMutationVariables,
-      requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<CreateCategoryDialog_UpdateCategoryMutation> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<CreateCategoryDialog_UpdateCategoryMutation>(
-            CreateCategoryDialog_UpdateCategoryDocument,
-            variables,
-            { ...requestHeaders, ...wrappedRequestHeaders },
-          ),
-        'createCategoryDialog_UpdateCategory',
-        'mutation',
-      );
-    },
-    categoryPage(
-      variables: CategoryPageQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<CategoryPageQuery> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<CategoryPageQuery>(CategoryPageDocument, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
-          }),
-        'categoryPage',
-        'query',
-      );
-    },
-    createCategoryDialog_CreateCategory(
-      variables: CreateCategoryDialog_CreateCategoryMutationVariables,
-      requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<CreateCategoryDialog_CreateCategoryMutation> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<CreateCategoryDialog_CreateCategoryMutation>(
-            CreateCategoryDialog_CreateCategoryDocument,
-            variables,
-            { ...requestHeaders, ...wrappedRequestHeaders },
-          ),
-        'createCategoryDialog_CreateCategory',
-        'mutation',
-      );
-    },
-    categories(
-      variables?: CategoriesQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<CategoriesQuery> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<CategoriesQuery>(CategoriesDocument, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
-          }),
-        'categories',
-        'query',
-      );
-    },
     paymentSummary(
       variables?: PaymentSummaryQueryVariables,
       requestHeaders?: GraphQLClientRequestHeaders,
@@ -847,6 +768,80 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders },
           ),
         'paymentHistoriesPage',
+        'query',
+      );
+    },
+    deleteCategoryDialog_DeleteCategory(
+      variables: DeleteCategoryDialog_DeleteCategoryMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<DeleteCategoryDialog_DeleteCategoryMutation> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<DeleteCategoryDialog_DeleteCategoryMutation>(
+            DeleteCategoryDialog_DeleteCategoryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'deleteCategoryDialog_DeleteCategory',
+        'mutation',
+      );
+    },
+    createCategoryDialog_UpdateCategory(
+      variables: CreateCategoryDialog_UpdateCategoryMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<CreateCategoryDialog_UpdateCategoryMutation> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<CreateCategoryDialog_UpdateCategoryMutation>(
+            CreateCategoryDialog_UpdateCategoryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'createCategoryDialog_UpdateCategory',
+        'mutation',
+      );
+    },
+    categoryPage(
+      variables: CategoryPageQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<CategoryPageQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<CategoryPageQuery>(CategoryPageDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'categoryPage',
+        'query',
+      );
+    },
+    createCategoryDialog_CreateCategory(
+      variables: CreateCategoryDialog_CreateCategoryMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<CreateCategoryDialog_CreateCategoryMutation> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<CreateCategoryDialog_CreateCategoryMutation>(
+            CreateCategoryDialog_CreateCategoryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'createCategoryDialog_CreateCategory',
+        'mutation',
+      );
+    },
+    categoriesPage(
+      variables?: CategoriesPageQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<CategoriesPageQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<CategoriesPageQuery>(
+            CategoriesPageDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'categoriesPage',
         'query',
       );
     },

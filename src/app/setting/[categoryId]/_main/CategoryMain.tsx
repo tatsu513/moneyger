@@ -1,9 +1,9 @@
 'use client';
 import React, { useCallback, useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import UpdateCategoryDialog from '@/app/categories/[categoryId]/_dialog/UpdateCategoryDialog';
+import UpdateCategoryDialog from '@/app/setting/[categoryId]/_dialog/UpdateCategoryDialog';
 import DialogState from '@/types/DialogState';
-import DeleteCategoryDialog from '@/app/categories/[categoryId]/_dialog/DeleteCategoryDialog';
+import DeleteCategoryDialog from '@/app/setting/[categoryId]/_dialog/DeleteCategoryDialog';
 import { Category } from '@/dao/generated/preset/graphql';
 import PageTitle from '@/components/common/PageTitle';
 import { grey } from '@/color';
