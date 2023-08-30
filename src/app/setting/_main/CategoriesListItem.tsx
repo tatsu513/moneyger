@@ -9,24 +9,19 @@ import {
 } from '@mui/material';
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import getPriceColorAndBgColor from '@/logics/getPriceColorAndBgColor';
 
 type Props = {
   id: number;
   name: string;
-  currentAmount: number;
   maxAmount: number;
 };
 
 const CategoriesListItem: React.FC<Props> = ({
   id,
   name,
-  currentAmount,
   maxAmount,
 }) => {
   const router = useRouter();
-  const diff = maxAmount - currentAmount;
-  const { color } = getPriceColorAndBgColor(diff);
 
   const handleClick = useCallback(() => {
     router.push(
@@ -47,7 +42,7 @@ const CategoriesListItem: React.FC<Props> = ({
       >
         <Typography variant="body1">{name}</Typography>
         <Box textAlign="right">
-          <Typography variant="h3Bold" mb={0.5} color={color}>
+          <Typography variant="body1" mb={0.5}>
             {getDisplayPrice(maxAmount)}円
           </Typography>
         </Box>
