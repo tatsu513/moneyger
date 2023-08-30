@@ -43,15 +43,15 @@ export type Category = {
 };
 
 export type Mutation = {
-  createPayment: Scalars['Int']['output'];
+  createCategory: Scalars['Int']['output'];
   createPaymentHistory: Scalars['Int']['output'];
-  deletePayment: Scalars['Int']['output'];
+  deleteCategory: Scalars['Int']['output'];
   deletePaymentHistory: Scalars['Int']['output'];
-  updatePayment: Scalars['Int']['output'];
+  updateCategory: Scalars['Int']['output'];
   updatePaymentHistory: Scalars['Int']['output'];
 };
 
-export type MutationCreatePaymentArgs = {
+export type MutationCreateCategoryArgs = {
   maxAmount: Scalars['Int']['input'];
   name: Scalars['String']['input'];
 };
@@ -63,7 +63,7 @@ export type MutationCreatePaymentHistoryArgs = {
   price: Scalars['Int']['input'];
 };
 
-export type MutationDeletePaymentArgs = {
+export type MutationDeleteCategoryArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -71,7 +71,7 @@ export type MutationDeletePaymentHistoryArgs = {
   id: Scalars['Int']['input'];
 };
 
-export type MutationUpdatePaymentArgs = {
+export type MutationUpdateCategoryArgs = {
   id: Scalars['Int']['input'];
   maxAmount: Scalars['Int']['input'];
   name: Scalars['String']['input'];
@@ -268,11 +268,11 @@ export type MutationResolvers<
   ParentType extends
     ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation'],
 > = {
-  createPayment?: Resolver<
+  createCategory?: Resolver<
     ResolversTypes['Int'],
     ParentType,
     ContextType,
-    RequireFields<MutationCreatePaymentArgs, 'maxAmount' | 'name'>
+    RequireFields<MutationCreateCategoryArgs, 'maxAmount' | 'name'>
   >;
   createPaymentHistory?: Resolver<
     ResolversTypes['Int'],
@@ -283,11 +283,11 @@ export type MutationResolvers<
       'paymentDate' | 'paymentId' | 'price'
     >
   >;
-  deletePayment?: Resolver<
+  deleteCategory?: Resolver<
     ResolversTypes['Int'],
     ParentType,
     ContextType,
-    RequireFields<MutationDeletePaymentArgs, 'id'>
+    RequireFields<MutationDeleteCategoryArgs, 'id'>
   >;
   deletePaymentHistory?: Resolver<
     ResolversTypes['Int'],
@@ -295,11 +295,11 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationDeletePaymentHistoryArgs, 'id'>
   >;
-  updatePayment?: Resolver<
+  updateCategory?: Resolver<
     ResolversTypes['Int'],
     ParentType,
     ContextType,
-    RequireFields<MutationUpdatePaymentArgs, 'id' | 'maxAmount' | 'name'>
+    RequireFields<MutationUpdateCategoryArgs, 'id' | 'maxAmount' | 'name'>
   >;
   updatePaymentHistory?: Resolver<
     ResolversTypes['Int'],
@@ -393,7 +393,7 @@ export type DeleteCategoryDialog_DeleteCategoryMutationVariables = Exact<{
 }>;
 
 export type DeleteCategoryDialog_DeleteCategoryMutation = {
-  deletePayment: number;
+  deleteCategory: number;
 };
 
 export type CreateCategoryDialog_UpdateCategoryMutationVariables = Exact<{
@@ -403,7 +403,7 @@ export type CreateCategoryDialog_UpdateCategoryMutationVariables = Exact<{
 }>;
 
 export type CreateCategoryDialog_UpdateCategoryMutation = {
-  updatePayment: number;
+  updateCategory: number;
 };
 
 export type CategoryPageQueryVariables = Exact<{
@@ -425,7 +425,7 @@ export type CreateCategoryDialog_CreateCategoryMutationVariables = Exact<{
 }>;
 
 export type CreateCategoryDialog_CreateCategoryMutation = {
-  createPayment: number;
+  createCategory: number;
 };
 
 export type CategoriesQueryVariables = Exact<{ [key: string]: never }>;
@@ -528,7 +528,7 @@ export type PaymentHistoriesPageQuery = {
 
 export const DeleteCategoryDialog_DeleteCategoryDocument = gql`
   mutation deleteCategoryDialog_DeleteCategory($id: Int!) {
-    deletePayment(id: $id)
+    deleteCategory(id: $id)
   }
 `;
 export const CreateCategoryDialog_UpdateCategoryDocument = gql`
@@ -537,7 +537,7 @@ export const CreateCategoryDialog_UpdateCategoryDocument = gql`
     $name: String!
     $maxAmount: Int!
   ) {
-    updatePayment(id: $id, name: $name, maxAmount: $maxAmount)
+    updateCategory(id: $id, name: $name, maxAmount: $maxAmount)
   }
 `;
 export const CategoryPageDocument = gql`
@@ -555,7 +555,7 @@ export const CreateCategoryDialog_CreateCategoryDocument = gql`
     $name: String!
     $maxAmount: Int!
   ) {
-    createPayment(name: $name, maxAmount: $maxAmount)
+    createCategory(name: $name, maxAmount: $maxAmount)
   }
 `;
 export const CategoriesDocument = gql`

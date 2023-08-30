@@ -18,7 +18,7 @@ const updateCategoryDialogUpdateCategoryDocument = graphql(`
     $name: String!
     $maxAmount: Int!
   ) {
-    updatePayment(id: $id, name: $name, maxAmount: $maxAmount)
+    updateCategory(id: $id, name: $name, maxAmount: $maxAmount)
   }
 `);
 

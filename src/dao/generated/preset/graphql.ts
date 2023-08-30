@@ -37,15 +37,15 @@ export type Category = {
 };
 
 export type Mutation = {
-  createPayment: Scalars['Int']['output'];
+  createCategory: Scalars['Int']['output'];
   createPaymentHistory: Scalars['Int']['output'];
-  deletePayment: Scalars['Int']['output'];
+  deleteCategory: Scalars['Int']['output'];
   deletePaymentHistory: Scalars['Int']['output'];
-  updatePayment: Scalars['Int']['output'];
+  updateCategory: Scalars['Int']['output'];
   updatePaymentHistory: Scalars['Int']['output'];
 };
 
-export type MutationCreatePaymentArgs = {
+export type MutationCreateCategoryArgs = {
   maxAmount: Scalars['Int']['input'];
   name: Scalars['String']['input'];
 };
@@ -57,7 +57,7 @@ export type MutationCreatePaymentHistoryArgs = {
   price: Scalars['Int']['input'];
 };
 
-export type MutationDeletePaymentArgs = {
+export type MutationDeleteCategoryArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -65,7 +65,7 @@ export type MutationDeletePaymentHistoryArgs = {
   id: Scalars['Int']['input'];
 };
 
-export type MutationUpdatePaymentArgs = {
+export type MutationUpdateCategoryArgs = {
   id: Scalars['Int']['input'];
   maxAmount: Scalars['Int']['input'];
   name: Scalars['String']['input'];
@@ -119,7 +119,7 @@ export type DeleteCategoryDialog_DeleteCategoryMutationVariables = Exact<{
 }>;
 
 export type DeleteCategoryDialog_DeleteCategoryMutation = {
-  deletePayment: number;
+  deleteCategory: number;
 };
 
 export type CreateCategoryDialog_UpdateCategoryMutationVariables = Exact<{
@@ -129,7 +129,7 @@ export type CreateCategoryDialog_UpdateCategoryMutationVariables = Exact<{
 }>;
 
 export type CreateCategoryDialog_UpdateCategoryMutation = {
-  updatePayment: number;
+  updateCategory: number;
 };
 
 export type CategoryPageQueryVariables = Exact<{
@@ -151,7 +151,7 @@ export type CreateCategoryDialog_CreateCategoryMutationVariables = Exact<{
 }>;
 
 export type CreateCategoryDialog_CreateCategoryMutation = {
-  createPayment: number;
+  createCategory: number;
 };
 
 export type CategoriesQueryVariables = Exact<{ [key: string]: never }>;
@@ -274,7 +274,7 @@ export const DeleteCategoryDialog_DeleteCategoryDocument = {
         selections: [
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'deletePayment' },
+            name: { kind: 'Name', value: 'deleteCategory' },
             arguments: [
               {
                 kind: 'Argument',
@@ -338,7 +338,7 @@ export const CreateCategoryDialog_UpdateCategoryDocument = {
         selections: [
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'updatePayment' },
+            name: { kind: 'Name', value: 'updateCategory' },
             arguments: [
               {
                 kind: 'Argument',
@@ -464,7 +464,7 @@ export const CreateCategoryDialog_CreateCategoryDocument = {
         selections: [
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'createPayment' },
+            name: { kind: 'Name', value: 'createCategory' },
             arguments: [
               {
                 kind: 'Argument',

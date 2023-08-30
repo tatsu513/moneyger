@@ -12,7 +12,7 @@ const CategoriesSummary: React.FC<Props> = ({ listCategories }) => {
   return (
     <Box>
       {listCategories.length === 0 ? (
-        <Typography variant="body1" color={grey[500]}>
+        <Typography variant="body1" color={grey[500]} mt={1}>
           データが登録されていません
         </Typography>
       ) : (
