@@ -1,18 +1,17 @@
 import CategoriesMain from '@/app/setting/_main/CategoriesMain';
 import { graphql } from '@/dao/generated/preset';
-import { currentAmountType, maxAmountType, nameType } from '@/models/category';
+import { maxAmountType, nameType } from '@/models/category';
 import checkSessionOnServer from '@/util/checkSessionOnServer';
 import registerRscUrqlClient from '@/util/registerRscUrqlClient';
 import { notFound } from 'next/navigation';
 import { z } from 'zod';
 
 const categoriesPageDocument = graphql(`
-  query categories {
+  query categoriesPage {
     listCategories {
       id
       name
       maxAmount
-      currentAmount
     }
   }
 `);
@@ -22,7 +21,6 @@ const categoriesSchema = z.array(
     id: z.number(),
     name: nameType,
     maxAmount: maxAmountType,
-    currentAmount: currentAmountType,
   }),
 );
 

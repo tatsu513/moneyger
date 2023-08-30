@@ -5,7 +5,7 @@ import { Box, List, Typography } from '@mui/material';
 import PageTitle from '@/components/common/PageTitle';
 import DialogState from '@/types/DialogState';
 import CreateCategoryDialog from '@/app/setting/_dialog/CreateCategoryDialog';
-import { Category } from '@/dao/generated/preset/graphql';
+import { CategoriesPageQuery } from '@/dao/generated/preset/graphql';
 import CategoriesListItem from '@/app/setting/_main/CategoriesListItem';
 import { grey } from '@/color';
 import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
@@ -14,7 +14,7 @@ import * as AddIcon from '@mui/icons-material/Add';
 import SecondaryButton from '@/components/common/buttons/SecondaryButton';
 
 type Props = {
-  categories: Category[];
+  categories: CategoriesPageQuery['listCategories'];
 };
 const CategoriesMain: React.FC<Props> = ({ categories }) => {
   const [dialogState, setDialogState] = useState<DialogState>('closed');

@@ -13,16 +13,6 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-  '\n  mutation deleteCategoryDialog_DeleteCategory($id: Int!) {\n    deletePayment(id: $id)\n  }\n':
-    types.DeleteCategoryDialog_DeleteCategoryDocument,
-  '\n  mutation createCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    updatePayment(id: $id, name: $name, maxAmount: $maxAmount)\n  }\n':
-    types.CreateCategoryDialog_UpdateCategoryDocument,
-  '\n  query categoryPage($categoryId: Int!) {\n    category(categoryId: $categoryId) {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n':
-    types.CategoryPageDocument,
-  '\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    createPayment(name: $name, maxAmount: $maxAmount)\n  }\n':
-    types.CreateCategoryDialog_CreateCategoryDocument,
-  '\n  query categories {\n    listCategories {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n':
-    types.CategoriesDocument,
   '\n  query paymentSummary {\n    paymentSummary {\n      totalMaxAmount\n      totalCurrentAmount\n      totalPaymentRatio\n    }\n    listCategories {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n':
     types.PaymentSummaryDocument,
   '\n  mutation deletePaymentHistoryDialog_DeletePaymentHistory($id: Int!) {\n    deletePaymentHistory(id: $id)\n  }\n':
@@ -37,6 +27,16 @@ const documents = {
     types.CreatePaymentHistoryDialog_CreatePaymentHistoryDocument,
   '\n  query paymentHistoriesPage {\n    listCategories {\n      id\n      name\n    }\n    listPaymentHistories {\n      id\n      paymentId\n      paymentDate\n      note\n      price\n    }\n  }\n':
     types.PaymentHistoriesPageDocument,
+  '\n  mutation deleteCategoryDialog_DeleteCategory($id: Int!) {\n    deletePayment(id: $id)\n  }\n':
+    types.DeleteCategoryDialog_DeleteCategoryDocument,
+  '\n  mutation createCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    updatePayment(id: $id, name: $name, maxAmount: $maxAmount)\n  }\n':
+    types.CreateCategoryDialog_UpdateCategoryDocument,
+  '\n  query categoryPage($categoryId: Int!) {\n    category(categoryId: $categoryId) {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n':
+    types.CategoryPageDocument,
+  '\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    createPayment(name: $name, maxAmount: $maxAmount)\n  }\n':
+    types.CreateCategoryDialog_CreateCategoryDocument,
+  '\n  query categoriesPage {\n    listCategories {\n      id\n      name\n      maxAmount\n    }\n  }\n':
+    types.CategoriesPageDocument,
 };
 
 /**
@@ -53,36 +53,6 @@ const documents = {
  */
 export function graphql(source: string): unknown;
 
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: '\n  mutation deleteCategoryDialog_DeleteCategory($id: Int!) {\n    deletePayment(id: $id)\n  }\n',
-): (typeof documents)['\n  mutation deleteCategoryDialog_DeleteCategory($id: Int!) {\n    deletePayment(id: $id)\n  }\n'];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: '\n  mutation createCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    updatePayment(id: $id, name: $name, maxAmount: $maxAmount)\n  }\n',
-): (typeof documents)['\n  mutation createCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    updatePayment(id: $id, name: $name, maxAmount: $maxAmount)\n  }\n'];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: '\n  query categoryPage($categoryId: Int!) {\n    category(categoryId: $categoryId) {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n',
-): (typeof documents)['\n  query categoryPage($categoryId: Int!) {\n    category(categoryId: $categoryId) {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n'];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: '\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    createPayment(name: $name, maxAmount: $maxAmount)\n  }\n',
-): (typeof documents)['\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    createPayment(name: $name, maxAmount: $maxAmount)\n  }\n'];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: '\n  query categories {\n    listCategories {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n',
-): (typeof documents)['\n  query categories {\n    listCategories {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -125,6 +95,36 @@ export function graphql(
 export function graphql(
   source: '\n  query paymentHistoriesPage {\n    listCategories {\n      id\n      name\n    }\n    listPaymentHistories {\n      id\n      paymentId\n      paymentDate\n      note\n      price\n    }\n  }\n',
 ): (typeof documents)['\n  query paymentHistoriesPage {\n    listCategories {\n      id\n      name\n    }\n    listPaymentHistories {\n      id\n      paymentId\n      paymentDate\n      note\n      price\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation deleteCategoryDialog_DeleteCategory($id: Int!) {\n    deletePayment(id: $id)\n  }\n',
+): (typeof documents)['\n  mutation deleteCategoryDialog_DeleteCategory($id: Int!) {\n    deletePayment(id: $id)\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation createCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    updatePayment(id: $id, name: $name, maxAmount: $maxAmount)\n  }\n',
+): (typeof documents)['\n  mutation createCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    updatePayment(id: $id, name: $name, maxAmount: $maxAmount)\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query categoryPage($categoryId: Int!) {\n    category(categoryId: $categoryId) {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n',
+): (typeof documents)['\n  query categoryPage($categoryId: Int!) {\n    category(categoryId: $categoryId) {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    createPayment(name: $name, maxAmount: $maxAmount)\n  }\n',
+): (typeof documents)['\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    createPayment(name: $name, maxAmount: $maxAmount)\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query categoriesPage {\n    listCategories {\n      id\n      name\n      maxAmount\n    }\n  }\n',
+): (typeof documents)['\n  query categoriesPage {\n    listCategories {\n      id\n      name\n      maxAmount\n    }\n  }\n'];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
