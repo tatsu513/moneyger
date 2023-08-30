@@ -42,7 +42,7 @@ const CategoriesMain: React.FC<Props> = ({ categories }) => {
         <PageTitle title="設定" />
       </Box>
 
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
         <Typography variant='h3'>費目</Typography>
         <SecondaryButton label="追加" size="small" startIcon={<AddIcon.default />} onClick={dialogOpen}/>
       </Box>
