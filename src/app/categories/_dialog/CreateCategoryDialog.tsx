@@ -87,7 +87,9 @@ const CreateCategoryDialog: React.FC<Props> = ({
         maxAmount: safeParseResult.data.maxAmount,
       });
       if (result.error) {
-        throw new Error('費目の作成に失敗しました');
+        throw new Error('費目の作成に失敗', { cause: {
+          result, safeParseResult
+        }});
       }
       router.refresh();
       events.onSuccess();
