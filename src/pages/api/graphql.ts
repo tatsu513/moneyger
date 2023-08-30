@@ -8,6 +8,7 @@ import isThisMonth from '@/logics/isThisMonth';
 import { DateTime } from 'luxon';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { GraphQLError } from 'graphql';
 // import { GraphQLError } from 'graphql/error';
 
 const resolvers: Resolvers = {
@@ -148,6 +149,9 @@ const resolvers: Resolvers = {
             },
           },
         },
+      }).catch((err) => {
+        console.error('カテゴリの作成に失敗しました', { err })
+        throw new GraphQLError('カテゴリの作成に失敗しました', { originalError: err })
       });
       return newPayment.id;
     },
@@ -226,17 +230,8 @@ export default startServerAndCreateNextHandler(server, {
     const session = await getServerSession(req, res, authOptions);
     if (session == null) {
       console.error('session is null');
-      // throw new GraphQLError('session is null in the graphql server');
+      throw new GraphQLError('session is null in the graphql server');
     }
-    // const { id, name, email, emailVerified, image } = session.user;
-    return {
-      user: {
-        id: 'id',
-        name: 'name',
-        email: 'email',
-        emailVerified: new Date(),
-        image: '',
-      },
-    };
+    return { user: session.user };
   },
 });
