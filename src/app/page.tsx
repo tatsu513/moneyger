@@ -12,6 +12,12 @@ const topPageDocument = graphql(`
       totalCurrentAmount
       totalPaymentRatio
     }
+    listCategories {
+      id
+      name
+      maxAmount
+      currentAmount
+    }
   }
 `);
 
@@ -21,6 +27,14 @@ const schema = z.object({
     totalCurrentAmount: z.number(),
     totalPaymentRatio: z.number(),
   }),
+  listCategories: z.array(
+    z.object({
+      id: z.number(),
+      name: z.string(),
+      maxAmount: z.number(),
+      currentAmount: z.number()
+    })
+  )
 });
 
 export default async function page() {
