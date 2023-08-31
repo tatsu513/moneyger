@@ -59,6 +59,7 @@ const ListPaymentHistories: React.FC<Props> = ({ paymentId, initialState }) => {
                   id={v.id}
                   note={v.note ?? null}
                   price={v.price}
+                  paymentDate={v.paymentDate}
                 />
                 {values.length !== i + 1 && <Divider />}
               </Box>
