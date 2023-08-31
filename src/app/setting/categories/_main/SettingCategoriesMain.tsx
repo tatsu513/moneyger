@@ -86,7 +86,7 @@ const SettingCategoriesMain: React.FC<Props> = ({ categories }) => {
         processingMessage="費目を削除中..."
         onClose={setDeleteNone}
       />
-      <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
+      <Box display="flex" justifyContent="flex-end" alignItems="center">
         <SecondaryButton label="費目を追加" size="small" startIcon={<AddIcon.default />} onClick={dialogOpen}/>
       </Box>
 
