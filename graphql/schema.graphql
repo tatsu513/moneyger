@@ -50,11 +50,11 @@ type PaymentHistory {
 
 type Mutation {
   # 費目の作成
-  createPayment(name: String!, maxAmount: Int!): Int!
+  createCategory(name: String!, maxAmount: Int!): Int!
   # 費目の更新
-  updatePayment(id: Int!, name: String!, maxAmount: Int!): Int!
+  updateCategory(id: Int!, name: String!, maxAmount: Int!): Int!
   # 費目の削除
-  deletePayment(id: Int!): Int!
+  deleteCategory(id: Int!): Int!
   # 支払履歴を作成
   createPaymentHistory(
     note: String

@@ -27,13 +27,13 @@ const documents = {
     types.CreatePaymentHistoryDialog_CreatePaymentHistoryDocument,
   '\n  query paymentHistoriesPage {\n    listCategories {\n      id\n      name\n    }\n    listPaymentHistories {\n      id\n      paymentId\n      paymentDate\n      note\n      price\n    }\n  }\n':
     types.PaymentHistoriesPageDocument,
-  '\n  mutation deleteCategoryDialog_DeleteCategory($id: Int!) {\n    deletePayment(id: $id)\n  }\n':
+  '\n  mutation deleteCategoryDialog_DeleteCategory($id: Int!) {\n    deleteCategory(id: $id)\n  }\n':
     types.DeleteCategoryDialog_DeleteCategoryDocument,
-  '\n  mutation createCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    updatePayment(id: $id, name: $name, maxAmount: $maxAmount)\n  }\n':
+  '\n  mutation createCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    updateCategory(id: $id, name: $name, maxAmount: $maxAmount)\n  }\n':
     types.CreateCategoryDialog_UpdateCategoryDocument,
   '\n  query categoryPage($categoryId: Int!) {\n    category(categoryId: $categoryId) {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n':
     types.CategoryPageDocument,
-  '\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    createPayment(name: $name, maxAmount: $maxAmount)\n  }\n':
+  '\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    createCategory(name: $name, maxAmount: $maxAmount)\n  }\n':
     types.CreateCategoryDialog_CreateCategoryDocument,
   '\n  query categoriesPage {\n    listCategories {\n      id\n      name\n      maxAmount\n    }\n  }\n':
     types.CategoriesPageDocument,
@@ -99,14 +99,14 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation deleteCategoryDialog_DeleteCategory($id: Int!) {\n    deletePayment(id: $id)\n  }\n',
-): (typeof documents)['\n  mutation deleteCategoryDialog_DeleteCategory($id: Int!) {\n    deletePayment(id: $id)\n  }\n'];
+  source: '\n  mutation deleteCategoryDialog_DeleteCategory($id: Int!) {\n    deleteCategory(id: $id)\n  }\n',
+): (typeof documents)['\n  mutation deleteCategoryDialog_DeleteCategory($id: Int!) {\n    deleteCategory(id: $id)\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation createCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    updatePayment(id: $id, name: $name, maxAmount: $maxAmount)\n  }\n',
-): (typeof documents)['\n  mutation createCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    updatePayment(id: $id, name: $name, maxAmount: $maxAmount)\n  }\n'];
+  source: '\n  mutation createCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    updateCategory(id: $id, name: $name, maxAmount: $maxAmount)\n  }\n',
+): (typeof documents)['\n  mutation createCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    updateCategory(id: $id, name: $name, maxAmount: $maxAmount)\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -117,8 +117,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    createPayment(name: $name, maxAmount: $maxAmount)\n  }\n',
-): (typeof documents)['\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    createPayment(name: $name, maxAmount: $maxAmount)\n  }\n'];
+  source: '\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    createCategory(name: $name, maxAmount: $maxAmount)\n  }\n',
+): (typeof documents)['\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    createCategory(name: $name, maxAmount: $maxAmount)\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

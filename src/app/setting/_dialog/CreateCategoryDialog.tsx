@@ -16,7 +16,7 @@ const createCategoryDialogCreateCategoryDocument = graphql(`
     $name: String!
     $maxAmount: Int!
   ) {
-    createPayment(name: $name, maxAmount: $maxAmount)
+    createCategory(name: $name, maxAmount: $maxAmount)
   }
 `);
 

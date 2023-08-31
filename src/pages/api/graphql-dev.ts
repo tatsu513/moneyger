@@ -105,15 +105,15 @@ const resolvers: Resolvers = {
     },
   },
   Mutation: {
-    createPayment: async (_, { name, maxAmount }, { user }) => {
+    createCategory: async (_, { name, maxAmount }, { user }) => {
       console.info({ name, maxAmount, user }, 'createPayment called');
       return 1;
     },
-    updatePayment: async (_, { id, name, maxAmount }) => {
+    updateCategory: async (_, { id, name, maxAmount }) => {
       console.info({ id, name, maxAmount }, 'updatePayment called');
       return 1;
     },
-    deletePayment: async (_, { id }) => {
+    deleteCategory: async (_, { id }) => {
       console.info({ id }, 'updatePayment called');
       return 1;
     },
