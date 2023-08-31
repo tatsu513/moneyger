@@ -3,7 +3,7 @@ import MoneygerDialog from '@/components/common/MoneygerDialog';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 import TextButton from '@/components/common/buttons/TextButton';
 import { graphql } from '@/dao/generated/preset';
-import { Category } from '@/dao/generated/preset/graphql';
+import { SettingCategoriesPageQuery } from '@/dao/generated/preset/graphql';
 import DialogState from '@/types/DialogState';
 import {
   Box,
@@ -22,6 +22,7 @@ const deleteCategoryDialogDeleteCategoryDocument = graphql(`
   }
 `);
 
+type Category = SettingCategoriesPageQuery['listCategories'][number]
 type Props = {
   dialogState: DialogState;
   category: Category;
@@ -91,9 +92,6 @@ const DeleteCategoryDialog: React.FC<Props> = ({
           </Typography>
           <Typography variant="body1" mb={2}>
             上限：{category.maxAmount.toLocaleString()}円
-          </Typography>
-          <Typography variant="body1" mb={2}>
-            支払済：{category.currentAmount.toLocaleString()}円
           </Typography>
           <FormGroup>
             <FormControlLabel

@@ -25,6 +25,7 @@ const resolvers: Resolvers = {
       return data;
     },
     category: async (_, { categoryId }) => {
+      console.log('呼ばれました', { categoryId })
       const category = categories.find((p) => p.id === categoryId);
       if (category == null) return null;
       const currentAmount = paymentHistories.reduce((acc, val) => {
