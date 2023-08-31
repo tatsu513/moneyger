@@ -12,6 +12,7 @@ import {
   FormGroup,
   Typography,
 } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useCallback, useState } from 'react';
 import { useMutation } from 'urql';
 
@@ -43,6 +44,7 @@ const DeletePaymentHistoryDialog: React.FC<Props> = ({
   onClose,
   events,
 }) => {
+  const router = useRouter();
   const [checked, setChecked] = useState(false);
 
   const onCheck = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -61,13 +63,14 @@ const DeletePaymentHistoryDialog: React.FC<Props> = ({
         throw new Error('支払いの削除に失敗しました');
       }
       events.onSuccess();
+      router.refresh()
       onClose()
     } catch (error) {
       console.error('支払いの削除に失敗しました', { error });
       events.onError();
       return;
     }
-  }, [paymentHistory.id, checked, submit, events, onClose]);
+  }, [paymentHistory.id, checked, submit, events, onClose, router]);
   return (
     <MoneygerDialog
       open={dialogState === 'open'}
