@@ -7,16 +7,16 @@ import {
   Divider,
   Typography,
 } from '@mui/material';
-import * as PaymentsIcon from '@mui/icons-material/Payments';
-import * as SummarizeIcon from '@mui/icons-material/Summarize';
+import * as PaymentIcon from '@mui/icons-material/Payment';
 import * as HomeIcon from '@mui/icons-material/Home';
+import * as SettingsIcon from '@mui/icons-material/Settings';
 import { z } from 'zod';
 import { usePathname, useRouter } from 'next/navigation';
 
 const home = 'home';
-const category = 'Category';
 const paymentHistory = 'paymentHistory';
-const navigationSchema = z.enum([home, category, paymentHistory]);
+const setting = 'Setting';
+const navigationSchema = z.enum([home, setting, paymentHistory]);
 type NavigationType = z.infer<typeof navigationSchema>;
 
 const MoneygerBottomNavigation = () => {
@@ -28,8 +28,8 @@ const MoneygerBottomNavigation = () => {
     if (/payment-histories/.test(pathname)) {
       return paymentHistory;
     }
-    if (/categories/.test(pathname)) {
-      return category;
+    if (/setting/.test(pathname)) {
+      return setting;
     }
     return home;
   }, [pathname]);
@@ -45,8 +45,8 @@ const MoneygerBottomNavigation = () => {
         case home:
           router.push('/');
           break;
-        case category:
-          router.push('/categories');
+        case setting:
+          router.push('/setting');
           break;
         case paymentHistory:
           router.push('/payment-histories');
@@ -69,14 +69,14 @@ const MoneygerBottomNavigation = () => {
           icon={<HomeIcon.default />}
         />
         <BottomNavigationAction
-          value={category}
-          label={<Typography variant="bottomNavigation">費目</Typography>}
-          icon={<SummarizeIcon.default />}
-        />
-        <BottomNavigationAction
           value={paymentHistory}
           label={<Typography variant="bottomNavigation">支払い</Typography>}
-          icon={<PaymentsIcon.default />}
+          icon={<PaymentIcon.default />}
+        />
+        <BottomNavigationAction
+          value={setting}
+          label={<Typography variant="bottomNavigation">設定</Typography>}
+          icon={<SettingsIcon.default />}
         />
       </BottomNavigation>
     </Box>

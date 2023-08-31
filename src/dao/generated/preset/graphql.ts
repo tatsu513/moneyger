@@ -37,15 +37,15 @@ export type Category = {
 };
 
 export type Mutation = {
-  createPayment: Scalars['Int']['output'];
+  createCategory: Scalars['Int']['output'];
   createPaymentHistory: Scalars['Int']['output'];
-  deletePayment: Scalars['Int']['output'];
+  deleteCategory: Scalars['Int']['output'];
   deletePaymentHistory: Scalars['Int']['output'];
-  updatePayment: Scalars['Int']['output'];
+  updateCategory: Scalars['Int']['output'];
   updatePaymentHistory: Scalars['Int']['output'];
 };
 
-export type MutationCreatePaymentArgs = {
+export type MutationCreateCategoryArgs = {
   maxAmount: Scalars['Int']['input'];
   name: Scalars['String']['input'];
 };
@@ -57,7 +57,7 @@ export type MutationCreatePaymentHistoryArgs = {
   price: Scalars['Int']['input'];
 };
 
-export type MutationDeletePaymentArgs = {
+export type MutationDeleteCategoryArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -65,7 +65,7 @@ export type MutationDeletePaymentHistoryArgs = {
   id: Scalars['Int']['input'];
 };
 
-export type MutationUpdatePaymentArgs = {
+export type MutationUpdateCategoryArgs = {
   id: Scalars['Int']['input'];
   maxAmount: Scalars['Int']['input'];
   name: Scalars['String']['input'];
@@ -112,57 +112,6 @@ export type QueryListPaymentHistoriesByPaymentIdArgs = {
 
 export type QueryPaymentHistoryArgs = {
   paymentHistoryId: Scalars['Int']['input'];
-};
-
-export type DeleteCategoryDialog_DeleteCategoryMutationVariables = Exact<{
-  id: Scalars['Int']['input'];
-}>;
-
-export type DeleteCategoryDialog_DeleteCategoryMutation = {
-  deletePayment: number;
-};
-
-export type CreateCategoryDialog_UpdateCategoryMutationVariables = Exact<{
-  id: Scalars['Int']['input'];
-  name: Scalars['String']['input'];
-  maxAmount: Scalars['Int']['input'];
-}>;
-
-export type CreateCategoryDialog_UpdateCategoryMutation = {
-  updatePayment: number;
-};
-
-export type CategoryPageQueryVariables = Exact<{
-  categoryId: Scalars['Int']['input'];
-}>;
-
-export type CategoryPageQuery = {
-  category?: {
-    id: number;
-    name: string;
-    maxAmount: number;
-    currentAmount: number;
-  } | null;
-};
-
-export type CreateCategoryDialog_CreateCategoryMutationVariables = Exact<{
-  name: Scalars['String']['input'];
-  maxAmount: Scalars['Int']['input'];
-}>;
-
-export type CreateCategoryDialog_CreateCategoryMutation = {
-  createPayment: number;
-};
-
-export type CategoriesQueryVariables = Exact<{ [key: string]: never }>;
-
-export type CategoriesQuery = {
-  listCategories: Array<{
-    id: number;
-    name: string;
-    maxAmount: number;
-    currentAmount: number;
-  }>;
 };
 
 export type PaymentSummaryQueryVariables = Exact<{ [key: string]: never }>;
@@ -252,277 +201,52 @@ export type PaymentHistoriesPageQuery = {
   }>;
 };
 
-export const DeleteCategoryDialog_DeleteCategoryDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'deleteCategoryDialog_DeleteCategory' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'deletePayment' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'id' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'id' },
-                },
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  DeleteCategoryDialog_DeleteCategoryMutation,
-  DeleteCategoryDialog_DeleteCategoryMutationVariables
->;
-export const CreateCategoryDialog_UpdateCategoryDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'createCategoryDialog_UpdateCategory' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
-          },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'name' } },
-          type: {
-            kind: 'NonNullType',
-            type: {
-              kind: 'NamedType',
-              name: { kind: 'Name', value: 'String' },
-            },
-          },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'maxAmount' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'updatePayment' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'id' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'id' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'name' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'name' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'maxAmount' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'maxAmount' },
-                },
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateCategoryDialog_UpdateCategoryMutation,
-  CreateCategoryDialog_UpdateCategoryMutationVariables
->;
-export const CategoryPageDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'categoryPage' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'categoryId' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'category' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'categoryId' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'categoryId' },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'maxAmount' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'currentAmount' },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<CategoryPageQuery, CategoryPageQueryVariables>;
-export const CreateCategoryDialog_CreateCategoryDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'createCategoryDialog_CreateCategory' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'name' } },
-          type: {
-            kind: 'NonNullType',
-            type: {
-              kind: 'NamedType',
-              name: { kind: 'Name', value: 'String' },
-            },
-          },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'maxAmount' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createPayment' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'name' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'name' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'maxAmount' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'maxAmount' },
-                },
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateCategoryDialog_CreateCategoryMutation,
-  CreateCategoryDialog_CreateCategoryMutationVariables
->;
-export const CategoriesDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'categories' },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'listCategories' },
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'maxAmount' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'currentAmount' },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<CategoriesQuery, CategoriesQueryVariables>;
+export type DeleteCategoryDialog_DeleteCategoryMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+export type DeleteCategoryDialog_DeleteCategoryMutation = {
+  deleteCategory: number;
+};
+
+export type CreateCategoryDialog_UpdateCategoryMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
+  maxAmount: Scalars['Int']['input'];
+}>;
+
+export type CreateCategoryDialog_UpdateCategoryMutation = {
+  updateCategory: number;
+};
+
+export type CategoryPageQueryVariables = Exact<{
+  categoryId: Scalars['Int']['input'];
+}>;
+
+export type CategoryPageQuery = {
+  category?: {
+    id: number;
+    name: string;
+    maxAmount: number;
+    currentAmount: number;
+  } | null;
+};
+
+export type CreateCategoryDialog_CreateCategoryMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+  maxAmount: Scalars['Int']['input'];
+}>;
+
+export type CreateCategoryDialog_CreateCategoryMutation = {
+  createCategory: number;
+};
+
+export type CategoriesPageQueryVariables = Exact<{ [key: string]: never }>;
+
+export type CategoriesPageQuery = {
+  listCategories: Array<{ id: number; name: string; maxAmount: number }>;
+};
+
 export const PaymentSummaryDocument = {
   kind: 'Document',
   definitions: [
@@ -967,3 +691,270 @@ export const PaymentHistoriesPageDocument = {
   PaymentHistoriesPageQuery,
   PaymentHistoriesPageQueryVariables
 >;
+export const DeleteCategoryDialog_DeleteCategoryDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'deleteCategoryDialog_DeleteCategory' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'deleteCategory' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'id' },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteCategoryDialog_DeleteCategoryMutation,
+  DeleteCategoryDialog_DeleteCategoryMutationVariables
+>;
+export const CreateCategoryDialog_UpdateCategoryDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createCategoryDialog_UpdateCategory' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'name' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'maxAmount' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateCategory' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'id' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'name' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'name' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'maxAmount' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'maxAmount' },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateCategoryDialog_UpdateCategoryMutation,
+  CreateCategoryDialog_UpdateCategoryMutationVariables
+>;
+export const CategoryPageDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'categoryPage' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'categoryId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'category' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'categoryId' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'categoryId' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'maxAmount' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'currentAmount' },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CategoryPageQuery, CategoryPageQueryVariables>;
+export const CreateCategoryDialog_CreateCategoryDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createCategoryDialog_CreateCategory' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'name' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'maxAmount' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createCategory' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'name' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'name' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'maxAmount' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'maxAmount' },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateCategoryDialog_CreateCategoryMutation,
+  CreateCategoryDialog_CreateCategoryMutationVariables
+>;
+export const CategoriesPageDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'categoriesPage' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'listCategories' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'maxAmount' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CategoriesPageQuery, CategoriesPageQueryVariables>;

@@ -18,7 +18,7 @@ import { useMutation } from 'urql';
 
 const deleteCategoryDialogDeleteCategoryDocument = graphql(`
   mutation deleteCategoryDialog_DeleteCategory($id: Int!) {
-    deletePayment(id: $id)
+    deleteCategory(id: $id)
   }
 `);
 

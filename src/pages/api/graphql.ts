@@ -138,7 +138,7 @@ const resolvers: Resolvers = {
     },
   },
   Mutation: {
-    createPayment: async (_, { name, maxAmount }, { user }) => {
+    createCategory: async (_, { name, maxAmount }, { user }) => {
       const newPayment = await prisma.category.create({
         data: {
           name,
@@ -155,14 +155,14 @@ const resolvers: Resolvers = {
       });
       return newPayment.id;
     },
-    updatePayment: async (_, { id, name, maxAmount }) => {
+    updateCategory: async (_, { id, name, maxAmount }) => {
       const target = await prisma.category.update({
         where: { id },
         data: { name, maxAmount },
       });
       return target.id;
     },
-    deletePayment: async (_, { id }) => {
+    deleteCategory: async (_, { id }) => {
       const target = await prisma.category.delete({
         where: { id },
       });
