@@ -515,6 +515,14 @@ export type CreateCategoryDialog_CreateCategoryMutation = {
   createCategory: number;
 };
 
+export type SettingCategoriesPageQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type SettingCategoriesPageQuery = {
+  listCategories: Array<{ id: number; name: string; maxAmount: number }>;
+};
+
 export type CategoriesPageQueryVariables = Exact<{ [key: string]: never }>;
 
 export type CategoriesPageQuery = {
@@ -637,6 +645,15 @@ export const CreateCategoryDialog_CreateCategoryDocument = gql`
     $maxAmount: Int!
   ) {
     createCategory(name: $name, maxAmount: $maxAmount)
+  }
+`;
+export const SettingCategoriesPageDocument = gql`
+  query settingCategoriesPage {
+    listCategories {
+      id
+      name
+      maxAmount
+    }
   }
 `;
 export const CategoriesPageDocument = gql`
@@ -828,6 +845,21 @@ export function getSdk(
           ),
         'createCategoryDialog_CreateCategory',
         'mutation',
+      );
+    },
+    settingCategoriesPage(
+      variables?: SettingCategoriesPageQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<SettingCategoriesPageQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<SettingCategoriesPageQuery>(
+            SettingCategoriesPageDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'settingCategoriesPage',
+        'query',
       );
     },
     categoriesPage(
