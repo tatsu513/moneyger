@@ -1,4 +1,4 @@
-import CategoryMain from '@/app/setting/[categoryId]/_main/CategoryMain';
+import CategoryMain from '@/app/setting/categories/[categoryId]/_main/CategoryMain';
 import { graphql } from '@/dao/generated/preset';
 import { currentAmountType, maxAmountType, nameType } from '@/models/category';
 import checkSessionOnServer from '@/util/checkSessionOnServer';
@@ -43,7 +43,8 @@ export default async function Home({
     if (res.error) throw res.error;
     const result = categorySchema.parse(res.data?.category);
     return <CategoryMain category={result} />;
-  } catch (e) {
+  } catch (err) {
+    console.error({ err })
     notFound();
   }
 }

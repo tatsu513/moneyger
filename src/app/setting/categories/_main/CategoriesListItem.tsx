@@ -25,7 +25,7 @@ const CategoriesListItem: React.FC<Props> = ({
 
   const handleClick = useCallback(() => {
     router.push(
-      `/categories/[categoryId]`.replace('[categoryId]', id.toString()),
+      `/setting/[categoryId]`.replace('[categoryId]', id.toString()),
     );
   }, [router, id]);
   return (

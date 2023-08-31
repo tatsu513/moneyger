@@ -2,11 +2,10 @@
 
 import React, { useCallback, useState } from 'react';
 import { Box, List, Typography } from '@mui/material';
-import PageTitle from '@/components/common/PageTitle';
 import DialogState from '@/types/DialogState';
 import CreateCategoryDialog from '@/app/setting/_dialog/CreateCategoryDialog';
-import { CategoriesPageQuery } from '@/dao/generated/preset/graphql';
-import CategoriesListItem from '@/app/setting/_main/CategoriesListItem';
+import { SettingCategoriesPageQuery } from '@/dao/generated/preset/graphql';
+import CategoriesListItem from '@/app/setting/categories/_main/CategoriesListItem';
 import { grey } from '@/color';
 import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
 import useAlert from '@/hooks/useAlert';
@@ -14,9 +13,9 @@ import * as AddIcon from '@mui/icons-material/Add';
 import SecondaryButton from '@/components/common/buttons/SecondaryButton';
 
 type Props = {
-  categories: CategoriesPageQuery['listCategories'];
+  categories: SettingCategoriesPageQuery['listCategories'];
 };
-const CategoriesMain: React.FC<Props> = ({ categories }) => {
+const SettingCategoriesMain: React.FC<Props> = ({ categories }) => {
   const [dialogState, setDialogState] = useState<DialogState>('closed');
   const { alertType, setSuccess, setError, setProcessing, setNone } =
     useAlert();
@@ -33,18 +32,8 @@ const CategoriesMain: React.FC<Props> = ({ categories }) => {
         processingMessage="費目を登録中..."
         onClose={setNone}
       />
-      <Box
-        mb={3}
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-      >
-        <PageTitle title="設定" />
-      </Box>
-
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-        <Typography variant='h3'>費目</Typography>
-        <SecondaryButton label="追加" size="small" startIcon={<AddIcon.default />} onClick={dialogOpen}/>
+      <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
+        <SecondaryButton label="費目を追加" size="small" startIcon={<AddIcon.default />} onClick={dialogOpen}/>
       </Box>
 
       {categories.length === 0 ? (
@@ -71,4 +60,4 @@ const CategoriesMain: React.FC<Props> = ({ categories }) => {
   );
 };
 
-export default CategoriesMain;
+export default SettingCategoriesMain;

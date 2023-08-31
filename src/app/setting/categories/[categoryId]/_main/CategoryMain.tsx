@@ -1,9 +1,9 @@
 'use client';
 import React, { useCallback, useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import UpdateCategoryDialog from '@/app/setting/[categoryId]/_dialog/UpdateCategoryDialog';
+import UpdateCategoryDialog from '@/app/setting/categories/[categoryId]/_dialog/UpdateCategoryDialog';
 import DialogState from '@/types/DialogState';
-import DeleteCategoryDialog from '@/app/setting/[categoryId]/_dialog/DeleteCategoryDialog';
+import DeleteCategoryDialog from '@/app/setting/categories/[categoryId]/_dialog/DeleteCategoryDialog';
 import { Category } from '@/dao/generated/preset/graphql';
 import PageTitle from '@/components/common/PageTitle';
 import { grey } from '@/color';
@@ -72,7 +72,7 @@ const CategoryMain: React.FC<Props> = ({ category }) => {
       <Box mb={4}>
         <Box mb={2}>
           <Link
-            href="/categories"
+            href="/setting"
             style={{ textDecoration: 'none', color: grey[900] }}
           >
             <TextButton

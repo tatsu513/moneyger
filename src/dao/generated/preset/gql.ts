@@ -35,6 +35,8 @@ const documents = {
     types.CategoryPageDocument,
   '\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    createCategory(name: $name, maxAmount: $maxAmount)\n  }\n':
     types.CreateCategoryDialog_CreateCategoryDocument,
+  '\n  query settingCategoriesPage {\n    listCategories {\n      id\n      name\n      maxAmount\n    }\n  }\n':
+    types.SettingCategoriesPageDocument,
   '\n  query categoriesPage {\n    listCategories {\n      id\n      name\n      maxAmount\n    }\n  }\n':
     types.CategoriesPageDocument,
 };
@@ -119,6 +121,12 @@ export function graphql(
 export function graphql(
   source: '\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    createCategory(name: $name, maxAmount: $maxAmount)\n  }\n',
 ): (typeof documents)['\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    createCategory(name: $name, maxAmount: $maxAmount)\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query settingCategoriesPage {\n    listCategories {\n      id\n      name\n      maxAmount\n    }\n  }\n',
+): (typeof documents)['\n  query settingCategoriesPage {\n    listCategories {\n      id\n      name\n      maxAmount\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

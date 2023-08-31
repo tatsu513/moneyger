@@ -241,6 +241,14 @@ export type CreateCategoryDialog_CreateCategoryMutation = {
   createCategory: number;
 };
 
+export type SettingCategoriesPageQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type SettingCategoriesPageQuery = {
+  listCategories: Array<{ id: number; name: string; maxAmount: number }>;
+};
+
 export type CategoriesPageQueryVariables = Exact<{ [key: string]: never }>;
 
 export type CategoriesPageQuery = {
@@ -930,6 +938,36 @@ export const CreateCategoryDialog_CreateCategoryDocument = {
 } as unknown as DocumentNode<
   CreateCategoryDialog_CreateCategoryMutation,
   CreateCategoryDialog_CreateCategoryMutationVariables
+>;
+export const SettingCategoriesPageDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'settingCategoriesPage' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'listCategories' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'maxAmount' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SettingCategoriesPageQuery,
+  SettingCategoriesPageQueryVariables
 >;
 export const CategoriesPageDocument = {
   kind: 'Document',
