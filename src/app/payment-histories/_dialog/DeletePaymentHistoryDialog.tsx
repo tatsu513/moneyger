@@ -3,7 +3,6 @@ import MoneygerDialog from '@/components/common/MoneygerDialog';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 import TextButton from '@/components/common/buttons/TextButton';
 import { graphql } from '@/dao/generated/preset';
-import { PaymentHistory } from '@/dao/generated/preset/graphql';
 import PrismaDateToFrontendDateStr from '@/logics/PrismaDateToFrontendDateStr';
 import DialogState from '@/types/DialogState';
 import {
@@ -13,7 +12,6 @@ import {
   FormGroup,
   Typography,
 } from '@mui/material';
-import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useCallback, useState } from 'react';
 import { useMutation } from 'urql';
 
@@ -23,6 +21,12 @@ const deletePaymentHistoryDeleteDialogDeletePaymentDocument = graphql(`
   }
 `);
 
+type PaymentHistory = {
+  id: number;
+  note: string | null;
+  paymentDate: string;
+  price: number
+}
 type Props = {
   dialogState: DialogState;
   paymentHistory: PaymentHistory;
@@ -39,7 +43,6 @@ const DeletePaymentHistoryDialog: React.FC<Props> = ({
   onClose,
   events,
 }) => {
-  const router = useRouter();
   const [checked, setChecked] = useState(false);
 
   const onCheck = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -58,13 +61,13 @@ const DeletePaymentHistoryDialog: React.FC<Props> = ({
         throw new Error('支払いの削除に失敗しました');
       }
       events.onSuccess();
-      router.push('/payment-histories');
+      onClose()
     } catch (error) {
       console.error('支払いの削除に失敗しました', { error });
       events.onError();
       return;
     }
-  }, [router, paymentHistory.id, checked, submit, events]);
+  }, [paymentHistory.id, checked, submit, events, onClose]);
   return (
     <MoneygerDialog
       open={dialogState === 'open'}

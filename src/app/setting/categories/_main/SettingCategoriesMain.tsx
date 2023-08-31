@@ -3,7 +3,7 @@
 import React, { useCallback, useState } from 'react';
 import { Box, List, Typography } from '@mui/material';
 import DialogState from '@/types/DialogState';
-import CreateCategoryDialog from '@/app/setting/_dialog/CreateCategoryDialog';
+import CreateCategoryDialog from '@/app/setting/categories/_dialog/CreateCategoryDialog';
 import { SettingCategoriesPageQuery } from '@/dao/generated/preset/graphql';
 import CategoriesListItem from '@/app/setting/categories/_main/CategoriesListItem';
 import { grey } from '@/color';

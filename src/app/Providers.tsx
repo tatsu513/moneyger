@@ -55,7 +55,6 @@ const client = createClient({
 });
 
 const Providers: React.FC<PropsWithChildren> = ({ children }) => {
-  console.log({ graphqlEndpoint: envs.nextAuthUrl + envs.graphqlEndpoint })
   return (
     <SessionProvider>
       <ThemeProvider theme={theme}>
