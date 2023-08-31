@@ -70,7 +70,7 @@ const DeletePaymentHistoryDialog: React.FC<Props> = ({
       events.onError();
       return;
     }
-  }, [paymentHistory.id, checked, submit, events, onClose]);
+  }, [paymentHistory.id, checked, submit, events, onClose, router]);
   return (
     <MoneygerDialog
       open={dialogState === 'open'}
