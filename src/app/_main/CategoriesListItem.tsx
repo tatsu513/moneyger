@@ -3,7 +3,6 @@ import {
   Box,
   Divider,
   ListItem,
-  ListItemButton,
   Typography,
 } from '@mui/material';
 import React from 'react';
@@ -25,15 +24,19 @@ const CategoriesListItem: React.FC<Props> = ({
   const sign = diff === 0 ? '' : diff > 0 ? '+' : '';
 
   return (
-    <ListItem divider disablePadding>
-      <ListItemButton
-        sx={{
-          px: 1,
-          py: 1,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
+    <ListItem
+      divider
+      disablePadding
+      sx={{
+        px: 1,
+        py: 1,
+      }}
+    >
+      <Box
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
+        width="100%"
       >
         <Typography variant="body1">{name}</Typography>
         <Box textAlign="right">
@@ -44,7 +47,7 @@ const CategoriesListItem: React.FC<Props> = ({
             支払済／{currentAmount.toLocaleString()}円
           </Typography>
         </Box>
-      </ListItemButton>
+      </Box>
       <Divider />
     </ListItem>
   );

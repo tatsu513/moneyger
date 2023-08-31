@@ -9,7 +9,7 @@ const ContentTitle: React.FC<Props> = ({ title }) => {
   return (
     <Typography
       variant='body1'
-      bgcolor={grey[50]}
+      bgcolor={grey[100]}
       p={1}
       pl={2}
       sx={{ borderRadius: 1 }}
