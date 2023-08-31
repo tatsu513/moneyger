@@ -3,7 +3,7 @@ import MoneygerDialog from '@/components/common/MoneygerDialog';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 import TextButton from '@/components/common/buttons/TextButton';
 import { graphql } from '@/dao/generated/preset';
-import { Category } from '@/dao/generated/preset/graphql';
+import { SettingCategoriesPageQuery } from '@/dao/generated/preset/graphql';
 import { maxAmountType, nameType } from '@/models/category';
 import DialogState from '@/types/DialogState';
 import { Box, TextField, Typography } from '@mui/material';
@@ -28,6 +28,7 @@ const updateSchema = z.object({
   maxAmount: maxAmountType,
 });
 
+type Category = SettingCategoriesPageQuery['listCategories'][number]
 type Props = {
   dialogState: DialogState;
   category: Category;
