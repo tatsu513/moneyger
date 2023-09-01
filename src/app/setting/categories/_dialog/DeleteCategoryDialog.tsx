@@ -56,7 +56,7 @@ const DeleteCategoryDialog: React.FC<Props> = ({
         throw new Error('費目の削除に失敗しました');
       }
       events.onSuccess();
-      router.push('/categories');
+      router.refresh()
     } catch (error) {
       console.error('費目の削除に失敗しました', { error });
       events.onError();
