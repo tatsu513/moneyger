@@ -18,11 +18,16 @@ const resolvers: Resolvers = {
         categoriesPromise,
         historiesPromise,
       ]);
-      const validHistories = histories.flatMap((h) => {
-        return isThisMonth(DateTime.fromISO(targetDate), DateTime.fromJSDate(h.paymentDate))
-          ? [h]
-          : [];
-      });
+      const validHistories = targetDate
+        ? histories.flatMap((h) => {
+            return isThisMonth(
+              DateTime.fromISO(targetDate),
+              DateTime.fromJSDate(h.paymentDate),
+            )
+              ? [h]
+              : [];
+          })
+        : histories;
       const data = categories.map((p) => {
         const currentAmount = validHistories.reduce((acc, val) => {
           return val.paymentId === p.id ? acc + val.price : acc;
@@ -114,7 +119,10 @@ const resolvers: Resolvers = {
       );
       const paymentHistories = await prisma.paymentHistory.findMany();
       const validHistories = paymentHistories.flatMap((h) => {
-        return isThisMonth(DateTime.fromISO(targetDate), DateTime.fromJSDate(h.paymentDate))
+        return isThisMonth(
+          DateTime.fromISO(targetDate),
+          DateTime.fromJSDate(h.paymentDate),
+        )
           ? [h]
           : [];
       });
@@ -131,19 +139,23 @@ const resolvers: Resolvers = {
   },
   Mutation: {
     createCategory: async (_, { name, maxAmount }, { user }) => {
-      const newPayment = await prisma.category.create({
-        data: {
-          name,
-          maxAmount,
-          author: {
-            connect: {
-              id: user.id,
+      const newPayment = await prisma.category
+        .create({
+          data: {
+            name,
+            maxAmount,
+            author: {
+              connect: {
+                id: user.id,
+              },
             },
           },
-        },
-      }).catch((err) => {
-        throw new GraphQLError('カテゴリの作成に失敗しました', { originalError: err })
-      });
+        })
+        .catch((err) => {
+          throw new GraphQLError('カテゴリの作成に失敗しました', {
+            originalError: err,
+          });
+        });
       return newPayment.id;
     },
     updateCategory: async (_, { id, name, maxAmount }) => {
