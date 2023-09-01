@@ -33,6 +33,14 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
+## schema.prisma
+
+### 更新
+
+1. yarn prisma db pullで最新か
+2. schemaファイルを更新
+3. yarn prisma db pushで反映
+
 ## Errors
 
 ### ローカル環境でログインボタンを押すと「このサイトは安全に接続できません」
