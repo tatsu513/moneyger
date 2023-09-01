@@ -5,10 +5,12 @@ import { z } from 'zod';
 import { nameType } from '@/models/category';
 import { notFound } from 'next/navigation';
 import checkSessionOnServer from '@/util/checkSessionOnServer';
+import dateTimeToStringDate from '@/logics/dateTimeToStringDate';
+import { DateTime } from 'luxon';
 
 const paymentHistoriesPageDocument = graphql(`
-  query paymentHistoriesPage {
-    listCategories {
+  query paymentHistoriesPage($targetDate: String!) {
+    listCategories(targetDate: $targetDate) {
       id
       name
     }
@@ -44,7 +46,9 @@ export default async function Home() {
   const { cookie } = await checkSessionOnServer('/payment-histories');
   const { getClient } = registerRscUrqlClient(cookie);
   try {
-    const res = await getClient().query(paymentHistoriesPageDocument, {});
+    const res = await getClient().query(paymentHistoriesPageDocument, {
+      targetDate: dateTimeToStringDate(DateTime.now())
+    });
     if (res.error) throw res.error;
     const result = fetchDataSchema.parse(res.data);
     return (

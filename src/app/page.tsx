@@ -1,18 +1,20 @@
 import TopMain from '@/app/_main/TopMain';
 import { graphql } from '@/dao/generated/preset/gql';
+import dateTimeToStringDate from '@/logics/dateTimeToStringDate';
 import checkSessionOnServer from '@/util/checkSessionOnServer';
 import registerRscUrqlClient from '@/util/registerRscUrqlClient';
+import { DateTime } from 'luxon';
 import { notFound } from 'next/navigation';
 import { z } from 'zod';
 
 const topPageDocument = graphql(`
-  query paymentSummary {
-    paymentSummary {
+  query paymentSummary($targetDate: String!) {
+    paymentSummary(targetDate: $targetDate) {
       totalMaxAmount
       totalCurrentAmount
       totalPaymentRatio
     }
-    listCategories {
+    listCategories(targetDate: $targetDate) {
       id
       name
       maxAmount
@@ -40,8 +42,11 @@ const schema = z.object({
 export default async function page() {
   const { cookie } = await checkSessionOnServer('/');
   const { getClient } = registerRscUrqlClient(cookie);
+  console.log({ ddd: dateTimeToStringDate(DateTime.now()) })
   try {
-    const result = await getClient().query(topPageDocument, {});
+    const result = await getClient().query(topPageDocument, {
+      targetDate: dateTimeToStringDate(DateTime.now())
+    });
     if (result.error) {
       console.error({ error: result.error, message: 'fetch失敗' });
       throw result.error;

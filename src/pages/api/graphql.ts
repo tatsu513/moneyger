@@ -3,17 +3,15 @@ import { Resolvers } from '@/dao/generated/graphql';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import fs from 'fs';
 import prisma from '@/util/prisma';
-// import { GraphQLError } from 'graphql';
 import isThisMonth from '@/logics/isThisMonth';
 import { DateTime } from 'luxon';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { GraphQLError } from 'graphql';
-// import { GraphQLError } from 'graphql/error';
 
 const resolvers: Resolvers = {
   Query: {
-    listCategories: async () => {
+    listCategories: async (_, { targetDate }) => {
       const categoriesPromise = prisma.category.findMany();
       const historiesPromise = prisma.paymentHistory.findMany();
       const [categories, histories] = await Promise.all([
@@ -21,7 +19,7 @@ const resolvers: Resolvers = {
         historiesPromise,
       ]);
       const validHistories = histories.flatMap((h) => {
-        return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate))
+        return isThisMonth(DateTime.fromISO(targetDate), DateTime.fromJSDate(h.paymentDate))
           ? [h]
           : [];
       });
@@ -108,7 +106,7 @@ const resolvers: Resolvers = {
       };
     },
     // ダッシュボード用
-    paymentSummary: async (_, _args) => {
+    paymentSummary: async (_, { targetDate }) => {
       const listCategories = await prisma.category.findMany();
       const totalMaxAmount = listCategories.reduce(
         (acc, val) => acc + val.maxAmount,
@@ -116,7 +114,7 @@ const resolvers: Resolvers = {
       );
       const paymentHistories = await prisma.paymentHistory.findMany();
       const validHistories = paymentHistories.flatMap((h) => {
-        return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate))
+        return isThisMonth(DateTime.fromISO(targetDate), DateTime.fromJSDate(h.paymentDate))
           ? [h]
           : [];
       });

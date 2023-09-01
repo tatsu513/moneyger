@@ -1,14 +1,16 @@
 import SettingCategoriesMain from '@/app/setting/categories/_main/SettingCategoriesMain';
 import { graphql } from '@/dao/generated/preset';
+import dateTimeToStringDate from '@/logics/dateTimeToStringDate';
 import { maxAmountType, nameType } from '@/models/category';
 import checkSessionOnServer from '@/util/checkSessionOnServer';
 import registerRscUrqlClient from '@/util/registerRscUrqlClient';
+import { DateTime } from 'luxon';
 import { notFound } from 'next/navigation';
 import { z } from 'zod';
 
 const settingCategoriesPageDocument = graphql(`
-  query settingCategoriesPage {
-    listCategories {
+  query settingCategoriesPage($targetDate: String!) {
+    listCategories(targetDate: $targetDate) {
       id
       name
       maxAmount
@@ -30,8 +32,9 @@ export default async function page() {
   try {
     const result = await getClient().query(
       settingCategoriesPageDocument,
-      {},
-      { suspense: true },
+      {
+        targetDate: dateTimeToStringDate(DateTime.now())
+      },
     );
     if (result.error) {
       throw result.error;
