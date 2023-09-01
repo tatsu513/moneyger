@@ -5,6 +5,8 @@ import { notFound } from 'next/navigation';
 import PaymentHistoryMain from '@/app/payment-histories/[paymentHistoryId]/_main/PaymentHistoryMain';
 import { nameType } from '@/models/category';
 import checkSessionOnServer from '@/util/checkSessionOnServer';
+import dateTimeToStringDate from '@/logics/dateTimeToStringDate';
+import { DateTime } from 'luxon';
 
 const paymentHistoryPageDocument = graphql(`
   query paymentHistoryPage($paymentHistoryId: Int!) {
@@ -19,8 +21,8 @@ const paymentHistoryPageDocument = graphql(`
 `);
 
 const paymentHistoryPageListCategoriesDocument = graphql(`
-  query paymentHistoryPageListCategories {
-    listCategories {
+  query paymentHistoryPageListCategories($targetDate: String!) {
+    listCategories(targetDate: $targetDate) {
       id
       name
     }
@@ -64,7 +66,9 @@ export default async function Home({
 
     const listCategoriesRes = await getClient().query(
       paymentHistoryPageListCategoriesDocument,
-      {},
+      {
+        targetDate: dateTimeToStringDate(DateTime.now())
+      },
     );
     if (listCategoriesRes.error) throw listCategoriesRes.error;
     const result = paymentHistorySchema.parse(res.data?.paymentHistory);

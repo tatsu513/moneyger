@@ -8,11 +8,11 @@ import { DateTime } from 'luxon';
 
 const resolvers: Resolvers = {
   Query: {
-    listCategories: async () => {
+    listCategories: async (_, { targetDate }) => {
       const data = categories.map((p) => {
         const currentAmount = paymentHistories.reduce((acc, val) => {
           if (
-            !isThisMonth(DateTime.now(), DateTime.fromJSDate(val.paymentDate))
+            !isThisMonth(DateTime.fromISO(targetDate), DateTime.fromJSDate(val.paymentDate))
           )
             return acc;
           return val.paymentId === p.id ? acc + val.price : acc;
@@ -84,13 +84,13 @@ const resolvers: Resolvers = {
       };
     },
     // ダッシュボード用
-    paymentSummary: async (_, _args) => {
+    paymentSummary: async (_, { targetDate }) => {
       const totalMaxAmount = categories.reduce(
         (acc, val) => acc + val.maxAmount,
         0,
       );
       const validHistories = paymentHistories.flatMap((h) => {
-        return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate))
+        return isThisMonth(DateTime.fromISO(targetDate), DateTime.fromJSDate(h.paymentDate))
           ? [h]
           : [];
       });
@@ -175,7 +175,6 @@ export default startServerAndCreateNextHandler(server, {
   },
 });
 
-const today = new Date();
 const categories = [
   {
     id: 1,
@@ -205,7 +204,7 @@ const paymentHistories = [
     id: 100,
     note: 'スーパー',
     price: 1588,
-    paymentDate: new Date(today.setDate(today.getDate() + 1)), // '2023-08-07T03:12:40+09:00',
+    paymentDate: new Date("2023-08-07T03:12:40+09:00"),
     paymentId: 1,
     authorId: 1,
     createdAt: new Date(),
@@ -232,7 +231,7 @@ const paymentHistories = [
     id: 999,
     note: 'ヤマザキ',
     price: 300,
-    paymentDate: new Date(today.setMonth(today.getMonth() + 2)),
+    paymentDate: new Date("2023-10-07T03:12:40+09:00"),
     paymentId: 3,
     authorId: 1,
     createdAt: new Date(),

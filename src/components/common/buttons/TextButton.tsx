@@ -8,6 +8,7 @@ type Props = {
   fullWidth?: boolean;
   disabled?: boolean;
   startIcon?: React.ReactNode
+  endIcon?: React.ReactNode
   size?: 'small' | 'normal'
   onClick: () => void;
 };
@@ -16,6 +17,7 @@ const TextButton: React.FC<Props> = ({
   fullWidth = false,
   disabled = false,
   startIcon,
+  endIcon,
   size = ' normal',
   onClick,
 }) => {
@@ -26,6 +28,7 @@ const TextButton: React.FC<Props> = ({
       disabled={disabled}
       onClick={onClick}
       startIcon={startIcon}
+      endIcon={endIcon}
       sx={{ color: grey[900], fontSize: size === 'normal' ? theme.typography.body1.fontSize : theme.typography.body2.fontSize }}
     >
       {label}

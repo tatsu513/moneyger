@@ -1,6 +1,6 @@
 type Query {
   # 作業日誌一覧
-  listCategories: [Category!]!
+  listCategories(targetDate: String!): [Category!]!
   # 費目1つを取得
   category(categoryId: Int!): Category
   # 支払履歴を全て取得
@@ -10,7 +10,7 @@ type Query {
   # 支払履歴を1件取得
   paymentHistory(paymentHistoryId: Int!): PaymentHistory
   # ダッシュボード用
-  paymentSummary: PaymentSummary!
+  paymentSummary(targetDate: String!): PaymentSummary!
 }
 
 # 支払の概要

@@ -82,7 +82,7 @@ const PaymentHistoriesMain: React.FC<Props> = ({
             value={
               listCategories.find((p) => p.id === selectedPayment?.id) ?? null
             }
-            label="絞り込み"
+            label="費目で絞り込む"
             filterOptions={filterOptions}
             getOptionLabel={getOptionLabel}
             onChange={handleChangePayment}
