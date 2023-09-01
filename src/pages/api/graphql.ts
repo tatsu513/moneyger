@@ -8,6 +8,7 @@ import { DateTime } from 'luxon';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { GraphQLError } from 'graphql';
+import getJstDateTimeFromJsDate from '@/logics/getJstDateTimeFromJsDate';
 
 const resolvers: Resolvers = {
   Query: {
@@ -68,15 +69,22 @@ const resolvers: Resolvers = {
           paymentDate: 'desc',
         },
       });
-      const validHistories = results.flatMap((r) => {
-        return isThisMonth(DateTime.now(), DateTime.fromJSDate(r.paymentDate))
-          ? [r]
+      return results.flatMap((r) => {
+        const { dateTime, str } = getJstDateTimeFromJsDate(r.paymentDate);
+        if (str == null) {
+          throw new GraphQLError(
+            '支払履歴の支払日が正しく取得できませんでした',
+          );
+        }
+        return isThisMonth(DateTime.now(), dateTime)
+          ? [
+              {
+                ...r,
+                paymentDate: str,
+              },
+            ]
           : [];
       });
-      return validHistories.map((r) => ({
-        ...r,
-        paymentDate: r.paymentDate.toISOString(),
-      }));
     },
     // paymentに紐づく支払履歴一覧
     listPaymentHistoriesByPaymentId: async (_, { paymentId }) => {
@@ -84,18 +92,22 @@ const resolvers: Resolvers = {
         where: { paymentId },
         orderBy: { paymentDate: 'desc' },
       });
-      const validHistories = results.flatMap((r) => {
-        return isThisMonth(DateTime.now(), DateTime.fromJSDate(r.paymentDate))
-          ? [r]
+      return results.flatMap((r) => {
+        const { dateTime, str } = getJstDateTimeFromJsDate(r.paymentDate);
+        if (str == null) {
+          throw new GraphQLError(
+            'paymentに紐づく支払履歴の支払日が正しく取得できませんでした',
+          );
+        }
+        return isThisMonth(DateTime.now(), dateTime)
+          ? [
+              {
+                ...r,
+                paymentDate: str,
+              },
+            ]
           : [];
       });
-      return validHistories.map((r) => ({
-        id: r.id,
-        note: r.note,
-        price: r.price,
-        paymentDate: r.paymentDate.toISOString(),
-        paymentId,
-      }));
     },
     // 支払履歴を1件取得
     paymentHistory: async (_, { paymentHistoryId }) => {
@@ -105,9 +117,15 @@ const resolvers: Resolvers = {
       if (result == null) {
         throw Error('支払履歴が見つかりません');
       }
+      const { str } = getJstDateTimeFromJsDate(result.paymentDate);
+      if (str == null) {
+        throw new GraphQLError(
+          '支払履歴を1件の支払日が正しく取得できませんでした',
+        );
+      }
       return {
         ...result,
-        paymentDate: result.paymentDate.toISOString(),
+        paymentDate: str,
       };
     },
     // ダッシュボード用
