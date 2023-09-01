@@ -9,23 +9,28 @@ import { DateTime } from 'luxon';
 const resolvers: Resolvers = {
   Query: {
     listCategories: async (_, { targetDate }) => {
-      const data = categories.map((p) => {
-        const currentAmount = paymentHistories.reduce((acc, val) => {
-          if (
-            !isThisMonth(DateTime.fromISO(targetDate), DateTime.fromJSDate(val.paymentDate))
-          )
-            return acc;
-          return val.paymentId === p.id ? acc + val.price : acc;
-        }, 0);
-        return {
-          ...p,
-          currentAmount,
-        };
-      });
+      const data = targetDate
+        ? categories.map((p) => {
+            const currentAmount = paymentHistories.reduce((acc, val) => {
+              if (
+                !isThisMonth(
+                  DateTime.fromISO(targetDate),
+                  DateTime.fromJSDate(val.paymentDate),
+                )
+              )
+                return acc;
+              return val.paymentId === p.id ? acc + val.price : acc;
+            }, 0);
+            return {
+              ...p,
+              currentAmount,
+            };
+          })
+        : [];
       return data;
     },
     category: async (_, { categoryId }) => {
-      console.log('呼ばれました', { categoryId })
+      console.log('呼ばれました', { categoryId });
       const category = categories.find((p) => p.id === categoryId);
       if (category == null) return null;
       const currentAmount = paymentHistories.reduce((acc, val) => {
@@ -90,7 +95,10 @@ const resolvers: Resolvers = {
         0,
       );
       const validHistories = paymentHistories.flatMap((h) => {
-        return isThisMonth(DateTime.fromISO(targetDate), DateTime.fromJSDate(h.paymentDate))
+        return isThisMonth(
+          DateTime.fromISO(targetDate),
+          DateTime.fromJSDate(h.paymentDate),
+        )
           ? [h]
           : [];
       });
@@ -204,7 +212,7 @@ const paymentHistories = [
     id: 100,
     note: 'スーパー',
     price: 1588,
-    paymentDate: new Date("2023-08-07T03:12:40+09:00"),
+    paymentDate: new Date('2023-08-07T03:12:40+09:00'),
     paymentId: 1,
     authorId: 1,
     createdAt: new Date(),
@@ -231,7 +239,7 @@ const paymentHistories = [
     id: 999,
     note: 'ヤマザキ',
     price: 300,
-    paymentDate: new Date("2023-10-07T03:12:40+09:00"),
+    paymentDate: new Date('2023-10-07T03:12:40+09:00'),
     paymentId: 3,
     authorId: 1,
     createdAt: new Date(),
