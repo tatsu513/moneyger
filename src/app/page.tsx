@@ -42,7 +42,6 @@ const schema = z.object({
 export default async function page() {
   const { cookie } = await checkSessionOnServer('/');
   const { getClient } = registerRscUrqlClient(cookie);
-  console.log({ ddd: dateTimeToStringDate(DateTime.now()) })
   try {
     const result = await getClient().query(topPageDocument, {
       targetDate: dateTimeToStringDate(DateTime.now())
