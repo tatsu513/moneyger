@@ -113,7 +113,7 @@ export type QueryCategoryArgs = {
 };
 
 export type QueryListCategoriesArgs = {
-  targetDate: Scalars['String']['input'];
+  targetDate?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type QueryListPaymentHistoriesByPaymentIdArgs = {
@@ -363,7 +363,7 @@ export type QueryResolvers<
     Array<ResolversTypes['Category']>,
     ParentType,
     ContextType,
-    RequireFields<QueryListCategoriesArgs, 'targetDate'>
+    Partial<QueryListCategoriesArgs>
   >;
   listPaymentHistories?: Resolver<
     Array<ResolversTypes['PaymentHistory']>,
