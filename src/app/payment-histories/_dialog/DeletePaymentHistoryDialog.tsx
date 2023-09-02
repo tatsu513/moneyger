@@ -26,8 +26,8 @@ type PaymentHistory = {
   id: number;
   note: string | null;
   paymentDate: string;
-  price: number
-}
+  price: number;
+};
 type Props = {
   dialogState: DialogState;
   paymentHistory: PaymentHistory;
@@ -63,8 +63,8 @@ const DeletePaymentHistoryDialog: React.FC<Props> = ({
         throw new Error('支払いの削除に失敗しました');
       }
       events.onSuccess();
-      router.refresh()
-      onClose()
+      router.refresh();
+      onClose();
     } catch (error) {
       console.error('支払いの削除に失敗しました', { error });
       events.onError();
@@ -102,7 +102,7 @@ const DeletePaymentHistoryDialog: React.FC<Props> = ({
             支払金額：{paymentHistory.price.toLocaleString()}円
           </Typography>
           <Typography variant="body1" mb={2}>
-            メモ：{paymentHistory.note ?? '-'}円
+            メモ：{paymentHistory.note ?? '-'}
           </Typography>
           <FormGroup>
             <FormControlLabel
