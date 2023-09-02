@@ -23,7 +23,7 @@ const topPageCategoriesDocument = graphql(`
 
 type Props = {
   listCategories: PaymentSummaryQuery['listCategories'];
-  targetDate: DateTime
+  targetDate: DateTime;
 };
 const CategoriesSummary: React.FC<Props> = ({ listCategories, targetDate }) => {
   const val = useMemo(() => {
@@ -31,12 +31,12 @@ const CategoriesSummary: React.FC<Props> = ({ listCategories, targetDate }) => {
       topPageCategoriesDocument,
       { targetDate: dateTimeToStringDate(targetDate) },
       false,
-    )
-  }, [targetDate])
+    );
+  }, [targetDate]);
   const [{ data }] = useQuery(val);
   const categories = useMemo(() => {
-    return data == null ? listCategories : data.listCategories
-  }, [data, listCategories])
+    return data == null ? listCategories : data.listCategories;
+  }, [data, listCategories]);
   return (
     <Box>
       {categories.length === 0 ? (
@@ -44,7 +44,7 @@ const CategoriesSummary: React.FC<Props> = ({ listCategories, targetDate }) => {
           データが登録されていません
         </Typography>
       ) : (
-        <List>
+        <List disablePadding>
           {categories.map((c) => (
             <CategoriesListItem key={c.name} {...c} />
           ))}
