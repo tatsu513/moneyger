@@ -1,12 +1,8 @@
 'use client';
-import {
-  Box,
-  Divider,
-  ListItem,
-  Typography,
-} from '@mui/material';
+import { Box, Divider, ListItem, Typography } from '@mui/material';
 import React from 'react';
 import getPriceColorAndBgColor from '@/logics/getPriceColorAndBgColor';
+import { grey } from '@/color';
 
 type Props = {
   name: string;
@@ -33,18 +29,32 @@ const CategoriesListItem: React.FC<Props> = ({
       }}
     >
       <Box
-        display='flex'
-        justifyContent='space-between'
-        alignItems='center'
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
         width="100%"
       >
-        <Typography variant="body1">{name}</Typography>
+        <Box>
+          <Typography variant="body1" mb={0.5}>
+            {name}
+          </Typography>
+          <Typography variant="body2" mb={0.5} color={grey[500]}>
+            上限
+          </Typography>
+          <Typography variant="body2" color={grey[500]}>
+            支払済み
+          </Typography>
+        </Box>
+
         <Box textAlign="right">
           <Typography variant="h3Bold" mb={0.5} color={color}>
             {sign + diff.toLocaleString()}円
           </Typography>
-          <Typography variant="body2">
-            支払済／{currentAmount.toLocaleString()}円
+          <Typography variant="body2" mb={0.5} color={grey[500]}>
+            {maxAmount.toLocaleString()}円
+          </Typography>
+          <Typography variant="body2" color={grey[500]}>
+            {currentAmount.toLocaleString()}円
           </Typography>
         </Box>
       </Box>

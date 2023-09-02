@@ -9,6 +9,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { GraphQLError } from 'graphql';
 import getJstDateTimeFromJsDate from '@/logics/getJstDateTimeFromJsDate';
+import { AVAILABLE_MONTH } from '@/constants/appSettingValue';
 
 const resolvers: Resolvers = {
   Query: {
@@ -29,7 +30,7 @@ const resolvers: Resolvers = {
               : [];
           })
         : histories;
-      const data = categories.map((p) => {
+      return categories.map((p) => {
         const currentAmount = validHistories.reduce((acc, val) => {
           return val.paymentId === p.id ? acc + val.price : acc;
         }, 0);
@@ -38,7 +39,6 @@ const resolvers: Resolvers = {
           currentAmount,
         };
       });
-      return data;
     },
     category: async (_, { categoryId }) => {
       const categoryPromise = prisma.category.findUnique({
@@ -76,13 +76,9 @@ const resolvers: Resolvers = {
             '支払履歴の支払日が正しく取得できませんでした',
           );
         }
-        return isThisMonth(DateTime.now(), dateTime)
-          ? [
-              {
-                ...r,
-                paymentDate: str,
-              },
-            ]
+        return dateTime.month >=
+          DateTime.now().minus({ months: AVAILABLE_MONTH }).month
+          ? [{ ...r, paymentDate: str }]
           : [];
       });
     },
@@ -99,13 +95,9 @@ const resolvers: Resolvers = {
             'paymentに紐づく支払履歴の支払日が正しく取得できませんでした',
           );
         }
-        return isThisMonth(DateTime.now(), dateTime)
-          ? [
-              {
-                ...r,
-                paymentDate: str,
-              },
-            ]
+        return dateTime.month >=
+          DateTime.now().minus({ months: AVAILABLE_MONTH }).month
+          ? [{ ...r, paymentDate: str }]
           : [];
       });
     },
