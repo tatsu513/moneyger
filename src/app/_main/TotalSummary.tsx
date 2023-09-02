@@ -21,20 +21,20 @@ const topPageMainDocument = graphql(`
 
 type Props = {
   paymentSummary: PaymentSummaryQuery['paymentSummary'];
-  targetDate: DateTime
+  targetDate: DateTime;
 };
-const TotalSummary: React.FC<Props> = ({ paymentSummary, targetDate }) => {  
+const TotalSummary: React.FC<Props> = ({ paymentSummary, targetDate }) => {
   const val = useMemo(() => {
     return getUrqlVariables(
       topPageMainDocument,
       { targetDate: dateTimeToStringDate(targetDate) },
       false,
-    )
-  }, [targetDate])
+    );
+  }, [targetDate]);
   const [{ data }] = useQuery(val);
   const summary = useMemo(() => {
-    return data == null ? paymentSummary : data.paymentSummary
-  }, [data, paymentSummary])
+    return data == null ? paymentSummary : data.paymentSummary;
+  }, [data, paymentSummary]);
 
   const { totalMaxAmount, totalCurrentAmount, totalPaymentRatio } = summary;
   const diff = totalMaxAmount - totalCurrentAmount;
@@ -43,13 +43,21 @@ const TotalSummary: React.FC<Props> = ({ paymentSummary, targetDate }) => {
   const ondOfMonth = today.endOf('month').day;
   const { color, bgColor } = getPriceColorAndBgColor(diff);
 
+  const showThisMonth = targetDate.month === today.month;
+  const restOfDays = showThisMonth ? ondOfMonth - day : 0;
+
   return (
     <>
       <Box mb={3}>
         <Typography variant="body1" mb={1} textAlign="left">
-          今月の余力（あと{ondOfMonth - day}日）
+          あと{restOfDays}日で使えるお金
         </Typography>
-        <Box p={0.5} bgcolor={bgColor} textAlign="center" sx={{ borderRadius: 1 }}>
+        <Box
+          p={0.5}
+          bgcolor={bgColor}
+          textAlign="center"
+          sx={{ borderRadius: 1 }}
+        >
           <Typography color={color} variant="totalPrice">
             {diff.toLocaleString()}円
           </Typography>
@@ -57,15 +65,12 @@ const TotalSummary: React.FC<Props> = ({ paymentSummary, targetDate }) => {
       </Box>
 
       <Grid container rowSpacing={1.5}>
+        <ItemBlock label="上限" body={`${totalMaxAmount.toLocaleString()}円`} />
         <ItemBlock
-          label="使える金額"
-          body={`${totalMaxAmount.toLocaleString()}円`}
-        />
-        <ItemBlock
-          label="支払った金額"
+          label="支払済み"
           body={`${totalCurrentAmount.toLocaleString()}円`}
         />
-        <ItemBlock label="割合" body={`${totalPaymentRatio}%`} />
+        <ItemBlock label="支払割合" body={`${totalPaymentRatio}%`} />
       </Grid>
     </>
   );
@@ -81,7 +86,7 @@ const ItemBlock: React.FC<ItemBlockProps> = ({ label, body }) => {
   return (
     <>
       <Grid item xs={6}>
-      <Typography variant="body1">{label}</Typography>
+        <Typography variant="body1">{label}</Typography>
       </Grid>
       <Grid item xs={6} textAlign="right">
         <Typography variant="body1Bold">{body}</Typography>

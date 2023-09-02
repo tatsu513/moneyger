@@ -23,6 +23,7 @@ const PaymentHistoriesMain: React.FC<Props> = ({
   listCategories,
   listPaymentHistories,
 }) => {
+  console.log({ listPaymentHistories });
   const [selectedPayment, setSelectedPayment] = useState<ListCategory | null>(
     null,
   );
