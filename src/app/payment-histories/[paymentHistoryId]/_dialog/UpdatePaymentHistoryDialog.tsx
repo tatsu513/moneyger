@@ -19,14 +19,14 @@ import { z } from 'zod';
 const updatePaymentHistoryDialogUpdatePaymentHistoryDocument = graphql(`
   mutation createPaymentHistoryDialog_UpdateHistoryPayment(
     $id: Int!
-    $paymentId: Int!
+    $categoryId: Int!
     $paymentDate: String!
     $price: Int!
     $note: String
   ) {
     updatePaymentHistory(
       id: $id
-      paymentId: $paymentId
+      categoryId: $categoryId
       paymentDate: $paymentDate
       price: $price
       note: $note
@@ -36,7 +36,7 @@ const updatePaymentHistoryDialogUpdatePaymentHistoryDocument = graphql(`
 
 const editUpdateSchema = z.object({
   id: z.number(),
-  paymentId: z.number(),
+  categoryId: z.number(),
   paymentDate: paymentDateType,
   price: priceType,
   note: noteType,
@@ -44,7 +44,7 @@ const editUpdateSchema = z.object({
 
 const updateSchema = z.object({
   id: z.number(),
-  paymentId: z.number(),
+  categoryId: z.number(),
   paymentDate: z.string(),
   price: priceType,
   note: noteType,
@@ -75,7 +75,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
 }) => {
   const router = useRouter();
   const [category, setCategory] = useState<LocalCategoryType | null>(
-    listCategories.find((p) => p.id === paymentHistory.paymentId) ?? null,
+    listCategories.find((p) => p.id === paymentHistory.categoryId) ?? null,
   );
   const [price, setPrice] = useState(paymentHistory.price.toString());
   const [note, setNote] = useState(paymentHistory.note);
@@ -85,7 +85,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
 
   const safeParseResult = editUpdateSchema.safeParse({
     id: paymentHistory.id,
-    paymentId: category?.id,
+    categoryId: category?.id,
     paymentDate,
     price,
     note,
@@ -128,7 +128,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
     events.onProcessing();
     const parseResult = updateSchema.safeParse({
       id: paymentHistory.id,
-      paymentId: category?.id,
+      categoryId: category?.id,
       paymentDate: paymentDate?.toISO(),
       price,
       note,
@@ -146,7 +146,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
     try {
       const result = await submit({
         id: parseResult.data.id,
-        paymentId: parseResult.data.paymentId,
+        categoryId: parseResult.data.categoryId,
         paymentDate: parseResult.data.paymentDate,
         price: parseResult.data.price,
         note: parseResult.data.note,

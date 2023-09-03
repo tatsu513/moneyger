@@ -7,15 +7,15 @@ import { grey } from '@/color';
 import PrismaDateToFrontendDateStr from '@/logics/PrismaDateToFrontendDateStr';
 
 type Props = {
-  paymentId: number | null;
+  categoryId: number | null;
   initialState: PaymentHistory[];
 };
 
-const ListPaymentHistories: React.FC<Props> = ({ paymentId, initialState }) => {
+const ListPaymentHistories: React.FC<Props> = ({ categoryId, initialState }) => {
   const listPaymentHistories = useMemo(() => {
-    if (paymentId == null) return initialState;
-    return initialState.flatMap((s) => (s.paymentId === paymentId ? [s] : []));
-  }, [paymentId, initialState]);
+    if (categoryId == null) return initialState;
+    return initialState.flatMap((s) => (s.categoryId === categoryId ? [s] : []));
+  }, [categoryId, initialState]);
   const listPaymentHistoriesPerDate = useMemo(() => {
     const map: Map<string, PaymentHistory[]> = new Map();
     listPaymentHistories.forEach((p) => {

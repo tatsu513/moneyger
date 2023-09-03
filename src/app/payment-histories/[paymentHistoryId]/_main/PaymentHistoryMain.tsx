@@ -41,7 +41,7 @@ const PaymentHistoryMain: React.FC<Props> = ({
   }, []);
 
   const category = listCategories.find(
-    (p) => p.id === paymentHistory.paymentId,
+    (p) => p.id === paymentHistory.categoryId,
   );
   if (category == null) {
     return (

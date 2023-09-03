@@ -32,12 +32,13 @@ export type Scalars = {
 export type Category = {
   currentAmount: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
+  labels: Array<Maybe<CategoryLabel>>;
   maxAmount: Scalars['Int']['output'];
   name: Scalars['String']['output'];
 };
 
 export type CategoryLabel = {
-  categoryId: Scalars['Int']['output'];
+  categoryId?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
 };
@@ -53,19 +54,20 @@ export type Mutation = {
 };
 
 export type MutationCreateCategoryArgs = {
+  labelIds: Array<Scalars['Int']['input']>;
   maxAmount: Scalars['Int']['input'];
   name: Scalars['String']['input'];
 };
 
 export type MutationCreateCategoryLabelArgs = {
   categoryId: Scalars['Int']['input'];
-  labels: Array<Scalars['String']['input']>;
+  labels?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 export type MutationCreatePaymentHistoryArgs = {
+  categoryId: Scalars['Int']['input'];
   note?: InputMaybe<Scalars['String']['input']>;
   paymentDate: Scalars['String']['input'];
-  paymentId: Scalars['Int']['input'];
   price: Scalars['Int']['input'];
 };
 
@@ -84,18 +86,18 @@ export type MutationUpdateCategoryArgs = {
 };
 
 export type MutationUpdatePaymentHistoryArgs = {
+  categoryId: Scalars['Int']['input'];
   id: Scalars['Int']['input'];
   note?: InputMaybe<Scalars['String']['input']>;
   paymentDate: Scalars['String']['input'];
-  paymentId: Scalars['Int']['input'];
   price: Scalars['Int']['input'];
 };
 
 export type PaymentHistory = {
+  categoryId: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
   note?: Maybe<Scalars['String']['output']>;
   paymentDate: Scalars['String']['output'];
-  paymentId: Scalars['Int']['output'];
   price: Scalars['Int']['output'];
 };
 
@@ -110,7 +112,7 @@ export type Query = {
   listCategories: Array<Category>;
   listCategoryLabels: Array<CategoryLabel>;
   listPaymentHistories: Array<PaymentHistory>;
-  listPaymentHistoriesByPaymentId: Array<PaymentHistory>;
+  listPaymentHistoriesByCategoryId: Array<PaymentHistory>;
   paymentHistory?: Maybe<PaymentHistory>;
   paymentSummary: PaymentSummary;
 };
@@ -123,8 +125,8 @@ export type QueryListCategoriesArgs = {
   targetDate?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type QueryListPaymentHistoriesByPaymentIdArgs = {
-  paymentId: Scalars['Int']['input'];
+export type QueryListPaymentHistoriesByCategoryIdArgs = {
+  categoryId: Scalars['Int']['input'];
 };
 
 export type QueryPaymentHistoryArgs = {
@@ -181,7 +183,7 @@ export type PaymentSummaryQuery = {
 export type CreatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables =
   Exact<{
     id: Scalars['Int']['input'];
-    paymentId: Scalars['Int']['input'];
+    categoryId: Scalars['Int']['input'];
     paymentDate: Scalars['String']['input'];
     price: Scalars['Int']['input'];
     note?: InputMaybe<Scalars['String']['input']>;
@@ -198,7 +200,7 @@ export type PaymentHistoryPageQueryVariables = Exact<{
 export type PaymentHistoryPageQuery = {
   paymentHistory?: {
     id: number;
-    paymentId: number;
+    categoryId: number;
     paymentDate: string;
     note?: string | null;
     price: number;
@@ -215,7 +217,7 @@ export type PaymentHistoryPageListCategoriesQuery = {
 
 export type CreatePaymentHistoryDialog_CreatePaymentHistoryMutationVariables =
   Exact<{
-    paymentId: Scalars['Int']['input'];
+    categoryId: Scalars['Int']['input'];
     paymentDate: Scalars['String']['input'];
     price: Scalars['Int']['input'];
     note?: InputMaybe<Scalars['String']['input']>;
@@ -242,7 +244,7 @@ export type PaymentHistoriesPageQuery = {
   listCategories: Array<{ id: number; name: string }>;
   listPaymentHistories: Array<{
     id: number;
-    paymentId: number;
+    categoryId: number;
     paymentDate: string;
     note?: string | null;
     price: number;
@@ -252,6 +254,7 @@ export type PaymentHistoriesPageQuery = {
 export type CreateCategoryDialog_CreateCategoryMutationVariables = Exact<{
   name: Scalars['String']['input'];
   maxAmount: Scalars['Int']['input'];
+  labelIds: Array<Scalars['Int']['input']>;
 }>;
 
 export type CreateCategoryDialog_CreateCategoryMutation = {
@@ -520,7 +523,7 @@ export const CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument = {
           kind: 'VariableDefinition',
           variable: {
             kind: 'Variable',
-            name: { kind: 'Name', value: 'paymentId' },
+            name: { kind: 'Name', value: 'categoryId' },
           },
           type: {
             kind: 'NonNullType',
@@ -575,10 +578,10 @@ export const CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument = {
               },
               {
                 kind: 'Argument',
-                name: { kind: 'Name', value: 'paymentId' },
+                name: { kind: 'Name', value: 'categoryId' },
                 value: {
                   kind: 'Variable',
-                  name: { kind: 'Name', value: 'paymentId' },
+                  name: { kind: 'Name', value: 'categoryId' },
                 },
               },
               {
@@ -655,7 +658,7 @@ export const PaymentHistoryPageDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'paymentId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'categoryId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'paymentDate' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'note' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'price' } },
@@ -740,7 +743,7 @@ export const CreatePaymentHistoryDialog_CreatePaymentHistoryDocument = {
           kind: 'VariableDefinition',
           variable: {
             kind: 'Variable',
-            name: { kind: 'Name', value: 'paymentId' },
+            name: { kind: 'Name', value: 'categoryId' },
           },
           type: {
             kind: 'NonNullType',
@@ -787,10 +790,10 @@ export const CreatePaymentHistoryDialog_CreatePaymentHistoryDocument = {
             arguments: [
               {
                 kind: 'Argument',
-                name: { kind: 'Name', value: 'paymentId' },
+                name: { kind: 'Name', value: 'categoryId' },
                 value: {
                   kind: 'Variable',
-                  name: { kind: 'Name', value: 'paymentId' },
+                  name: { kind: 'Name', value: 'categoryId' },
                 },
               },
               {
@@ -926,7 +929,7 @@ export const PaymentHistoriesPageDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'paymentId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'categoryId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'paymentDate' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'note' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'price' } },
@@ -971,6 +974,26 @@ export const CreateCategoryDialog_CreateCategoryDocument = {
             type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
           },
         },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'labelIds' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'ListType',
+              type: {
+                kind: 'NonNullType',
+                type: {
+                  kind: 'NamedType',
+                  name: { kind: 'Name', value: 'Int' },
+                },
+              },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: 'SelectionSet',
@@ -993,6 +1016,14 @@ export const CreateCategoryDialog_CreateCategoryDocument = {
                 value: {
                   kind: 'Variable',
                   name: { kind: 'Name', value: 'maxAmount' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'labelIds' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'labelIds' },
                 },
               },
             ],
