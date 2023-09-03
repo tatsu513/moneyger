@@ -43,7 +43,7 @@ model User {
   image          String?
   accounts       Account[]
   category       Category[]
-  PaymentHistory PaymentHistory[]
+  paymentHistory PaymentHistory[]
   sessions       Session[]
 }
 
@@ -63,7 +63,7 @@ model Category {
   createdAt      DateTime         @default(now())
   author         User             @relation(fields: [authorId], references: [id])
   categoryLabel  CategoryLabel[]
-  PaymentHistory PaymentHistory[]
+  paymentHistory PaymentHistory[]
 }
 
 model CategoryLabel {
