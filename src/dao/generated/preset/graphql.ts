@@ -36,8 +36,15 @@ export type Category = {
   name: Scalars['String']['output'];
 };
 
+export type CategoryLabel = {
+  categoryId: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+};
+
 export type Mutation = {
   createCategory: Scalars['Int']['output'];
+  createCategoryLabel: Scalars['Int']['output'];
   createPaymentHistory: Scalars['Int']['output'];
   deleteCategory: Scalars['Int']['output'];
   deletePaymentHistory: Scalars['Int']['output'];
@@ -48,6 +55,11 @@ export type Mutation = {
 export type MutationCreateCategoryArgs = {
   maxAmount: Scalars['Int']['input'];
   name: Scalars['String']['input'];
+};
+
+export type MutationCreateCategoryLabelArgs = {
+  categoryId: Scalars['Int']['input'];
+  labels: Array<Scalars['String']['input']>;
 };
 
 export type MutationCreatePaymentHistoryArgs = {
@@ -96,6 +108,7 @@ export type PaymentSummary = {
 export type Query = {
   category?: Maybe<Category>;
   listCategories: Array<Category>;
+  listCategoryLabels: Array<CategoryLabel>;
   listPaymentHistories: Array<PaymentHistory>;
   listPaymentHistoriesByPaymentId: Array<PaymentHistory>;
   paymentHistory?: Maybe<PaymentHistory>;

@@ -62,16 +62,16 @@ model Category {
   authorId       String
   createdAt      DateTime         @default(now())
   author         User             @relation(fields: [authorId], references: [id])
-  PaymentHistory PaymentHistory[]
   CategoryLabel  CategoryLabel[]
+  PaymentHistory PaymentHistory[]
 }
 
 model CategoryLabel {
   id         Int      @id @default(autoincrement())
   name       String
   createdAt  DateTime @default(now())
-  category   Category @relation(fields: [categoryId], references: [id])
   categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
 }
 
 model PaymentHistory {

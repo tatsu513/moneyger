@@ -42,8 +42,15 @@ export type Category = {
   name: Scalars['String']['output'];
 };
 
+export type CategoryLabel = {
+  categoryId: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+};
+
 export type Mutation = {
   createCategory: Scalars['Int']['output'];
+  createCategoryLabel: Scalars['Int']['output'];
   createPaymentHistory: Scalars['Int']['output'];
   deleteCategory: Scalars['Int']['output'];
   deletePaymentHistory: Scalars['Int']['output'];
@@ -54,6 +61,11 @@ export type Mutation = {
 export type MutationCreateCategoryArgs = {
   maxAmount: Scalars['Int']['input'];
   name: Scalars['String']['input'];
+};
+
+export type MutationCreateCategoryLabelArgs = {
+  categoryId: Scalars['Int']['input'];
+  labels: Array<Scalars['String']['input']>;
 };
 
 export type MutationCreatePaymentHistoryArgs = {
@@ -102,6 +114,7 @@ export type PaymentSummary = {
 export type Query = {
   category?: Maybe<Category>;
   listCategories: Array<Category>;
+  listCategoryLabels: Array<CategoryLabel>;
   listPaymentHistories: Array<PaymentHistory>;
   listPaymentHistoriesByPaymentId: Array<PaymentHistory>;
   paymentHistory?: Maybe<PaymentHistory>;
@@ -237,6 +250,7 @@ export type DirectiveResolverFn<
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Category: ResolverTypeWrapper<Category>;
+  CategoryLabel: ResolverTypeWrapper<CategoryLabel>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -250,6 +264,7 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   Category: Category;
+  CategoryLabel: CategoryLabel;
   Float: Scalars['Float']['output'];
   Int: Scalars['Int']['output'];
   Mutation: {};
@@ -271,6 +286,17 @@ export type CategoryResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type CategoryLabelResolvers<
+  ContextType = Context,
+  ParentType extends
+    ResolversParentTypes['CategoryLabel'] = ResolversParentTypes['CategoryLabel'],
+> = {
+  categoryId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<
   ContextType = Context,
   ParentType extends
@@ -281,6 +307,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationCreateCategoryArgs, 'maxAmount' | 'name'>
+  >;
+  createCategoryLabel?: Resolver<
+    ResolversTypes['Int'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateCategoryLabelArgs, 'categoryId' | 'labels'>
   >;
   createPaymentHistory?: Resolver<
     ResolversTypes['Int'],
@@ -365,6 +397,11 @@ export type QueryResolvers<
     ContextType,
     Partial<QueryListCategoriesArgs>
   >;
+  listCategoryLabels?: Resolver<
+    Array<ResolversTypes['CategoryLabel']>,
+    ParentType,
+    ContextType
+  >;
   listPaymentHistories?: Resolver<
     Array<ResolversTypes['PaymentHistory']>,
     ParentType,
@@ -392,6 +429,7 @@ export type QueryResolvers<
 
 export type Resolvers<ContextType = Context> = {
   Category?: CategoryResolvers<ContextType>;
+  CategoryLabel?: CategoryLabelResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   PaymentHistory?: PaymentHistoryResolvers<ContextType>;
   PaymentSummary?: PaymentSummaryResolvers<ContextType>;

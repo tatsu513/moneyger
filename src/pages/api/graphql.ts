@@ -146,6 +146,10 @@ const resolvers: Resolvers = {
         totalPaymentRatio: isNaN(ratio) ? 0 : ratio,
       };
     },
+    listCategoryLabels: async (_, _args) => {
+      const labels = await prisma.categoryLabel.findMany();
+      return labels;
+    }, 
   },
   Mutation: {
     createCategory: async (_, { name, maxAmount }, { user }) => {
@@ -225,6 +229,16 @@ const resolvers: Resolvers = {
         where: { id },
       });
       return target.id;
+    },
+    createCategoryLabel: async (_, { categoryId, labels }) => {
+      const target = await prisma.categoryLabel.createMany({
+        data: labels.map((l) => ({ categoryId, name: l })),
+        skipDuplicates: true,
+      }).catch((err) => {
+        console.error('カテゴリラベルの登録に失敗しました', { err, categoryId, labels });
+        throw new GraphQLError('カテゴリラベルの登録に失敗しました')
+      })
+      return target.count
     },
   },
 };

@@ -11,6 +11,8 @@ type Query {
   paymentHistory(paymentHistoryId: Int!): PaymentHistory
   # ダッシュボード用
   paymentSummary(targetDate: String!): PaymentSummary!
+  # カテゴリラベル一覧を取得
+  listCategoryLabels: [CategoryLabel!]!
 }
 
 # 支払の概要
@@ -48,6 +50,15 @@ type PaymentHistory {
   paymentId: Int!
 }
 
+type CategoryLabel {
+  #ID
+  id: Int!
+  # ラベル名
+  name: String!
+  # カテゴリID
+  categoryId: Int!
+}
+
 type Mutation {
   # 費目の作成
   createCategory(name: String!, maxAmount: Int!): Int!
@@ -72,4 +83,6 @@ type Mutation {
   ): Int!
   # 支払履歴を削除
   deletePaymentHistory(id: Int!): Int!
+  # カテゴリラベルを登録
+  createCategoryLabel(categoryId: Int!, labels: [String!]!): Int!
 }
