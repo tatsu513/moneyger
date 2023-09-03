@@ -17,7 +17,6 @@ const CategoriesListItem: React.FC<Props> = ({
 }) => {
   const diff = maxAmount - currentAmount;
   const { color } = getPriceColorAndBgColor(diff);
-  const sign = diff === 0 ? '' : diff > 0 ? '+' : '';
 
   return (
     <ListItem
@@ -48,7 +47,7 @@ const CategoriesListItem: React.FC<Props> = ({
 
         <Box textAlign="right">
           <Typography variant="h3Bold" mb={0.5} color={color}>
-            {sign + diff.toLocaleString()}円
+            {diff.toLocaleString()}円
           </Typography>
           <Typography variant="body2" mb={0.5} color={grey[500]}>
             {maxAmount.toLocaleString()}円

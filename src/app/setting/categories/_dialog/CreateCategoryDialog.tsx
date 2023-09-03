@@ -15,8 +15,9 @@ const createCategoryDialogCreateCategoryDocument = graphql(`
   mutation createCategoryDialog_CreateCategory(
     $name: String!
     $maxAmount: Int!
+    $labelIds: [Int!]!
   ) {
-    createCategory(name: $name, maxAmount: $maxAmount)
+    createCategory(name: $name, maxAmount: $maxAmount, labelIds: $labelIds)
   }
 `);
 
@@ -85,6 +86,7 @@ const CreateCategoryDialog: React.FC<Props> = ({
       const result = await submit({
         name: safeParseResult.data.name,
         maxAmount: safeParseResult.data.maxAmount,
+        labelIds: [],
       });
       if (result.error) {
         throw new Error('費目の作成に失敗', { cause: {

@@ -19,11 +19,15 @@ const resolvers: Resolvers = {
                 )
               )
                 return acc;
-              return val.paymentId === p.id ? acc + val.price : acc;
+              return val.categoryId === p.id ? acc + val.price : acc;
             }, 0);
+            const labels = categoryLabels.filter((l) => {
+              return l.categoryId === p.id
+            })
             return {
               ...p,
               currentAmount,
+              labels,
             };
           })
         : [];
@@ -34,13 +38,17 @@ const resolvers: Resolvers = {
       const category = categories.find((p) => p.id === categoryId);
       if (category == null) return null;
       const currentAmount = paymentHistories.reduce((acc, val) => {
-        return val.paymentId === category.id ? acc + val.price : acc;
+        return val.categoryId === category.id ? acc + val.price : acc;
       }, 0);
+      const labels = categoryLabels.filter((l) => {
+        return l.categoryId === category.id
+      })
       return {
         id: category.id,
         name: category.name,
         currentAmount,
         maxAmount: category.maxAmount,
+        labels,
       };
     },
     // 支払履歴を全て取得
@@ -56,14 +64,14 @@ const resolvers: Resolvers = {
       }));
     },
     // paymentに紐づく支払履歴一覧
-    listPaymentHistoriesByPaymentId: async (_, { paymentId }) => {
+    listPaymentHistoriesByCategoryId: async (_, { categoryId }) => {
       const validHistories = paymentHistories.flatMap((h) => {
         return isThisMonth(DateTime.now(), DateTime.fromJSDate(h.paymentDate))
           ? [h]
           : [];
       });
       const results = validHistories.flatMap((p) => {
-        if (p.paymentId === paymentId) {
+        if (p.categoryId === categoryId) {
           return [
             {
               ...p,
@@ -128,21 +136,21 @@ const resolvers: Resolvers = {
     },
     createPaymentHistory: async (
       _,
-      { note, price, paymentDate, paymentId },
+      { note, price, paymentDate, categoryId },
       { user },
     ) => {
       console.info(
-        { note, price, paymentDate, paymentId, user },
+        { note, price, paymentDate, categoryId, user },
         'createPaymentHistory called',
       );
       return 1;
     },
     updatePaymentHistory: async (
       _,
-      { id, paymentId, note, price, paymentDate },
+      { id, categoryId, note, price, paymentDate },
     ) => {
       console.info(
-        { id, paymentId, note, price, paymentDate },
+        { id, categoryId, note, price, paymentDate },
         'createPaymentHistory called',
       );
       return id;
@@ -213,7 +221,7 @@ const paymentHistories = [
     note: 'スーパー',
     price: 1588,
     paymentDate: new Date('2023-08-07T03:12:40+09:00'),
-    paymentId: 1,
+    categoryId: 1,
     authorId: 1,
     createdAt: new Date(),
   },
@@ -222,7 +230,7 @@ const paymentHistories = [
     note: 'コンビニ',
     price: 600,
     paymentDate: new Date(),
-    paymentId: 2,
+    categoryId: 2,
     authorId: 1,
     createdAt: new Date(),
   },
@@ -231,7 +239,7 @@ const paymentHistories = [
     note: '薬局',
     price: 300,
     paymentDate: new Date(),
-    paymentId: 3,
+    categoryId: 3,
     authorId: 1,
     createdAt: new Date(),
   },
@@ -240,8 +248,41 @@ const paymentHistories = [
     note: 'ヤマザキ',
     price: 300,
     paymentDate: new Date('2023-10-07T03:12:40+09:00'),
-    paymentId: 3,
+    categoryId: 3,
     authorId: 1,
     createdAt: new Date(),
   },
 ];
+
+const categoryLabels = [
+  {
+    id: 10,
+    name: "ラベル1",
+    createdAt: new Date(),
+    categoryId: 1,
+  },
+  {
+    id: 20,
+    name: "ラベル2",
+    createdAt: new Date(),
+    categoryId: 2,
+  },
+  {
+    id: 30,
+    name: "ラベル3",
+    createdAt: new Date(),
+    categoryId: 1,
+  },
+  {
+    id: 40,
+    name: "ラベル4",
+    createdAt: new Date(),
+    categoryId: 2,
+  },
+  {
+    id: 50,
+    name: "ラベル5",
+    createdAt: new Date(),
+    categoryId: 3,
+  }
+]

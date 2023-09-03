@@ -36,8 +36,8 @@ const PaymentHistoriesMain: React.FC<Props> = ({
 
   const handleChangePayment = useCallback(
     (_e: React.SyntheticEvent<Element, Event>, value: ListCategory | null) => {
-      const paymentId = value?.id;
-      const target = listCategories.find((p) => p.id === paymentId);
+      const categoryId = value?.id;
+      const target = listCategories.find((p) => p.id === categoryId);
       if (target == null) {
         setSelectedPayment(null);
         return;
@@ -92,7 +92,7 @@ const PaymentHistoriesMain: React.FC<Props> = ({
         </Box>
       </Box>
       <ListPaymentHistories
-        paymentId={selectedPayment?.id ?? null}
+        categoryId={selectedPayment?.id ?? null}
         initialState={listPaymentHistories}
       />
       <CreatePaymentHistoryDialog
