@@ -16,7 +16,7 @@ const paymentHistoriesPageDocument = graphql(`
     }
     listPaymentHistories {
       id
-      paymentId
+      categoryId
       paymentDate
       note
       price
@@ -37,7 +37,7 @@ const fetchDataSchema = z.object({
       note: z.string().nullable(),
       price: z.number(),
       paymentDate: z.string(),
-      paymentId: z.number(),
+      categoryId: z.number(),
     }),
   ),
 });

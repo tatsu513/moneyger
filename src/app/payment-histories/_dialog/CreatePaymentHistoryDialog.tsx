@@ -26,13 +26,13 @@ import { useMutation } from 'urql';
 
 const createPaymentHistoryDialogCreatePaymentDocument = graphql(`
   mutation createPaymentHistoryDialog_CreatePaymentHistory(
-    $paymentId: Int!
+    $categoryId: Int!
     $paymentDate: String!
     $price: Int!
     $note: String
   ) {
     createPaymentHistory(
-      paymentId: $paymentId
+      categoryId: $categoryId
       paymentDate: $paymentDate
       price: $price
       note: $note
@@ -66,7 +66,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
   const [note, setNote] = useState<string>('');
 
   const safeParseResult = editCreatePaymentHistorySchema.safeParse({
-    paymentId: payment?.id,
+    categoryId: payment?.id,
     paymentDate,
     price,
     note,
@@ -117,7 +117,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
   const handleSubmit = useCallback(async () => {
     events.onProcessing();
     const data = {
-      paymentId: payment?.id,
+      categoryId: payment?.id,
       paymentDate: paymentDate?.toISO(),
       price: Number(price),
       note,
@@ -133,7 +133,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
     }
     try {
       const result = await submit({
-        paymentId: parseResult.data.paymentId,
+        categoryId: parseResult.data.categoryId,
         paymentDate: parseResult.data.paymentDate,
         price: parseResult.data.price,
         note: parseResult.data.note,

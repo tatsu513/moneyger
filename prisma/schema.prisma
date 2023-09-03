@@ -42,8 +42,8 @@ model User {
   emailVerified  DateTime?
   image          String?
   accounts       Account[]
-  Payment        Category[]
-  PaymentHistory PaymentHistory[]
+  category       Category[]
+  paymentHistory PaymentHistory[]
   sessions       Session[]
 }
 
@@ -62,16 +62,16 @@ model Category {
   authorId       String
   createdAt      DateTime         @default(now())
   author         User             @relation(fields: [authorId], references: [id])
-  PaymentHistory PaymentHistory[]
-  CategoryLabel  CategoryLabel[]
+  categoryLabel  CategoryLabel[]
+  paymentHistory PaymentHistory[]
 }
 
 model CategoryLabel {
-  id         Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   name       String
-  createdAt  DateTime @default(now())
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId Int
+  createdAt  DateTime  @default(now())
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
 }
 
 model PaymentHistory {
@@ -79,9 +79,9 @@ model PaymentHistory {
   note        String?
   price       Int
   paymentDate DateTime
-  paymentId   Int
+  categoryId  Int
   authorId    String
   createdAt   DateTime @default(now())
   author      User     @relation(fields: [authorId], references: [id])
-  payment     Category @relation(fields: [paymentId], references: [id])
+  category    Category @relation(fields: [categoryId], references: [id])
 }

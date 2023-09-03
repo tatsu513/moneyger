@@ -12,7 +12,7 @@ const paymentHistoryPageDocument = graphql(`
   query paymentHistoryPage($paymentHistoryId: Int!) {
     paymentHistory(paymentHistoryId: $paymentHistoryId) {
       id
-      paymentId
+      categoryId
       paymentDate
       note
       price
@@ -35,7 +35,7 @@ const pageParamSchema = z.object({
 
 const paymentHistorySchema = z.object({
   id: z.number(),
-  paymentId: z.number(),
+  categoryId: z.number(),
   paymentDate: z.string(),
   note: z.string().nullable(),
   price: z.number(),
