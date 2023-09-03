@@ -41,7 +41,7 @@ const CategoriesSummary: React.FC<Props> = ({ listCategories, targetDate }) => {
     <Box>
       {categories.length === 0 ? (
         <Typography variant="body1" color={grey[500]} mt={1}>
-          データが登録されていません
+          費目が登録されていません
         </Typography>
       ) : (
         <List disablePadding>

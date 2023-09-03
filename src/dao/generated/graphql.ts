@@ -66,7 +66,7 @@ export type MutationCreateCategoryArgs = {
 };
 
 export type MutationCreateCategoryLabelArgs = {
-  categoryId: Scalars['Int']['input'];
+  categoryId?: InputMaybe<Scalars['Int']['input']>;
   labels?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
@@ -319,7 +319,7 @@ export type MutationResolvers<
     ResolversTypes['Int'],
     ParentType,
     ContextType,
-    RequireFields<MutationCreateCategoryLabelArgs, 'categoryId'>
+    Partial<MutationCreateCategoryLabelArgs>
   >;
   createPaymentHistory?: Resolver<
     ResolversTypes['Int'],
@@ -593,6 +593,21 @@ export type SettingCategoriesPageQuery = {
   listCategories: Array<{ id: number; name: string; maxAmount: number }>;
 };
 
+export type CreateLabelDialog_CreateLabelMutationVariables = Exact<{
+  categoryId?: InputMaybe<Scalars['Int']['input']>;
+  labels?: InputMaybe<Array<Scalars['String']['input']>>;
+}>;
+
+export type CreateLabelDialog_CreateLabelMutation = {
+  createCategoryLabel: number;
+};
+
+export type SettingLabelsPageQueryVariables = Exact<{ [key: string]: never }>;
+
+export type SettingLabelsPageQuery = {
+  listCategoryLabels: Array<{ id: number; name: string }>;
+};
+
 export const TopPageCategoriesDocument = gql`
   query topPageCategories($targetDate: String!) {
     listCategories(targetDate: $targetDate) {
@@ -727,6 +742,19 @@ export const SettingCategoriesPageDocument = gql`
       id
       name
       maxAmount
+    }
+  }
+`;
+export const CreateLabelDialog_CreateLabelDocument = gql`
+  mutation createLabelDialog_CreateLabel($categoryId: Int, $labels: [String!]) {
+    createCategoryLabel(categoryId: $categoryId, labels: $labels)
+  }
+`;
+export const SettingLabelsPageDocument = gql`
+  query settingLabelsPage {
+    listCategoryLabels {
+      id
+      name
     }
   }
 `;
@@ -940,6 +968,36 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders },
           ),
         'settingCategoriesPage',
+        'query',
+      );
+    },
+    createLabelDialog_CreateLabel(
+      variables?: CreateLabelDialog_CreateLabelMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<CreateLabelDialog_CreateLabelMutation> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<CreateLabelDialog_CreateLabelMutation>(
+            CreateLabelDialog_CreateLabelDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'createLabelDialog_CreateLabel',
+        'mutation',
+      );
+    },
+    settingLabelsPage(
+      variables?: SettingLabelsPageQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<SettingLabelsPageQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<SettingLabelsPageQuery>(
+            SettingLabelsPageDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'settingLabelsPage',
         'query',
       );
     },

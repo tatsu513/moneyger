@@ -39,6 +39,10 @@ const documents = {
     types.CreateCategoryDialog_UpdateCategoryDocument,
   '\n  query settingCategoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      maxAmount\n    }\n  }\n':
     types.SettingCategoriesPageDocument,
+  '\n  mutation createLabelDialog_CreateLabel(\n    $categoryId: Int\n    $labels: [String!]\n  ) {\n    createCategoryLabel(categoryId: $categoryId, labels: $labels)\n  }\n':
+    types.CreateLabelDialog_CreateLabelDocument,
+  '\n  query settingLabelsPage {\n    listCategoryLabels {\n      id\n      name\n    }\n  }\n':
+    types.SettingLabelsPageDocument,
 };
 
 /**
@@ -133,6 +137,18 @@ export function graphql(
 export function graphql(
   source: '\n  query settingCategoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      maxAmount\n    }\n  }\n',
 ): (typeof documents)['\n  query settingCategoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      maxAmount\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation createLabelDialog_CreateLabel(\n    $categoryId: Int\n    $labels: [String!]\n  ) {\n    createCategoryLabel(categoryId: $categoryId, labels: $labels)\n  }\n',
+): (typeof documents)['\n  mutation createLabelDialog_CreateLabel(\n    $categoryId: Int\n    $labels: [String!]\n  ) {\n    createCategoryLabel(categoryId: $categoryId, labels: $labels)\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query settingLabelsPage {\n    listCategoryLabels {\n      id\n      name\n    }\n  }\n',
+): (typeof documents)['\n  query settingLabelsPage {\n    listCategoryLabels {\n      id\n      name\n    }\n  }\n'];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

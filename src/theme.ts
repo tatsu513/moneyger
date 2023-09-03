@@ -11,6 +11,7 @@ const fontSize = {
   XS: 16,
   XXS: 14,
   XXXS: 12,
+  XXXXS: 10,
 } as const;
 
 // font-family
@@ -84,10 +85,10 @@ const initialTheme = createTheme({
       textDecoration: 'underline',
     },
     caption: {
-      fontSize: fontSize.XXS,
+      fontSize: fontSize.XXXS,
     },
     captionBold: {
-      fontSize: fontSize.XXS,
+      fontSize: fontSize.XXXS,
       fontWeight: 700,
     },
     button: {

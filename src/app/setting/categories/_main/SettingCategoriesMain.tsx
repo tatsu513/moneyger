@@ -91,8 +91,8 @@ const SettingCategoriesMain: React.FC<Props> = ({ categories }) => {
       </Box>
 
       {categories.length === 0 ? (
-        <Typography variant="body1" color={grey[500]}>
-          データが登録されていません
+        <Typography variant="body1" mt={8} color={grey[500]} textAlign="center">
+          費目が登録されていません
         </Typography>
       ) : (
         <List>

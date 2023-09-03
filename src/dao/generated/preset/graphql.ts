@@ -60,7 +60,7 @@ export type MutationCreateCategoryArgs = {
 };
 
 export type MutationCreateCategoryLabelArgs = {
-  categoryId: Scalars['Int']['input'];
+  categoryId?: InputMaybe<Scalars['Int']['input']>;
   labels?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
@@ -285,6 +285,21 @@ export type SettingCategoriesPageQueryVariables = Exact<{
 
 export type SettingCategoriesPageQuery = {
   listCategories: Array<{ id: number; name: string; maxAmount: number }>;
+};
+
+export type CreateLabelDialog_CreateLabelMutationVariables = Exact<{
+  categoryId?: InputMaybe<Scalars['Int']['input']>;
+  labels?: InputMaybe<Array<Scalars['String']['input']>>;
+}>;
+
+export type CreateLabelDialog_CreateLabelMutation = {
+  createCategoryLabel: number;
+};
+
+export type SettingLabelsPageQueryVariables = Exact<{ [key: string]: never }>;
+
+export type SettingLabelsPageQuery = {
+  listCategoryLabels: Array<{ id: number; name: string }>;
 };
 
 export const TopPageCategoriesDocument = {
@@ -1213,4 +1228,100 @@ export const SettingCategoriesPageDocument = {
 } as unknown as DocumentNode<
   SettingCategoriesPageQuery,
   SettingCategoriesPageQueryVariables
+>;
+export const CreateLabelDialog_CreateLabelDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createLabelDialog_CreateLabel' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'categoryId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'labels' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: { kind: 'Name', value: 'String' },
+              },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createCategoryLabel' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'categoryId' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'categoryId' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'labels' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'labels' },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateLabelDialog_CreateLabelMutation,
+  CreateLabelDialog_CreateLabelMutationVariables
+>;
+export const SettingLabelsPageDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'settingLabelsPage' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'listCategoryLabels' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SettingLabelsPageQuery,
+  SettingLabelsPageQueryVariables
 >;

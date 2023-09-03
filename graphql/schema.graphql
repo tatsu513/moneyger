@@ -86,5 +86,5 @@ type Mutation {
   # 支払履歴を削除
   deletePaymentHistory(id: Int!): Int!
   # カテゴリラベルを登録
-  createCategoryLabel(categoryId: Int!, labels: [String!]): Int!
+  createCategoryLabel(categoryId: Int, labels: [String!]): Int!
 }
