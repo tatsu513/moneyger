@@ -75,7 +75,7 @@
     "type-fest": "^4.0.0"
   },
   "resolutions": {
-    "jackspeak": "2.1.1"
+    "jackspeak": "2.3.3"
   },
   "volta": {
     "node": "18.17.1",
