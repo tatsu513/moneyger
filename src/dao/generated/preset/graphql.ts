@@ -47,8 +47,10 @@ export type Mutation = {
   createCategory: Scalars['Int']['output'];
   createCategoryLabel: Scalars['Int']['output'];
   createPaymentHistory: Scalars['Int']['output'];
+  deleteCaregoryLabel: Scalars['Int']['output'];
   deleteCategory: Scalars['Int']['output'];
   deletePaymentHistory: Scalars['Int']['output'];
+  updateCaregoryLabel: Scalars['Int']['output'];
   updateCategory: Scalars['Int']['output'];
   updatePaymentHistory: Scalars['Int']['output'];
 };
@@ -71,12 +73,21 @@ export type MutationCreatePaymentHistoryArgs = {
   price: Scalars['Int']['input'];
 };
 
+export type MutationDeleteCaregoryLabelArgs = {
+  categoryLabelId: Scalars['Int']['input'];
+};
+
 export type MutationDeleteCategoryArgs = {
   id: Scalars['Int']['input'];
 };
 
 export type MutationDeletePaymentHistoryArgs = {
   id: Scalars['Int']['input'];
+};
+
+export type MutationUpdateCaregoryLabelArgs = {
+  categoryLabelId: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
 };
 
 export type MutationUpdateCategoryArgs = {
@@ -294,6 +305,23 @@ export type CreateLabelDialog_CreateLabelMutationVariables = Exact<{
 
 export type CreateLabelDialog_CreateLabelMutation = {
   createCategoryLabel: number;
+};
+
+export type DeleteCategoryDialog_DeleteCategoryLabelMutationVariables = Exact<{
+  categoryLabelId: Scalars['Int']['input'];
+}>;
+
+export type DeleteCategoryDialog_DeleteCategoryLabelMutation = {
+  deleteCaregoryLabel: number;
+};
+
+export type CreateLabelDialog_UpdateCategoryLabelMutationVariables = Exact<{
+  categoryLabelId: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
+}>;
+
+export type CreateLabelDialog_UpdateCategoryLabelMutation = {
+  updateCaregoryLabel: number;
 };
 
 export type SettingLabelsPageQueryVariables = Exact<{ [key: string]: never }>;
@@ -1295,6 +1323,115 @@ export const CreateLabelDialog_CreateLabelDocument = {
 } as unknown as DocumentNode<
   CreateLabelDialog_CreateLabelMutation,
   CreateLabelDialog_CreateLabelMutationVariables
+>;
+export const DeleteCategoryDialog_DeleteCategoryLabelDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'deleteCategoryDialog_DeleteCategoryLabel' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'categoryLabelId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'deleteCaregoryLabel' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'categoryLabelId' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'categoryLabelId' },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteCategoryDialog_DeleteCategoryLabelMutation,
+  DeleteCategoryDialog_DeleteCategoryLabelMutationVariables
+>;
+export const CreateLabelDialog_UpdateCategoryLabelDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createLabelDialog_UpdateCategoryLabel' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'categoryLabelId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'name' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateCaregoryLabel' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'categoryLabelId' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'categoryLabelId' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'name' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'name' },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateLabelDialog_UpdateCategoryLabelMutation,
+  CreateLabelDialog_UpdateCategoryLabelMutationVariables
 >;
 export const SettingLabelsPageDocument = {
   kind: 'Document',

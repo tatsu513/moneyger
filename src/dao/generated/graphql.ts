@@ -53,8 +53,10 @@ export type Mutation = {
   createCategory: Scalars['Int']['output'];
   createCategoryLabel: Scalars['Int']['output'];
   createPaymentHistory: Scalars['Int']['output'];
+  deleteCaregoryLabel: Scalars['Int']['output'];
   deleteCategory: Scalars['Int']['output'];
   deletePaymentHistory: Scalars['Int']['output'];
+  updateCaregoryLabel: Scalars['Int']['output'];
   updateCategory: Scalars['Int']['output'];
   updatePaymentHistory: Scalars['Int']['output'];
 };
@@ -77,12 +79,21 @@ export type MutationCreatePaymentHistoryArgs = {
   price: Scalars['Int']['input'];
 };
 
+export type MutationDeleteCaregoryLabelArgs = {
+  categoryLabelId: Scalars['Int']['input'];
+};
+
 export type MutationDeleteCategoryArgs = {
   id: Scalars['Int']['input'];
 };
 
 export type MutationDeletePaymentHistoryArgs = {
   id: Scalars['Int']['input'];
+};
+
+export type MutationUpdateCaregoryLabelArgs = {
+  categoryLabelId: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
 };
 
 export type MutationUpdateCategoryArgs = {
@@ -330,6 +341,12 @@ export type MutationResolvers<
       'categoryId' | 'paymentDate' | 'price'
     >
   >;
+  deleteCaregoryLabel?: Resolver<
+    ResolversTypes['Int'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteCaregoryLabelArgs, 'categoryLabelId'>
+  >;
   deleteCategory?: Resolver<
     ResolversTypes['Int'],
     ParentType,
@@ -341,6 +358,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationDeletePaymentHistoryArgs, 'id'>
+  >;
+  updateCaregoryLabel?: Resolver<
+    ResolversTypes['Int'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateCaregoryLabelArgs, 'categoryLabelId' | 'name'>
   >;
   updateCategory?: Resolver<
     ResolversTypes['Int'],
@@ -602,6 +625,23 @@ export type CreateLabelDialog_CreateLabelMutation = {
   createCategoryLabel: number;
 };
 
+export type DeleteCategoryDialog_DeleteCategoryLabelMutationVariables = Exact<{
+  categoryLabelId: Scalars['Int']['input'];
+}>;
+
+export type DeleteCategoryDialog_DeleteCategoryLabelMutation = {
+  deleteCaregoryLabel: number;
+};
+
+export type CreateLabelDialog_UpdateCategoryLabelMutationVariables = Exact<{
+  categoryLabelId: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
+}>;
+
+export type CreateLabelDialog_UpdateCategoryLabelMutation = {
+  updateCaregoryLabel: number;
+};
+
 export type SettingLabelsPageQueryVariables = Exact<{ [key: string]: never }>;
 
 export type SettingLabelsPageQuery = {
@@ -748,6 +788,19 @@ export const SettingCategoriesPageDocument = gql`
 export const CreateLabelDialog_CreateLabelDocument = gql`
   mutation createLabelDialog_CreateLabel($categoryId: Int, $labels: [String!]) {
     createCategoryLabel(categoryId: $categoryId, labels: $labels)
+  }
+`;
+export const DeleteCategoryDialog_DeleteCategoryLabelDocument = gql`
+  mutation deleteCategoryDialog_DeleteCategoryLabel($categoryLabelId: Int!) {
+    deleteCaregoryLabel(categoryLabelId: $categoryLabelId)
+  }
+`;
+export const CreateLabelDialog_UpdateCategoryLabelDocument = gql`
+  mutation createLabelDialog_UpdateCategoryLabel(
+    $categoryLabelId: Int!
+    $name: String!
+  ) {
+    updateCaregoryLabel(categoryLabelId: $categoryLabelId, name: $name)
   }
 `;
 export const SettingLabelsPageDocument = gql`
@@ -983,6 +1036,36 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders },
           ),
         'createLabelDialog_CreateLabel',
+        'mutation',
+      );
+    },
+    deleteCategoryDialog_DeleteCategoryLabel(
+      variables: DeleteCategoryDialog_DeleteCategoryLabelMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<DeleteCategoryDialog_DeleteCategoryLabelMutation> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<DeleteCategoryDialog_DeleteCategoryLabelMutation>(
+            DeleteCategoryDialog_DeleteCategoryLabelDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'deleteCategoryDialog_DeleteCategoryLabel',
+        'mutation',
+      );
+    },
+    createLabelDialog_UpdateCategoryLabel(
+      variables: CreateLabelDialog_UpdateCategoryLabelMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<CreateLabelDialog_UpdateCategoryLabelMutation> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<CreateLabelDialog_UpdateCategoryLabelMutation>(
+            CreateLabelDialog_UpdateCategoryLabelDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'createLabelDialog_UpdateCategoryLabel',
         'mutation',
       );
     },

@@ -13,6 +13,8 @@ import SecondaryButton from '@/components/common/buttons/SecondaryButton';
 // import DeleteCategoryDialog from '@/app/setting/categories/_dialog/DeleteCategoryDialog';
 import LabelListItem from '@/app/setting/labels/_main/LabelListItem';
 import CreateLabelDialog from '@/app/setting/labels/_dialog/CreateLabelDialog';
+import DeleteLabelDialog from '@/app/setting/labels/_dialog/DeleteLabelDialog';
+import UpdateLabelDialog from '@/app/setting/labels/_dialog/UpdateLabelDialog';
 
 type Label = SettingLabelsPageQuery['listCategoryLabels'][number]
 type Props = {
@@ -116,9 +118,9 @@ const SettingLabelsMain: React.FC<Props> = ({ labels }) => {
           onProcessing: setCreateProcessing,
         }}
       />
-      {/* {selectedLabel && (
+      {selectedLabel && (
         <>
-          <UpdateCategoryDialog
+          <UpdateLabelDialog
             dialogState={updateDialogState}
             label={selectedLabel}
             onClose={dialogClose}
@@ -128,7 +130,7 @@ const SettingLabelsMain: React.FC<Props> = ({ labels }) => {
               onProcessing: setUpdateProcessing,
             }}
           />
-          <DeleteCategoryDialog
+          <DeleteLabelDialog
             dialogState={deleteDialogState}
             label={selectedLabel}
             onClose={dialogClose}
@@ -139,7 +141,7 @@ const SettingLabelsMain: React.FC<Props> = ({ labels }) => {
             }}
           />
         </>
-      )} */}
+      )}
     </Box>
   );
 };

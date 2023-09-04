@@ -251,6 +251,25 @@ const resolvers: Resolvers = {
       })
       return target.count
     },
+    updateCaregoryLabel: async (_, { categoryLabelId, name }) => {
+      const target = await prisma.categoryLabel.update({
+        where: { id: categoryLabelId },
+        data: { name }
+      }).catch((err) => {
+        console.error('カテゴリラベルの更新に失敗しました', { err, categoryLabelId, name });
+        throw new GraphQLError('カテゴリラベルの更新に失敗しました')
+      })
+      return target.id
+    },
+    deleteCaregoryLabel: async (_, { categoryLabelId }) => {
+      const target = await prisma.categoryLabel.delete({
+        where: { id: categoryLabelId },
+      }).catch((err) => {
+        console.error('カテゴリラベルの削除に失敗しました', { err, categoryLabelId, name });
+        throw new GraphQLError('カテゴリラベルの削除に失敗しました')
+      })
+      return target.id
+    },
   },
 };
 

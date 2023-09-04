@@ -41,6 +41,10 @@ const documents = {
     types.SettingCategoriesPageDocument,
   '\n  mutation createLabelDialog_CreateLabel(\n    $categoryId: Int\n    $labels: [String!]\n  ) {\n    createCategoryLabel(categoryId: $categoryId, labels: $labels)\n  }\n':
     types.CreateLabelDialog_CreateLabelDocument,
+  '\n  mutation deleteCategoryDialog_DeleteCategoryLabel($categoryLabelId: Int!) {\n    deleteCaregoryLabel(categoryLabelId: $categoryLabelId)\n  }\n':
+    types.DeleteCategoryDialog_DeleteCategoryLabelDocument,
+  '\n  mutation createLabelDialog_UpdateCategoryLabel(\n    $categoryLabelId: Int!\n    $name: String!\n  ) {\n    updateCaregoryLabel(categoryLabelId: $categoryLabelId, name: $name)\n  }\n':
+    types.CreateLabelDialog_UpdateCategoryLabelDocument,
   '\n  query settingLabelsPage {\n    listCategoryLabels {\n      id\n      name\n    }\n  }\n':
     types.SettingLabelsPageDocument,
 };
@@ -143,6 +147,18 @@ export function graphql(
 export function graphql(
   source: '\n  mutation createLabelDialog_CreateLabel(\n    $categoryId: Int\n    $labels: [String!]\n  ) {\n    createCategoryLabel(categoryId: $categoryId, labels: $labels)\n  }\n',
 ): (typeof documents)['\n  mutation createLabelDialog_CreateLabel(\n    $categoryId: Int\n    $labels: [String!]\n  ) {\n    createCategoryLabel(categoryId: $categoryId, labels: $labels)\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation deleteCategoryDialog_DeleteCategoryLabel($categoryLabelId: Int!) {\n    deleteCaregoryLabel(categoryLabelId: $categoryLabelId)\n  }\n',
+): (typeof documents)['\n  mutation deleteCategoryDialog_DeleteCategoryLabel($categoryLabelId: Int!) {\n    deleteCaregoryLabel(categoryLabelId: $categoryLabelId)\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation createLabelDialog_UpdateCategoryLabel(\n    $categoryLabelId: Int!\n    $name: String!\n  ) {\n    updateCaregoryLabel(categoryLabelId: $categoryLabelId, name: $name)\n  }\n',
+): (typeof documents)['\n  mutation createLabelDialog_UpdateCategoryLabel(\n    $categoryLabelId: Int!\n    $name: String!\n  ) {\n    updateCaregoryLabel(categoryLabelId: $categoryLabelId, name: $name)\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
