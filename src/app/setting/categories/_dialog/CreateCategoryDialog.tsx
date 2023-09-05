@@ -1,10 +1,12 @@
+import MoneygerAutocompleteMultiple from '@/components/common/MoneygerAutocompleteMultiple';
 import MoneygerDialog from '@/components/common/MoneygerDialog';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 import TextButton from '@/components/common/buttons/TextButton';
 import { graphql } from '@/dao/generated/preset';
-import { maxAmountType, nameType } from '@/models/category';
+import { SettingCategoriesPageQuery } from '@/dao/generated/preset/graphql';
+import { labelsType, maxAmountType, nameType } from '@/models/category';
 import DialogState from '@/types/DialogState';
-import { Box, Slide, TextField, Typography } from '@mui/material';
+import { Box, Slide, TextField, Typography, createFilterOptions } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useCallback, useState } from 'react';
@@ -24,10 +26,13 @@ const createCategoryDialogCreateCategoryDocument = graphql(`
 const createCategorySchema = z.object({
   name: nameType,
   maxAmount: maxAmountType,
+  labels: labelsType
 });
 
+type Label = SettingCategoriesPageQuery['listCategoryLabels'][number]
 type Props = {
   dialogState: DialogState;
+  labels: Label[];
   onClose: () => void;
   events: {
     onSuccess: () => void;
@@ -37,16 +42,19 @@ type Props = {
 };
 const CreateCategoryDialog: React.FC<Props> = ({
   dialogState,
+  labels,
   onClose,
   events,
 }) => {
   const router = useRouter();
   const [name, setName] = useState('');
   const [maxAmount, setMaxAmount] = useState('');
+  const [selectedLabels, setSelectedLabels] = useState<Label[]>([])
 
   const safeParseResult = createCategorySchema.safeParse({
     name,
     maxAmount,
+    labels: selectedLabels
   });
 
   const handleChangeName = useCallback(
@@ -74,6 +82,24 @@ const CreateCategoryDialog: React.FC<Props> = ({
     setMaxAmount('');
   }, [onClose]);
 
+  const getOptionLabel = useCallback(
+    (option: Label): string => option.name,
+    [],
+  );
+  const filterOptions = createFilterOptions({
+    matchFrom: 'any',
+    stringify: (label: Label) => label.name,
+  });
+  const handlePaymentChange = useCallback(
+    (
+      _e: React.SyntheticEvent<Element, Event>,
+      values: Label[] | null,
+    ) => {
+      setSelectedLabels(values ?? []);
+    },
+    [],
+  );
+
   const submit = useMutation(createCategoryDialogCreateCategoryDocument)[1];
   const handleSubmit = useCallback(async () => {
     events.onProcessing();
@@ -86,7 +112,7 @@ const CreateCategoryDialog: React.FC<Props> = ({
       const result = await submit({
         name: safeParseResult.data.name,
         maxAmount: safeParseResult.data.maxAmount,
-        labelIds: [],
+        labelIds: safeParseResult.data.labels.map((l) => l.id),
       });
       if (result.error) {
         throw new Error('費目の作成に失敗', { cause: {
@@ -132,6 +158,21 @@ const CreateCategoryDialog: React.FC<Props> = ({
           onChange={handleChangeMaxAmount}
           placeholder="10000"
           size="small"
+        />
+      </Box>
+      <Box mb={3}>
+        <Typography variant="body1" mb={1}>
+          上限金額
+        </Typography>
+        <MoneygerAutocompleteMultiple
+          values={selectedLabels}
+          options={labels}
+          noOptionsText="ラベルがありません"
+          ariaLabel="ラベルの設定"
+          placeholder='ラベルを選択'
+          getOptionLabel={getOptionLabel}
+          filterOptions={filterOptions}
+          onChange={handlePaymentChange}
         />
       </Box>
       <Box display="flex" flexDirection="column" columnGap={2}>

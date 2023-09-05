@@ -15,10 +15,12 @@ import UpdateCategoryDialog from '@/app/setting/categories/_dialog/UpdateCategor
 import DeleteCategoryDialog from '@/app/setting/categories/_dialog/DeleteCategoryDialog';
 
 type Category = SettingCategoriesPageQuery['listCategories'][number]
+type Label = SettingCategoriesPageQuery['listCategoryLabels'][number]
 type Props = {
   categories: Category[];
+  labels: Label[];
 };
-const SettingCategoriesMain: React.FC<Props> = ({ categories }) => {
+const SettingCategoriesMain: React.FC<Props> = ({ categories, labels }) => {
   const [dialogState, setDialogState] = useState<DialogState>('closed');
   const [updateDialogState, setUpdateDialogState] = useState<DialogState>('closed');
   const [deleteDialogState, setDeleteDialogState] = useState<DialogState>('closed');
@@ -99,6 +101,10 @@ const SettingCategoriesMain: React.FC<Props> = ({ categories }) => {
           {categories.map((p) => (
             <CategoriesListItem
               key={p.name} {...p}
+              id={p.id}
+              name={p.name}
+              maxAmount={p.maxAmount}
+              labels={p.labels.flatMap((l) => l ? [l] : []) ?? []}
               onRowClick={updateDialogOpen}
               onDeleteClick={deleteDialogOpen}
             />
@@ -108,6 +114,7 @@ const SettingCategoriesMain: React.FC<Props> = ({ categories }) => {
       <CreateCategoryDialog
         dialogState={dialogState}
         onClose={dialogClose}
+        labels={labels}
         events={{
           onSuccess: setSuccess,
           onError: setError,
@@ -117,15 +124,16 @@ const SettingCategoriesMain: React.FC<Props> = ({ categories }) => {
       {selectedCategory && (
         <>
           <UpdateCategoryDialog
-          dialogState={updateDialogState}
-          category={selectedCategory}
-          onClose={dialogClose}
-          events={{
-            onSuccess: setUpdateSuccess,
-            onError: setUpdateError,
-            onProcessing: setUpdateProcessing,
-          }}
-        />
+            dialogState={updateDialogState}
+            labels={labels}
+            category={selectedCategory}
+            onClose={dialogClose}
+            events={{
+              onSuccess: setUpdateSuccess,
+              onError: setUpdateError,
+              onProcessing: setUpdateProcessing,
+            }}
+          />
         <DeleteCategoryDialog
           dialogState={deleteDialogState}
           category={selectedCategory}

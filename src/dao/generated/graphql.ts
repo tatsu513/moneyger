@@ -49,6 +49,11 @@ export type CategoryLabel = {
   name: Scalars['String']['output'];
 };
 
+export type InputCategoryLabel = {
+  id: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
+};
+
 export type Mutation = {
   createCategory: Scalars['Int']['output'];
   createCategoryLabel: Scalars['Int']['output'];
@@ -98,6 +103,7 @@ export type MutationUpdateCaregoryLabelArgs = {
 
 export type MutationUpdateCategoryArgs = {
   id: Scalars['Int']['input'];
+  labelIds: Array<Scalars['Int']['input']>;
   maxAmount: Scalars['Int']['input'];
   name: Scalars['String']['input'];
 };
@@ -265,6 +271,7 @@ export type ResolversTypes = {
   Category: ResolverTypeWrapper<Category>;
   CategoryLabel: ResolverTypeWrapper<CategoryLabel>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
+  InputCategoryLabel: InputCategoryLabel;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   PaymentHistory: ResolverTypeWrapper<PaymentHistory>;
@@ -279,6 +286,7 @@ export type ResolversParentTypes = {
   Category: Category;
   CategoryLabel: CategoryLabel;
   Float: Scalars['Float']['output'];
+  InputCategoryLabel: InputCategoryLabel;
   Int: Scalars['Int']['output'];
   Mutation: {};
   PaymentHistory: PaymentHistory;
@@ -369,7 +377,10 @@ export type MutationResolvers<
     ResolversTypes['Int'],
     ParentType,
     ContextType,
-    RequireFields<MutationUpdateCategoryArgs, 'id' | 'maxAmount' | 'name'>
+    RequireFields<
+      MutationUpdateCategoryArgs,
+      'id' | 'labelIds' | 'maxAmount' | 'name'
+    >
   >;
   updatePaymentHistory?: Resolver<
     ResolversTypes['Int'],
@@ -598,13 +609,14 @@ export type DeleteCategoryDialog_DeleteCategoryMutation = {
   deleteCategory: number;
 };
 
-export type CreateCategoryDialog_UpdateCategoryMutationVariables = Exact<{
+export type UpdateCategoryDialog_UpdateCategoryMutationVariables = Exact<{
   id: Scalars['Int']['input'];
   name: Scalars['String']['input'];
   maxAmount: Scalars['Int']['input'];
+  labelIds: Array<Scalars['Int']['input']>;
 }>;
 
-export type CreateCategoryDialog_UpdateCategoryMutation = {
+export type UpdateCategoryDialog_UpdateCategoryMutation = {
   updateCategory: number;
 };
 
@@ -613,7 +625,13 @@ export type SettingCategoriesPageQueryVariables = Exact<{
 }>;
 
 export type SettingCategoriesPageQuery = {
-  listCategories: Array<{ id: number; name: string; maxAmount: number }>;
+  listCategories: Array<{
+    id: number;
+    name: string;
+    maxAmount: number;
+    labels: Array<{ id: number; name: string } | null>;
+  }>;
+  listCategoryLabels: Array<{ id: number; name: string }>;
 };
 
 export type CreateLabelDialog_CreateLabelMutationVariables = Exact<{
@@ -767,13 +785,19 @@ export const DeleteCategoryDialog_DeleteCategoryDocument = gql`
     deleteCategory(id: $id)
   }
 `;
-export const CreateCategoryDialog_UpdateCategoryDocument = gql`
-  mutation createCategoryDialog_UpdateCategory(
+export const UpdateCategoryDialog_UpdateCategoryDocument = gql`
+  mutation updateCategoryDialog_UpdateCategory(
     $id: Int!
     $name: String!
     $maxAmount: Int!
+    $labelIds: [Int!]!
   ) {
-    updateCategory(id: $id, name: $name, maxAmount: $maxAmount)
+    updateCategory(
+      id: $id
+      name: $name
+      maxAmount: $maxAmount
+      labelIds: $labelIds
+    )
   }
 `;
 export const SettingCategoriesPageDocument = gql`
@@ -782,6 +806,14 @@ export const SettingCategoriesPageDocument = gql`
       id
       name
       maxAmount
+      labels {
+        id
+        name
+      }
+    }
+    listCategoryLabels {
+      id
+      name
     }
   }
 `;
@@ -994,18 +1026,18 @@ export function getSdk(
         'mutation',
       );
     },
-    createCategoryDialog_UpdateCategory(
-      variables: CreateCategoryDialog_UpdateCategoryMutationVariables,
+    updateCategoryDialog_UpdateCategory(
+      variables: UpdateCategoryDialog_UpdateCategoryMutationVariables,
       requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<CreateCategoryDialog_UpdateCategoryMutation> {
+    ): Promise<UpdateCategoryDialog_UpdateCategoryMutation> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<CreateCategoryDialog_UpdateCategoryMutation>(
-            CreateCategoryDialog_UpdateCategoryDocument,
+          client.request<UpdateCategoryDialog_UpdateCategoryMutation>(
+            UpdateCategoryDialog_UpdateCategoryDocument,
             variables,
             { ...requestHeaders, ...wrappedRequestHeaders },
           ),
-        'createCategoryDialog_UpdateCategory',
+        'updateCategoryDialog_UpdateCategory',
         'mutation',
       );
     },

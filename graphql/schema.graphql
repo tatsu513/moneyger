@@ -65,7 +65,12 @@ type Mutation {
   # 費目の作成
   createCategory(name: String!, maxAmount: Int!, labelIds: [Int!]!): Int!
   # 費目の更新
-  updateCategory(id: Int!, name: String!, maxAmount: Int!): Int!
+  updateCategory(
+    id: Int!
+    name: String!
+    maxAmount: Int!
+    labelIds: [Int!]!
+  ): Int!
   # 費目の削除
   deleteCategory(id: Int!): Int!
   # 支払履歴を作成
@@ -91,4 +96,11 @@ type Mutation {
   updateCaregoryLabel(categoryLabelId: Int!, name: String!): Int!
   # カテゴリラベルを削除
   deleteCaregoryLabel(categoryLabelId: Int!): Int!
+}
+
+input InputCategoryLabel {
+  #ID
+  id: Int!
+  # ラベル名
+  name: String!
 }

@@ -43,6 +43,11 @@ export type CategoryLabel = {
   name: Scalars['String']['output'];
 };
 
+export type InputCategoryLabel = {
+  id: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
+};
+
 export type Mutation = {
   createCategory: Scalars['Int']['output'];
   createCategoryLabel: Scalars['Int']['output'];
@@ -92,6 +97,7 @@ export type MutationUpdateCaregoryLabelArgs = {
 
 export type MutationUpdateCategoryArgs = {
   id: Scalars['Int']['input'];
+  labelIds: Array<Scalars['Int']['input']>;
   maxAmount: Scalars['Int']['input'];
   name: Scalars['String']['input'];
 };
@@ -280,13 +286,14 @@ export type DeleteCategoryDialog_DeleteCategoryMutation = {
   deleteCategory: number;
 };
 
-export type CreateCategoryDialog_UpdateCategoryMutationVariables = Exact<{
+export type UpdateCategoryDialog_UpdateCategoryMutationVariables = Exact<{
   id: Scalars['Int']['input'];
   name: Scalars['String']['input'];
   maxAmount: Scalars['Int']['input'];
+  labelIds: Array<Scalars['Int']['input']>;
 }>;
 
-export type CreateCategoryDialog_UpdateCategoryMutation = {
+export type UpdateCategoryDialog_UpdateCategoryMutation = {
   updateCategory: number;
 };
 
@@ -295,7 +302,13 @@ export type SettingCategoriesPageQueryVariables = Exact<{
 }>;
 
 export type SettingCategoriesPageQuery = {
-  listCategories: Array<{ id: number; name: string; maxAmount: number }>;
+  listCategories: Array<{
+    id: number;
+    name: string;
+    maxAmount: number;
+    labels: Array<{ id: number; name: string } | null>;
+  }>;
+  listCategoryLabels: Array<{ id: number; name: string }>;
 };
 
 export type CreateLabelDialog_CreateLabelMutationVariables = Exact<{
@@ -1121,13 +1134,13 @@ export const DeleteCategoryDialog_DeleteCategoryDocument = {
   DeleteCategoryDialog_DeleteCategoryMutation,
   DeleteCategoryDialog_DeleteCategoryMutationVariables
 >;
-export const CreateCategoryDialog_UpdateCategoryDocument = {
+export const UpdateCategoryDialog_UpdateCategoryDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
       operation: 'mutation',
-      name: { kind: 'Name', value: 'createCategoryDialog_UpdateCategory' },
+      name: { kind: 'Name', value: 'updateCategoryDialog_UpdateCategory' },
       variableDefinitions: [
         {
           kind: 'VariableDefinition',
@@ -1157,6 +1170,26 @@ export const CreateCategoryDialog_UpdateCategoryDocument = {
           type: {
             kind: 'NonNullType',
             type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'labelIds' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'ListType',
+              type: {
+                kind: 'NonNullType',
+                type: {
+                  kind: 'NamedType',
+                  name: { kind: 'Name', value: 'Int' },
+                },
+              },
+            },
           },
         },
       ],
@@ -1191,6 +1224,14 @@ export const CreateCategoryDialog_UpdateCategoryDocument = {
                   name: { kind: 'Name', value: 'maxAmount' },
                 },
               },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'labelIds' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'labelIds' },
+                },
+              },
             ],
           },
         ],
@@ -1198,8 +1239,8 @@ export const CreateCategoryDialog_UpdateCategoryDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  CreateCategoryDialog_UpdateCategoryMutation,
-  CreateCategoryDialog_UpdateCategoryMutationVariables
+  UpdateCategoryDialog_UpdateCategoryMutation,
+  UpdateCategoryDialog_UpdateCategoryMutationVariables
 >;
 export const SettingCategoriesPageDocument = {
   kind: 'Document',
@@ -1246,6 +1287,28 @@ export const SettingCategoriesPageDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'maxAmount' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'labels' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'listCategoryLabels' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
               ],
             },
           },

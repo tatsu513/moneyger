@@ -56,22 +56,20 @@ model VerificationToken {
 }
 
 model Category {
-  id             Int              @id @default(autoincrement())
-  name           String
-  maxAmount      Int
-  authorId       String
-  createdAt      DateTime         @default(now())
-  author         User             @relation(fields: [authorId], references: [id])
-  categoryLabel  CategoryLabel[]
-  paymentHistory PaymentHistory[]
+  id               Int              @id @default(autoincrement())
+  name             String
+  maxAmount        Int
+  authorId         String
+  createdAt        DateTime         @default(now())
+  author           User             @relation(fields: [authorId], references: [id])
+  categoryLabelIds Int[]
+  paymentHistory   PaymentHistory[]
 }
 
 model CategoryLabel {
-  id         Int       @id @default(autoincrement())
-  name       String
-  createdAt  DateTime  @default(now())
-  categoryId Int?
-  category   Category? @relation(fields: [categoryId], references: [id])
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
 }
 
 model PaymentHistory {

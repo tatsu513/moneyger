@@ -32,12 +32,13 @@ const resolvers: Resolvers = {
               : [];
           })
         : histories;
-      return categories.map((p) => {
+      const data = categories.map((p) => {
         const currentAmount = validHistories.reduce((acc, val) => {
           return val.categoryId === p.id ? acc + val.price : acc;
         }, 0);
         const labels = categoryLabels.flatMap((l) => {
-          return l.categoryId === p.id ? [l] : []
+          const hasId = p.categoryLabelIds.includes(l.id)
+          return hasId ? [l] : []
         })
         return {
           ...p,
@@ -45,6 +46,7 @@ const resolvers: Resolvers = {
           labels
         };
       });
+      return data
     },
     category: async (_, { categoryId }) => {
       const categoryPromise = prisma.category.findUnique({
@@ -53,9 +55,7 @@ const resolvers: Resolvers = {
       const historiesPromise = prisma.paymentHistory.findMany({
         where: { categoryId },
       });
-      const categoryLabelPromise = prisma.categoryLabel.findMany({
-        where: { categoryId }
-      })
+      const categoryLabelPromise = prisma.categoryLabel.findMany()
       const [category, histories, labels] = await Promise.all([
         categoryPromise,
         historiesPromise,
@@ -65,12 +65,13 @@ const resolvers: Resolvers = {
       const currentAmount = histories.reduce((acc, val) => {
         return val.categoryId === category.id ? acc + val.price : acc;
       }, 0);
+      const includedLabels = labels.flatMap((l) => l.id === categoryId ? [l] : [])
       return {
         id: category.id,
         name: category.name,
         currentAmount,
         maxAmount: category.maxAmount,
-        labels
+        labels: includedLabels
       };
     },
     // 支払履歴を全て取得
@@ -163,7 +164,7 @@ const resolvers: Resolvers = {
     }, 
   },
   Mutation: {
-    createCategory: async (_, { name, maxAmount }, { user }) => {
+    createCategory: async (_, { name, maxAmount, labelIds }, { user }) => {
       const newPayment = await prisma.category
         .create({
           data: {
@@ -174,6 +175,7 @@ const resolvers: Resolvers = {
                 id: user.id,
               },
             },
+            categoryLabelIds: labelIds
           },
         })
         .catch((err) => {
@@ -183,10 +185,14 @@ const resolvers: Resolvers = {
         });
       return newPayment.id;
     },
-    updateCategory: async (_, { id, name, maxAmount }) => {
+    updateCategory: async (_, { id, name, maxAmount, labelIds }) => {
       const target = await prisma.category.update({
         where: { id },
-        data: { name, maxAmount },
+        data: {
+          name,
+          maxAmount,
+          categoryLabelIds: labelIds
+        },
       });
       return target.id;
     },
