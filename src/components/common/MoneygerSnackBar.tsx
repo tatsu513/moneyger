@@ -30,7 +30,7 @@ const MoneygerSnackBar: React.FC<Props> = ({
       >
         <Box width="100%">
           {state === 'success' && (
-            <SuccessSnackAlert message={successMessage} onClose={onClose}/>
+            <SuccessSnackAlert message={successMessage} onClose={onClose} />
           )}
           {state === 'error' && (
             <ErrorSnackAlert message={errorMessage} onClose={onClose} />

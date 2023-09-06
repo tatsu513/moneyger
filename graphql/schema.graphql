@@ -36,7 +36,7 @@ type Category {
   # 現状の金額
   currentAmount: Int!
   # ラベル
-  labels: [CategoryLabel]!
+  labels: [CategoryLabel!]!
 }
 
 type PaymentHistory {
@@ -50,6 +50,8 @@ type PaymentHistory {
   paymentDate: String!
   # 費目ID
   categoryId: Int!
+  # カテゴリラベルID
+  labels: [CategoryLabel!]!
 }
 
 type CategoryLabel {
@@ -65,15 +67,26 @@ type Mutation {
   # 費目の作成
   createCategory(name: String!, maxAmount: Int!, labelIds: [Int!]!): Int!
   # 費目の更新
-  updateCategory(id: Int!, name: String!, maxAmount: Int!): Int!
+  updateCategory(
+    id: Int!
+    name: String!
+    maxAmount: Int!
+    labelIds: [Int!]!
+  ): Int!
   # 費目の削除
   deleteCategory(id: Int!): Int!
+  # カテゴリからラベルを削除
+  deleteCaregoryLabelFromCategory(
+    categoryId: Int!
+    categoryLabelIds: [Int!]!
+  ): Int!
   # 支払履歴を作成
   createPaymentHistory(
     note: String
     price: Int!
     categoryId: Int!
     paymentDate: String!
+    categoryLabelIds: [Int!]!
   ): Int!
   # 支払履歴を更新
   updatePaymentHistory(
@@ -82,9 +95,14 @@ type Mutation {
     note: String
     price: Int!
     paymentDate: String!
+    labelIds: [Int!]!
   ): Int!
   # 支払履歴を削除
   deletePaymentHistory(id: Int!): Int!
   # カテゴリラベルを登録
-  createCategoryLabel(categoryId: Int!, labels: [String!]): Int!
+  createCategoryLabel(categoryId: Int, labels: [String!]!): Int!
+  # カテゴリラベルを編集
+  updateCaregoryLabel(categoryLabelId: Int!, name: String!): Int!
+  # カテゴリラベルを削除
+  deleteCaregoryLabel(categoryLabelId: Int!): Int!
 }

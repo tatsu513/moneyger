@@ -8,7 +8,7 @@ type Props = {
 const ContentTitle: React.FC<Props> = ({ title }) => {
   return (
     <Typography
-      variant='body1'
+      variant="body1"
       bgcolor={grey[100]}
       p={1}
       pl={2}
@@ -16,7 +16,7 @@ const ContentTitle: React.FC<Props> = ({ title }) => {
     >
       {title}
     </Typography>
-  )
+  );
 };
 
 export default ContentTitle;

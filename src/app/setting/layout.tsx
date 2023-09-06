@@ -1,6 +1,6 @@
-import SettingTab from "@/app/setting/_layout/SettingTab";
-import PageTitle from "@/components/common/PageTitle";
-import { Box } from "@mui/material";
+import SettingTab from '@/app/setting/_layout/SettingTab';
+import PageTitle from '@/components/common/PageTitle';
+import { Box } from '@mui/material';
 
 export default function RootLayout({
   children,

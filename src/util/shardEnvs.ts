@@ -15,7 +15,7 @@ export class ShardEnvs {
   constructor() {
     this._env = shardEnvsSchema.parse({
       nextAuthUrl: process.env.NEXT_PUBLIC_NEXTAUTH_URL,
-      graphqlEndpoint: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT
+      graphqlEndpoint: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
     });
   }
 

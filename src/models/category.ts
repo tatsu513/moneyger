@@ -7,3 +7,9 @@ export const nameType = z
 
 export const maxAmountType = z.coerce.number().gte(1).lte(999999);
 export const currentAmountType = z.coerce.number().gte(0).lte(999999);
+export const labelsType = z.array(
+  z.object({
+    id: z.number(),
+    name: z.string(),
+  }),
+);

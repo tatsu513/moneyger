@@ -5,7 +5,8 @@ import { NextApiHandler } from 'next';
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import * as GoogleProvider from 'next-auth/providers/google';
 
-const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, authOptions);
+const authHandler: NextApiHandler = (req, res) =>
+  NextAuth(req, res, authOptions);
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -18,7 +19,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, user }) {
       const localSessiojn = session;
       localSessiojn.user.id = user.id;
-      localSessiojn.user.emailVerified = user.emailVerified
+      localSessiojn.user.emailVerified = user.emailVerified;
       return localSessiojn;
     },
   },

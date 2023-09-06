@@ -19,26 +19,34 @@ const documents = {
     types.PaymentSummaryMainDocument,
   '\n  query paymentSummary($targetDate: String!) {\n    paymentSummary(targetDate: $targetDate) {\n      totalMaxAmount\n      totalCurrentAmount\n      totalPaymentRatio\n    }\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      maxAmount\n      currentAmount\n    }\n  }\n':
     types.PaymentSummaryDocument,
-  '\n  mutation createPaymentHistoryDialog_UpdateHistoryPayment(\n    $id: Int!\n    $categoryId: Int!\n    $paymentDate: String!\n    $price: Int!\n    $note: String\n  ) {\n    updatePaymentHistory(\n      id: $id\n      categoryId: $categoryId\n      paymentDate: $paymentDate\n      price: $price\n      note: $note\n    )\n  }\n':
-    types.CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument,
-  '\n  query paymentHistoryPage($paymentHistoryId: Int!) {\n    paymentHistory(paymentHistoryId: $paymentHistoryId) {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n':
+  '\n  mutation updatePaymentHistoryDialog_UpdateHistoryPayment(\n    $id: Int!\n    $categoryId: Int!\n    $paymentDate: String!\n    $price: Int!\n    $note: String\n    $labelIds: [Int!]!\n  ) {\n    updatePaymentHistory(\n      id: $id\n      categoryId: $categoryId\n      paymentDate: $paymentDate\n      price: $price\n      note: $note\n      labelIds: $labelIds\n    )\n  }\n':
+    types.UpdatePaymentHistoryDialog_UpdateHistoryPaymentDocument,
+  '\n  query paymentHistoryPage($paymentHistoryId: Int!) {\n    paymentHistory(paymentHistoryId: $paymentHistoryId) {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n      labels {\n        id\n        name\n      }\n    }\n  }\n':
     types.PaymentHistoryPageDocument,
-  '\n  query paymentHistoryPageListCategories($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n    }\n  }\n':
+  '\n  query paymentHistoryPageListCategories($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      labels {\n        id\n        name\n      }\n    }\n  }\n':
     types.PaymentHistoryPageListCategoriesDocument,
-  '\n  mutation createPaymentHistoryDialog_CreatePaymentHistory(\n    $categoryId: Int!\n    $paymentDate: String!\n    $price: Int!\n    $note: String\n  ) {\n    createPaymentHistory(\n      categoryId: $categoryId\n      paymentDate: $paymentDate\n      price: $price\n      note: $note\n    )\n  }\n':
+  '\n  mutation createPaymentHistoryDialog_CreatePaymentHistory(\n    $categoryId: Int!\n    $paymentDate: String!\n    $price: Int!\n    $note: String\n    $categoryLabelIds: [Int!]!\n  ) {\n    createPaymentHistory(\n      categoryId: $categoryId\n      paymentDate: $paymentDate\n      price: $price\n      note: $note\n      categoryLabelIds: $categoryLabelIds\n    )\n  }\n':
     types.CreatePaymentHistoryDialog_CreatePaymentHistoryDocument,
   '\n  mutation deletePaymentHistoryDialog_DeletePaymentHistory($id: Int!) {\n    deletePaymentHistory(id: $id)\n  }\n':
     types.DeletePaymentHistoryDialog_DeletePaymentHistoryDocument,
-  '\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n':
+  '\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      labels {\n        id\n        name\n      }\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n      labels {\n        id\n        name\n      }\n    }\n  }\n':
     types.PaymentHistoriesPageDocument,
   '\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n    $labelIds: [Int!]!\n  ) {\n    createCategory(name: $name, maxAmount: $maxAmount, labelIds: $labelIds)\n  }\n':
     types.CreateCategoryDialog_CreateCategoryDocument,
   '\n  mutation deleteCategoryDialog_DeleteCategory($id: Int!) {\n    deleteCategory(id: $id)\n  }\n':
     types.DeleteCategoryDialog_DeleteCategoryDocument,
-  '\n  mutation createCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    updateCategory(id: $id, name: $name, maxAmount: $maxAmount)\n  }\n':
-    types.CreateCategoryDialog_UpdateCategoryDocument,
-  '\n  query settingCategoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      maxAmount\n    }\n  }\n':
+  '\n  mutation updateCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n    $labelIds: [Int!]!\n  ) {\n    updateCategory(\n      id: $id\n      name: $name\n      maxAmount: $maxAmount\n      labelIds: $labelIds\n    )\n  }\n':
+    types.UpdateCategoryDialog_UpdateCategoryDocument,
+  '\n  query settingCategoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      maxAmount\n      labels {\n        id\n        name\n      }\n    }\n    listCategoryLabels {\n      id\n      name\n    }\n  }\n':
     types.SettingCategoriesPageDocument,
+  '\n  mutation createLabelDialog_CreateLabel(\n    $categoryId: Int\n    $labels: [String!]!\n  ) {\n    createCategoryLabel(categoryId: $categoryId, labels: $labels)\n  }\n':
+    types.CreateLabelDialog_CreateLabelDocument,
+  '\n  mutation deleteCategoryDialog_DeleteCategoryLabel($categoryLabelId: Int!) {\n    deleteCaregoryLabel(categoryLabelId: $categoryLabelId)\n  }\n':
+    types.DeleteCategoryDialog_DeleteCategoryLabelDocument,
+  '\n  mutation createLabelDialog_UpdateCategoryLabel(\n    $categoryLabelId: Int!\n    $name: String!\n  ) {\n    updateCaregoryLabel(categoryLabelId: $categoryLabelId, name: $name)\n  }\n':
+    types.CreateLabelDialog_UpdateCategoryLabelDocument,
+  '\n  query settingLabelsPage {\n    listCategoryLabels {\n      id\n      name\n    }\n  }\n':
+    types.SettingLabelsPageDocument,
 };
 
 /**
@@ -77,26 +85,26 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation createPaymentHistoryDialog_UpdateHistoryPayment(\n    $id: Int!\n    $categoryId: Int!\n    $paymentDate: String!\n    $price: Int!\n    $note: String\n  ) {\n    updatePaymentHistory(\n      id: $id\n      categoryId: $categoryId\n      paymentDate: $paymentDate\n      price: $price\n      note: $note\n    )\n  }\n',
-): (typeof documents)['\n  mutation createPaymentHistoryDialog_UpdateHistoryPayment(\n    $id: Int!\n    $categoryId: Int!\n    $paymentDate: String!\n    $price: Int!\n    $note: String\n  ) {\n    updatePaymentHistory(\n      id: $id\n      categoryId: $categoryId\n      paymentDate: $paymentDate\n      price: $price\n      note: $note\n    )\n  }\n'];
+  source: '\n  mutation updatePaymentHistoryDialog_UpdateHistoryPayment(\n    $id: Int!\n    $categoryId: Int!\n    $paymentDate: String!\n    $price: Int!\n    $note: String\n    $labelIds: [Int!]!\n  ) {\n    updatePaymentHistory(\n      id: $id\n      categoryId: $categoryId\n      paymentDate: $paymentDate\n      price: $price\n      note: $note\n      labelIds: $labelIds\n    )\n  }\n',
+): (typeof documents)['\n  mutation updatePaymentHistoryDialog_UpdateHistoryPayment(\n    $id: Int!\n    $categoryId: Int!\n    $paymentDate: String!\n    $price: Int!\n    $note: String\n    $labelIds: [Int!]!\n  ) {\n    updatePaymentHistory(\n      id: $id\n      categoryId: $categoryId\n      paymentDate: $paymentDate\n      price: $price\n      note: $note\n      labelIds: $labelIds\n    )\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query paymentHistoryPage($paymentHistoryId: Int!) {\n    paymentHistory(paymentHistoryId: $paymentHistoryId) {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n',
-): (typeof documents)['\n  query paymentHistoryPage($paymentHistoryId: Int!) {\n    paymentHistory(paymentHistoryId: $paymentHistoryId) {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n'];
+  source: '\n  query paymentHistoryPage($paymentHistoryId: Int!) {\n    paymentHistory(paymentHistoryId: $paymentHistoryId) {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n      labels {\n        id\n        name\n      }\n    }\n  }\n',
+): (typeof documents)['\n  query paymentHistoryPage($paymentHistoryId: Int!) {\n    paymentHistory(paymentHistoryId: $paymentHistoryId) {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n      labels {\n        id\n        name\n      }\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query paymentHistoryPageListCategories($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n    }\n  }\n',
-): (typeof documents)['\n  query paymentHistoryPageListCategories($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n    }\n  }\n'];
+  source: '\n  query paymentHistoryPageListCategories($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      labels {\n        id\n        name\n      }\n    }\n  }\n',
+): (typeof documents)['\n  query paymentHistoryPageListCategories($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      labels {\n        id\n        name\n      }\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation createPaymentHistoryDialog_CreatePaymentHistory(\n    $categoryId: Int!\n    $paymentDate: String!\n    $price: Int!\n    $note: String\n  ) {\n    createPaymentHistory(\n      categoryId: $categoryId\n      paymentDate: $paymentDate\n      price: $price\n      note: $note\n    )\n  }\n',
-): (typeof documents)['\n  mutation createPaymentHistoryDialog_CreatePaymentHistory(\n    $categoryId: Int!\n    $paymentDate: String!\n    $price: Int!\n    $note: String\n  ) {\n    createPaymentHistory(\n      categoryId: $categoryId\n      paymentDate: $paymentDate\n      price: $price\n      note: $note\n    )\n  }\n'];
+  source: '\n  mutation createPaymentHistoryDialog_CreatePaymentHistory(\n    $categoryId: Int!\n    $paymentDate: String!\n    $price: Int!\n    $note: String\n    $categoryLabelIds: [Int!]!\n  ) {\n    createPaymentHistory(\n      categoryId: $categoryId\n      paymentDate: $paymentDate\n      price: $price\n      note: $note\n      categoryLabelIds: $categoryLabelIds\n    )\n  }\n',
+): (typeof documents)['\n  mutation createPaymentHistoryDialog_CreatePaymentHistory(\n    $categoryId: Int!\n    $paymentDate: String!\n    $price: Int!\n    $note: String\n    $categoryLabelIds: [Int!]!\n  ) {\n    createPaymentHistory(\n      categoryId: $categoryId\n      paymentDate: $paymentDate\n      price: $price\n      note: $note\n      categoryLabelIds: $categoryLabelIds\n    )\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -107,8 +115,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n',
-): (typeof documents)['\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n'];
+  source: '\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      labels {\n        id\n        name\n      }\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n      labels {\n        id\n        name\n      }\n    }\n  }\n',
+): (typeof documents)['\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      labels {\n        id\n        name\n      }\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n      labels {\n        id\n        name\n      }\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -125,14 +133,38 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation createCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    updateCategory(id: $id, name: $name, maxAmount: $maxAmount)\n  }\n',
-): (typeof documents)['\n  mutation createCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n  ) {\n    updateCategory(id: $id, name: $name, maxAmount: $maxAmount)\n  }\n'];
+  source: '\n  mutation updateCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n    $labelIds: [Int!]!\n  ) {\n    updateCategory(\n      id: $id\n      name: $name\n      maxAmount: $maxAmount\n      labelIds: $labelIds\n    )\n  }\n',
+): (typeof documents)['\n  mutation updateCategoryDialog_UpdateCategory(\n    $id: Int!\n    $name: String!\n    $maxAmount: Int!\n    $labelIds: [Int!]!\n  ) {\n    updateCategory(\n      id: $id\n      name: $name\n      maxAmount: $maxAmount\n      labelIds: $labelIds\n    )\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query settingCategoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      maxAmount\n    }\n  }\n',
-): (typeof documents)['\n  query settingCategoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      maxAmount\n    }\n  }\n'];
+  source: '\n  query settingCategoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      maxAmount\n      labels {\n        id\n        name\n      }\n    }\n    listCategoryLabels {\n      id\n      name\n    }\n  }\n',
+): (typeof documents)['\n  query settingCategoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      maxAmount\n      labels {\n        id\n        name\n      }\n    }\n    listCategoryLabels {\n      id\n      name\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation createLabelDialog_CreateLabel(\n    $categoryId: Int\n    $labels: [String!]!\n  ) {\n    createCategoryLabel(categoryId: $categoryId, labels: $labels)\n  }\n',
+): (typeof documents)['\n  mutation createLabelDialog_CreateLabel(\n    $categoryId: Int\n    $labels: [String!]!\n  ) {\n    createCategoryLabel(categoryId: $categoryId, labels: $labels)\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation deleteCategoryDialog_DeleteCategoryLabel($categoryLabelId: Int!) {\n    deleteCaregoryLabel(categoryLabelId: $categoryLabelId)\n  }\n',
+): (typeof documents)['\n  mutation deleteCategoryDialog_DeleteCategoryLabel($categoryLabelId: Int!) {\n    deleteCaregoryLabel(categoryLabelId: $categoryLabelId)\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation createLabelDialog_UpdateCategoryLabel(\n    $categoryLabelId: Int!\n    $name: String!\n  ) {\n    updateCaregoryLabel(categoryLabelId: $categoryLabelId, name: $name)\n  }\n',
+): (typeof documents)['\n  mutation createLabelDialog_UpdateCategoryLabel(\n    $categoryLabelId: Int!\n    $name: String!\n  ) {\n    updateCaregoryLabel(categoryLabelId: $categoryLabelId, name: $name)\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query settingLabelsPage {\n    listCategoryLabels {\n      id\n      name\n    }\n  }\n',
+): (typeof documents)['\n  query settingLabelsPage {\n    listCategoryLabels {\n      id\n      name\n    }\n  }\n'];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

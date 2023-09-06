@@ -1,12 +1,12 @@
-import React from 'react'
-import CircularProgress from '@mui/material/CircularProgress'
-import Box from '@mui/material/Box'
-import { grey } from '@mui/material/colors'
-import { Typography } from '@mui/material'
+import React from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import { grey } from '@mui/material/colors';
+import { Typography } from '@mui/material';
 
 type Props = {
-  height?: number | string
-}
+  height?: number | string;
+};
 const CommonLoading: React.FC<Props> = ({ height = 400 }) => {
   return (
     <Box
@@ -19,9 +19,9 @@ const CommonLoading: React.FC<Props> = ({ height = 400 }) => {
       color={grey[400]}
     >
       <CircularProgress />
-      <Typography variant='body1'>LOADING...</Typography>
+      <Typography variant="body1">LOADING...</Typography>
     </Box>
-  )
-}
+  );
+};
 
-export default CommonLoading
+export default CommonLoading;

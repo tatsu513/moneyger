@@ -1,5 +1,5 @@
-import { DateIOFormats } from "@date-io/core/IUtils";
-import { DATE_TIME_FORMATS } from "@/constants/datetimeFormats";
+import { DateIOFormats } from '@date-io/core/IUtils';
+import { DATE_TIME_FORMATS } from '@/constants/datetimeFormats';
 
 export const LOCALIZATION_FORMATS: Readonly<Partial<DateIOFormats>> = {
   normalDate: DATE_TIME_FORMATS.NORMAL_DATE,

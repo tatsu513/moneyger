@@ -30,9 +30,7 @@ const makeClient = (cookie: string) => {
  * RSC用のurqlクライアントを取得します
  * 同一リクエストで同じcookieが渡された場合は同じクライアントを返します
  */
-const registerRscUrqlClient: (
-  cookie: string,
-) => {
+const registerRscUrqlClient: (cookie: string) => {
   getClient: () => Client;
 } = cache((cookie: string) => {
   return registerUrql(makeClient(cookie));

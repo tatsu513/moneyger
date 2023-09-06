@@ -14,7 +14,7 @@ import { HTMLAttributes, ReactNode, useCallback } from 'react';
 type TimeCardComboBoxProps<T> = {
   id?: string;
   size?: 'small' | 'medium';
-  value: T | null;
+  values: T[] | undefined;
   options: readonly T[];
   noOptionsText?: string;
   errorMessage?: ReactNode;
@@ -26,14 +26,14 @@ type TimeCardComboBoxProps<T> = {
   getOptionLabel?: (option: T) => string;
   onChange?: (
     event: React.SyntheticEvent<Element, Event>,
-    value: T | null,
+    value: T[] | null,
   ) => void;
 };
 
-const MoneygerAutocomplete = <T,>({
+const MoneygerAutocompleteMultiple = <T,>({
   id,
   size = 'small',
-  value,
+  values,
   options,
   noOptionsText = '該当なし',
   errorMessage,
@@ -47,7 +47,7 @@ const MoneygerAutocomplete = <T,>({
 }: TimeCardComboBoxProps<T>): React.ReactElement => {
   const renderInput = useCallback(
     (params: AutocompleteRenderInputParams) => {
-      const paddingRight = value ? '4px' : '24px';
+      const paddingRight = values ? '4px' : '24px';
       return (
         <TextField
           {...params}
@@ -65,7 +65,7 @@ const MoneygerAutocomplete = <T,>({
         />
       );
     },
-    [value, ariaLabel, label, errorMessage, size, placeholder],
+    [values, ariaLabel, label, errorMessage, size, placeholder],
   );
 
   const renderOption = useCallback(
@@ -94,8 +94,8 @@ const MoneygerAutocomplete = <T,>({
     <Autocomplete
       id={id}
       size={size}
-      value={value ?? null}
-      multiple={false}
+      value={values}
+      multiple={true}
       options={options}
       noOptionsText={noOptionsText}
       disabled={disabled}
@@ -105,7 +105,8 @@ const MoneygerAutocomplete = <T,>({
       renderInput={renderInput}
       renderOption={renderOption}
       isOptionEqualToValue={isOptionEqualToValue}
+      disableCloseOnSelect
     />
   );
 };
-export default MoneygerAutocomplete;
+export default MoneygerAutocompleteMultiple;

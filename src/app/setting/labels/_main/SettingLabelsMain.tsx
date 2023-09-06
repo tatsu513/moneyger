@@ -3,35 +3,39 @@
 import React, { useCallback, useState } from 'react';
 import { Box, List, Typography } from '@mui/material';
 import DialogState from '@/types/DialogState';
-import CreateCategoryDialog from '@/app/setting/categories/_dialog/CreateCategoryDialog';
-import { SettingCategoriesPageQuery } from '@/dao/generated/preset/graphql';
-import CategoriesListItem from '@/app/setting/categories/_main/CategoriesListItem';
+import { SettingLabelsPageQuery } from '@/dao/generated/preset/graphql';
 import { grey } from '@/color';
 import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
 import useAlert from '@/hooks/useAlert';
 import * as AddIcon from '@mui/icons-material/Add';
 import SecondaryButton from '@/components/common/buttons/SecondaryButton';
-import UpdateCategoryDialog from '@/app/setting/categories/_dialog/UpdateCategoryDialog';
-import DeleteCategoryDialog from '@/app/setting/categories/_dialog/DeleteCategoryDialog';
+// import UpdateCategoryDialog from '@/app/setting/categories/_dialog/UpdateCategoryDialog';
+// import DeleteCategoryDialog from '@/app/setting/categories/_dialog/DeleteCategoryDialog';
+import LabelListItem from '@/app/setting/labels/_main/LabelListItem';
+import CreateLabelDialog from '@/app/setting/labels/_dialog/CreateLabelDialog';
+import DeleteLabelDialog from '@/app/setting/labels/_dialog/DeleteLabelDialog';
+import UpdateLabelDialog from '@/app/setting/labels/_dialog/UpdateLabelDialog';
 
-type Category = SettingCategoriesPageQuery['listCategories'][number];
-type Label = SettingCategoriesPageQuery['listCategoryLabels'][number];
+type Label = SettingLabelsPageQuery['listCategoryLabels'][number];
 type Props = {
-  categories: Category[];
   labels: Label[];
 };
-const SettingCategoriesMain: React.FC<Props> = ({ categories, labels }) => {
-  const [dialogState, setDialogState] = useState<DialogState>('closed');
+const SettingLabelsMain: React.FC<Props> = ({ labels }) => {
+  const [createDialogState, setCreateDialogState] =
+    useState<DialogState>('closed');
   const [updateDialogState, setUpdateDialogState] =
     useState<DialogState>('closed');
   const [deleteDialogState, setDeleteDialogState] =
     useState<DialogState>('closed');
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
-    null,
-  );
+  const [selectedLabel, setSelectedLabel] = useState<Label | null>(null);
 
-  const { alertType, setSuccess, setError, setProcessing, setNone } =
-    useAlert();
+  const {
+    alertType: createAlertType,
+    setSuccess: setCreateSuccess,
+    setError: setCreateError,
+    setProcessing: setCreateProcessing,
+    setNone: setCreateNone,
+  } = useAlert();
 
   const {
     alertType: updateAlertType,
@@ -49,96 +53,91 @@ const SettingCategoriesMain: React.FC<Props> = ({ categories, labels }) => {
     setNone: setDeleteNone,
   } = useAlert();
 
-  const dialogOpen = useCallback(() => setDialogState('open'), []);
+  const createDialogOpen = useCallback(() => setCreateDialogState('open'), []);
   const updateDialogOpen = useCallback(
     (id: number) => {
-      setSelectedCategory(categories.find((c) => c.id === id) ?? null);
+      setSelectedLabel(labels.find((c) => c.id === id) ?? null);
       setUpdateDialogState('open');
     },
-    [categories],
+    [labels],
   );
   const deleteDialogOpen = useCallback(
     (id: number) => {
-      setSelectedCategory(categories.find((c) => c.id === id) ?? null);
+      setSelectedLabel(labels.find((c) => c.id === id) ?? null);
       setDeleteDialogState('open');
     },
-    [categories],
+    [labels],
   );
   const dialogClose = useCallback(() => {
-    setDialogState('closed');
+    setCreateDialogState('closed');
     setUpdateDialogState('closed');
     setDeleteDialogState('closed');
-    setSelectedCategory(null);
+    setSelectedLabel(null);
   }, []);
 
   return (
     <Box>
       <MoneygerSnackBar
-        state={alertType}
-        successMessage="費目の登録に成功しました"
-        errorMessage="費目の登録に失敗しました"
-        processingMessage="費目を登録中..."
-        onClose={setNone}
+        state={createAlertType}
+        successMessage="ラベルの登録に成功しました"
+        errorMessage="ラベルの登録に失敗しました"
+        processingMessage="ラベルを登録中..."
+        onClose={setCreateNone}
       />
       <MoneygerSnackBar
         state={updateAlertType}
-        successMessage="費目の更新に成功しました"
-        errorMessage="費目の更新に失敗しました"
-        processingMessage="費目を更新中..."
+        successMessage="ラベルの更新に成功しました"
+        errorMessage="ラベルの更新に失敗しました"
+        processingMessage="ラベルを更新中..."
         onClose={setUpdateNone}
       />
       <MoneygerSnackBar
         state={deleteAlertType}
-        successMessage="費目の削除に成功しました"
-        errorMessage="費目の削除に失敗しました"
-        processingMessage="費目を削除中..."
+        successMessage="ラベルの削除に成功しました"
+        errorMessage="ラベルの削除に失敗しました"
+        processingMessage="ラベルを削除中..."
         onClose={setDeleteNone}
       />
       <Box display="flex" justifyContent="flex-end" alignItems="center">
         <SecondaryButton
-          label="費目を追加"
+          label="ラベルを追加"
           size="small"
           startIcon={<AddIcon.default />}
-          onClick={dialogOpen}
+          onClick={createDialogOpen}
         />
       </Box>
 
-      {categories.length === 0 ? (
+      {labels.length === 0 ? (
         <Typography variant="body1" mt={8} color={grey[500]} textAlign="center">
-          費目が登録されていません
+          ラベルが登録されていません
         </Typography>
       ) : (
         <List>
-          {categories.map((p) => (
-            <CategoriesListItem
+          {labels.map((p) => (
+            <LabelListItem
               key={p.name}
               {...p}
-              id={p.id}
-              name={p.name}
-              maxAmount={p.maxAmount}
-              labels={p.labels.flatMap((l) => (l ? [l] : [])) ?? []}
               onRowClick={updateDialogOpen}
               onDeleteClick={deleteDialogOpen}
             />
           ))}
         </List>
       )}
-      <CreateCategoryDialog
-        dialogState={dialogState}
+      <CreateLabelDialog
+        dialogState={createDialogState}
+        addCategoryId={null}
         onClose={dialogClose}
-        labels={labels}
         events={{
-          onSuccess: setSuccess,
-          onError: setError,
-          onProcessing: setProcessing,
+          onSuccess: setCreateSuccess,
+          onError: setCreateError,
+          onProcessing: setCreateProcessing,
         }}
       />
-      {selectedCategory && (
+      {selectedLabel && (
         <>
-          <UpdateCategoryDialog
+          <UpdateLabelDialog
             dialogState={updateDialogState}
-            labels={labels}
-            category={selectedCategory}
+            label={selectedLabel}
             onClose={dialogClose}
             events={{
               onSuccess: setUpdateSuccess,
@@ -146,9 +145,9 @@ const SettingCategoriesMain: React.FC<Props> = ({ categories, labels }) => {
               onProcessing: setUpdateProcessing,
             }}
           />
-          <DeleteCategoryDialog
+          <DeleteLabelDialog
             dialogState={deleteDialogState}
-            category={selectedCategory}
+            label={selectedLabel}
             onClose={dialogClose}
             events={{
               onSuccess: setDeleteSuccess,
@@ -162,4 +161,4 @@ const SettingCategoriesMain: React.FC<Props> = ({ categories, labels }) => {
   );
 };
 
-export default SettingCategoriesMain;
+export default SettingLabelsMain;

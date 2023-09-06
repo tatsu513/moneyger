@@ -1,5 +1,5 @@
-import { Resolvers } from '@/dao/generated/graphql'
+import { Resolvers } from '@/dao/generated/graphql';
 
-type DefinedGraphQLType = keyof Resolvers
+type DefinedGraphQLType = keyof Resolvers;
 
-export default DefinedGraphQLType
+export default DefinedGraphQLType;
