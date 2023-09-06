@@ -13,8 +13,6 @@ type Query {
   paymentSummary(targetDate: String!): PaymentSummary!
   # カテゴリラベル一覧を取得
   listCategoryLabels: [CategoryLabel!]!
-  # 費目に紐づくカテゴリラベル一覧
-  listCategoryLabelsFromCategoryId(categoryId: Int!): [CategoryLabel!]!
 }
 
 # 支払の概要
@@ -38,7 +36,7 @@ type Category {
   # 現状の金額
   currentAmount: Int!
   # ラベル
-  labels: [CategoryLabel]!
+  labels: [CategoryLabel!]!
 }
 
 type PaymentHistory {
@@ -52,6 +50,8 @@ type PaymentHistory {
   paymentDate: String!
   # 費目ID
   categoryId: Int!
+  # カテゴリラベルID
+  labels: [CategoryLabel!]!
 }
 
 type CategoryLabel {
@@ -86,6 +86,7 @@ type Mutation {
     price: Int!
     categoryId: Int!
     paymentDate: String!
+    categoryLabelIds: [Int!]!
   ): Int!
   # 支払履歴を更新
   updatePaymentHistory(

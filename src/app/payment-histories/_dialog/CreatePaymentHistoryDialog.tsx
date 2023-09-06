@@ -1,7 +1,5 @@
-import FetchErrorBoundary from '@/components/common/FetchErrorBoundary';
-import InlineLoading from '@/components/common/InlineLoading';
+import CategoryLabelsAutocomplate from '@/components/common/CategoryLabelsAutocomplate';
 import MoneygerAutocomplete from '@/components/common/MoneygerAutocomplete';
-import MoneygerAutocompleteMultiple from '@/components/common/MoneygerAutocompleteMultiple';
 import MoneygerDatePicker from '@/components/common/MoneygerDatePicker';
 import MoneygerDialog from '@/components/common/MoneygerDialog';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
@@ -15,7 +13,6 @@ import {
   priceType,
 } from '@/models/paymentHistory';
 import DialogState from '@/types/DialogState';
-import getUrqlVariables from '@/util/getUrqlVariables';
 import {
   Box,
   Slide,
@@ -23,10 +20,9 @@ import {
   createFilterOptions,
 } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
-import { useQuery } from '@urql/next';
 import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
-import React, { ChangeEvent, Dispatch, SetStateAction, Suspense, SyntheticEvent, useCallback, useMemo, useState } from 'react';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 import { useMutation } from 'urql';
 
 const createPaymentHistoryDialogCreatePaymentDocument = graphql(`
@@ -35,12 +31,14 @@ const createPaymentHistoryDialogCreatePaymentDocument = graphql(`
     $paymentDate: String!
     $price: Int!
     $note: String
+    $categoryLabelIds: [Int!]!
   ) {
     createPaymentHistory(
       categoryId: $categoryId
       paymentDate: $paymentDate
       price: $price
       note: $note
+      categoryLabelIds: $categoryLabelIds
     )
   }
 `);
@@ -77,6 +75,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
     paymentDate,
     price,
     note,
+    categoryLabels: labels
   });
 
   const handlePaymentChange = useCallback(
@@ -116,6 +115,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
     setPaymentDate(null);
     setPrice('');
     setNote('');
+    setLabels([])
   }, [onClose]);
 
   const submit = useMutation(
@@ -128,6 +128,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
       paymentDate: paymentDate?.toISO(),
       price: Number(price),
       note,
+      categoryLabelIds: labels.map((i) => i.id)
     };
     const parseResult = createPaymentHistorySchema.safeParse({ ...data });
     if (!parseResult.success) {
@@ -144,6 +145,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
         paymentDate: parseResult.data.paymentDate,
         price: parseResult.data.price,
         note: parseResult.data.note,
+        categoryLabelIds: parseResult.data.categoryLabelIds
       });
       if (result.error) {
         throw new Error('支払いの作成に失敗しました');
@@ -156,7 +158,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
       events.onError();
       return;
     }
-  }, [submit, handleClose, category, paymentDate, price, note, router, events]);
+  }, [submit, handleClose, category, paymentDate, price, note, router, labels, events]);
 
   const getOptionLabel = useCallback(
     (option: LocalCategoryType[number]): string => option.name,
@@ -168,11 +170,15 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
     stringify: (payment: LocalCategoryType[number]) => payment.name,
   });
 
+  const handleChange = useCallback((values: CategoryLabel[]) => {
+    setLabels(values)
+  }, [])
+
   return (
     <MoneygerDialog
       open={dialogState === 'open'}
       onClose={onClose}
-      title="費目を追加"
+      title="支払いを追加"
       fullScreen
       TransitionComponent={Transition}
     >
@@ -183,6 +189,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
           options={listCategories}
           noOptionsText="費目がありません"
           ariaLabel="費目の設定"
+          placeholder="費目を選択"
           getOptionLabel={getOptionLabel}
           filterOptions={filterOptions}
           onChange={handlePaymentChange}
@@ -204,11 +211,11 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
       </FormContentsBlock>
 
       <FormContentsBlock label='ラベル' hasMargin>
-        <FetchErrorBoundary>
-          <Suspense fallback={<InlineLoading height={40}/>}>
-            <CategoryLabelsBlock category={category} values={labels} setLabels={setLabels}/>
-          </Suspense>
-        </FetchErrorBoundary>
+        <CategoryLabelsAutocomplate
+          selectedValues={labels}
+          options={category?.labels ?? []}
+          onChange={handleChange}
+        />
       </FormContentsBlock>
       
       <FormContentsBlock label='メモ' hasMargin>
@@ -243,75 +250,3 @@ const Transition = React.forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
-const createPaymentHistoryDialog = graphql(`
-  query listCategoryLabelsFromCategoryId($categoryId: Int!) {
-    listCategoryLabelsFromCategoryId(categoryId: $categoryId) {
-      id
-      name
-    }
-  }
-`)
-
-type CategoryLabelsBlockProps = {
-  category: LocalCategoryType[number] | null;
-  values: CategoryLabel[]
-  setLabels: Dispatch<SetStateAction<CategoryLabel[]>>
-}
-const CategoryLabelsBlock: React.FC<CategoryLabelsBlockProps> = ({ category, values, setLabels }) => {
-  const val = useMemo(() => {
-    return getUrqlVariables(
-      createPaymentHistoryDialog,
-      { categoryId: category?.id ?? 0 },
-      true,
-      category?.id == null
-    )
-  }, [category])
-  const [{ data }] = useQuery(val);
-  console.log({ data, id: category })
-  const options = useMemo(() => data?.listCategoryLabelsFromCategoryId ?? [], [data?.listCategoryLabelsFromCategoryId])
-
-  const getOptionLabel = useCallback(
-    (option: CategoryLabel): string => option.name,
-    [],
-  );
-  const filterOptions = createFilterOptions({
-    matchFrom: 'any',
-    stringify: (label: CategoryLabel) => label.name,
-  });
-  const handlePaymentChange = useCallback(
-    (
-      _e: SyntheticEvent<Element, Event>,
-      values: CategoryLabel[] | null,
-    ) => {
-      setLabels(values ?? []);
-    },
-    [setLabels],
-  );
-
-  const placeholder = useMemo(() => {
-    if (category == null) {
-      return "費目を選択してください"
-    }
-    if (options.length === 0) {
-      return "費目ラベルが未設定です"
-    }
-    if (values.length === 0) {
-      return "ラベルを選択"
-    }
-    return ""
-  }, [category, options, values])
-
-  return (
-    <MoneygerAutocompleteMultiple
-      values={values}
-      options={options}
-      noOptionsText="ラベルがありません"
-      placeholder={placeholder}
-      getOptionLabel={getOptionLabel}
-      filterOptions={filterOptions}
-      onChange={handlePaymentChange}
-      disabled={category == null}
-    />
-  )
-}

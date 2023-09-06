@@ -76,60 +76,90 @@ const resolvers: Resolvers = {
     },
     // 支払履歴を全て取得
     listPaymentHistories: async () => {
-      const results = await prisma.paymentHistory.findMany({
+      const historiesPrimise = prisma.paymentHistory.findMany({
         orderBy: {
           paymentDate: 'desc',
         },
       });
-      return results.flatMap((r) => {
+      const labelsPromise = prisma.categoryLabel.findMany()
+
+      const [histories, labels] = await Promise.all([
+        historiesPrimise,
+        labelsPromise
+      ])
+      return histories.flatMap((r) => {
         const { dateTime, str } = getJstDateTimeFromJsDate(r.paymentDate);
         if (str == null) {
           throw new GraphQLError(
             '支払履歴の支払日が正しく取得できませんでした',
           );
         }
+        const categoryLabels = labels.flatMap((l) => {
+          const isInclude = r.categoryLabelIds.includes(l.id)
+          return isInclude ? [l] : []
+        })
         return dateTime.month >=
           DateTime.now().minus({ months: AVAILABLE_MONTH }).month
-          ? [{ ...r, paymentDate: str }]
+          ? [{ ...r, paymentDate: str, labels: categoryLabels }]
           : [];
       });
     },
     // paymentに紐づく支払履歴一覧
     listPaymentHistoriesByCategoryId: async (_, { categoryId }) => {
-      const results = await prisma.paymentHistory.findMany({
+      const historiesPrimise = prisma.paymentHistory.findMany({
         where: { categoryId: categoryId },
         orderBy: { paymentDate: 'desc' },
       });
-      return results.flatMap((r) => {
+      const labelsPromise = prisma.categoryLabel.findMany();
+      const [histories, labels] = await Promise.all([
+        historiesPrimise,
+        labelsPromise
+      ])
+
+      return histories.flatMap((r) => {
         const { dateTime, str } = getJstDateTimeFromJsDate(r.paymentDate);
         if (str == null) {
           throw new GraphQLError(
             'paymentに紐づく支払履歴の支払日が正しく取得できませんでした',
           );
         }
+        const categoryLabels = labels.flatMap((l) => {
+          const isInclude = r.categoryLabelIds.includes(l.id)
+          return isInclude ? [l] : []
+        })
         return dateTime.month >=
           DateTime.now().minus({ months: AVAILABLE_MONTH }).month
-          ? [{ ...r, paymentDate: str }]
+          ? [{ ...r, paymentDate: str, labels: categoryLabels }]
           : [];
       });
     },
     // 支払履歴を1件取得
     paymentHistory: async (_, { paymentHistoryId }) => {
-      const result = await prisma.paymentHistory.findUnique({
+      const historyPrimise = prisma.paymentHistory.findUnique({
         where: { id: paymentHistoryId },
       });
-      if (result == null) {
+      const labelsPromise = prisma.categoryLabel.findMany();
+      const [history, labels] = await Promise.all([
+        historyPrimise,
+        labelsPromise
+      ])
+      if (history == null) {
         throw Error('支払履歴が見つかりません');
       }
-      const { str } = getJstDateTimeFromJsDate(result.paymentDate);
+      const { str } = getJstDateTimeFromJsDate(history.paymentDate);
       if (str == null) {
         throw new GraphQLError(
           '支払履歴を1件の支払日が正しく取得できませんでした',
         );
       }
+      const categoryLabels = labels.flatMap((l) => {
+        const isInclude = history.categoryLabelIds.includes(l.id)
+        return isInclude ? [l] : []
+      })
       return {
-        ...result,
+        ...history,
         paymentDate: str,
+        labels: categoryLabels,
       };
     },
     // ダッシュボード用
@@ -160,12 +190,6 @@ const resolvers: Resolvers = {
     },
     listCategoryLabels: async (_, _args) => {
       const labels = await prisma.categoryLabel.findMany();
-      return labels;
-    },
-    listCategoryLabelsFromCategoryId: async (_, { categoryId }) => {
-      const labels = await prisma.categoryLabel.findMany({
-        where: { id: categoryId }
-      });
       return labels;
     },
   },
@@ -210,7 +234,7 @@ const resolvers: Resolvers = {
     },
     createPaymentHistory: async (
       _,
-      { note, price, paymentDate, categoryId },
+      { note, price, paymentDate, categoryId, categoryLabelIds },
       { user },
     ) => {
       const newData = await prisma.paymentHistory.create({
@@ -228,6 +252,7 @@ const resolvers: Resolvers = {
               id: user.id,
             },
           },
+          categoryLabelIds
         },
       });
       return newData.id;

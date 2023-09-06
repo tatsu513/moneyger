@@ -75,9 +75,14 @@ const PaymentHistoryListItem: React.FC<Props> = ({
               alignItems='flex-start'
               flex={7}
             >
-              <Typography variant="h3Bold" mb={0.5}>
+              <Typography variant="h3Bold" mb={1}>
                 {price.toLocaleString()}円
               </Typography>
+              {labels.length > 0 && (
+                <Box mb={0.5}>
+                  <DisplayCategoryLabelsList labels={labels}/>
+                </Box>
+              )}
               <Typography variant="body1">{!note ? '-' : note}</Typography>
             </Box>
             <Box color={grey[400]} flex={1} textAlign="center">
@@ -86,7 +91,6 @@ const PaymentHistoryListItem: React.FC<Props> = ({
               </IconButton>
             </Box>
           </Box>
-          <DisplayCategoryLabelsList labels={labels}/>
         </ListItemButton>
       </ListItem>
 

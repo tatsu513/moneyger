@@ -61,8 +61,8 @@ model Category {
   maxAmount        Int
   authorId         String
   createdAt        DateTime         @default(now())
-  author           User             @relation(fields: [authorId], references: [id])
   categoryLabelIds Int[]
+  author           User             @relation(fields: [authorId], references: [id])
   paymentHistory   PaymentHistory[]
 }
 
@@ -73,13 +73,14 @@ model CategoryLabel {
 }
 
 model PaymentHistory {
-  id          Int      @id @default(autoincrement())
-  note        String?
-  price       Int
-  paymentDate DateTime
-  categoryId  Int
-  authorId    String
-  createdAt   DateTime @default(now())
-  author      User     @relation(fields: [authorId], references: [id])
-  category    Category @relation(fields: [categoryId], references: [id])
+  id               Int      @id @default(autoincrement())
+  note             String?
+  price            Int
+  paymentDate      DateTime
+  categoryId       Int
+  authorId         String
+  createdAt        DateTime @default(now())
+  categoryLabelIds Int[]
+  author           User     @relation(fields: [authorId], references: [id])
+  category         Category @relation(fields: [categoryId], references: [id])
 }

@@ -38,7 +38,7 @@ export type Scalars = {
 export type Category = {
   currentAmount: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
-  labels: Array<Maybe<CategoryLabel>>;
+  labels: Array<CategoryLabel>;
   maxAmount: Scalars['Int']['output'];
   name: Scalars['String']['output'];
 };
@@ -80,6 +80,7 @@ export type MutationCreateCategoryLabelArgs = {
 
 export type MutationCreatePaymentHistoryArgs = {
   categoryId: Scalars['Int']['input'];
+  categoryLabelIds: Array<Scalars['Int']['input']>;
   note?: InputMaybe<Scalars['String']['input']>;
   paymentDate: Scalars['String']['input'];
   price: Scalars['Int']['input'];
@@ -125,6 +126,7 @@ export type MutationUpdatePaymentHistoryArgs = {
 export type PaymentHistory = {
   categoryId: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
+  labels: Array<CategoryLabel>;
   note?: Maybe<Scalars['String']['output']>;
   paymentDate: Scalars['String']['output'];
   price: Scalars['Int']['output'];
@@ -140,7 +142,6 @@ export type Query = {
   category?: Maybe<Category>;
   listCategories: Array<Category>;
   listCategoryLabels: Array<CategoryLabel>;
-  listCategoryLabelsFromCategoryId: Array<CategoryLabel>;
   listPaymentHistories: Array<PaymentHistory>;
   listPaymentHistoriesByCategoryId: Array<PaymentHistory>;
   paymentHistory?: Maybe<PaymentHistory>;
@@ -153,10 +154,6 @@ export type QueryCategoryArgs = {
 
 export type QueryListCategoriesArgs = {
   targetDate?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type QueryListCategoryLabelsFromCategoryIdArgs = {
-  categoryId: Scalars['Int']['input'];
 };
 
 export type QueryListPaymentHistoriesByCategoryIdArgs = {
@@ -314,7 +311,7 @@ export type CategoryResolvers<
   currentAmount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   labels?: Resolver<
-    Array<Maybe<ResolversTypes['CategoryLabel']>>,
+    Array<ResolversTypes['CategoryLabel']>,
     ParentType,
     ContextType
   >;
@@ -357,7 +354,7 @@ export type MutationResolvers<
     ContextType,
     RequireFields<
       MutationCreatePaymentHistoryArgs,
-      'categoryId' | 'paymentDate' | 'price'
+      'categoryId' | 'categoryLabelIds' | 'paymentDate' | 'price'
     >
   >;
   deleteCaregoryLabel?: Resolver<
@@ -420,6 +417,11 @@ export type PaymentHistoryResolvers<
 > = {
   categoryId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  labels?: Resolver<
+    Array<ResolversTypes['CategoryLabel']>,
+    ParentType,
+    ContextType
+  >;
   note?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   paymentDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -462,12 +464,6 @@ export type QueryResolvers<
     Array<ResolversTypes['CategoryLabel']>,
     ParentType,
     ContextType
-  >;
-  listCategoryLabelsFromCategoryId?: Resolver<
-    Array<ResolversTypes['CategoryLabel']>,
-    ParentType,
-    ContextType,
-    RequireFields<QueryListCategoryLabelsFromCategoryIdArgs, 'categoryId'>
   >;
   listPaymentHistories?: Resolver<
     Array<ResolversTypes['PaymentHistory']>,
@@ -587,18 +583,11 @@ export type CreatePaymentHistoryDialog_CreatePaymentHistoryMutationVariables =
     paymentDate: Scalars['String']['input'];
     price: Scalars['Int']['input'];
     note?: InputMaybe<Scalars['String']['input']>;
+    categoryLabelIds: Array<Scalars['Int']['input']>;
   }>;
 
 export type CreatePaymentHistoryDialog_CreatePaymentHistoryMutation = {
   createPaymentHistory: number;
-};
-
-export type ListCategoryLabelsFromCategoryIdQueryVariables = Exact<{
-  categoryId: Scalars['Int']['input'];
-}>;
-
-export type ListCategoryLabelsFromCategoryIdQuery = {
-  listCategoryLabelsFromCategoryId: Array<{ id: number; name: string }>;
 };
 
 export type DeletePaymentHistoryDialog_DeletePaymentHistoryMutationVariables =
@@ -618,7 +607,7 @@ export type PaymentHistoriesPageQuery = {
   listCategories: Array<{
     id: number;
     name: string;
-    labels: Array<{ id: number; name: string } | null>;
+    labels: Array<{ id: number; name: string }>;
   }>;
   listPaymentHistories: Array<{
     id: number;
@@ -626,6 +615,7 @@ export type PaymentHistoriesPageQuery = {
     paymentDate: string;
     note?: string | null;
     price: number;
+    labels: Array<{ id: number; name: string }>;
   }>;
 };
 
@@ -667,7 +657,7 @@ export type SettingCategoriesPageQuery = {
     id: number;
     name: string;
     maxAmount: number;
-    labels: Array<{ id: number; name: string } | null>;
+    labels: Array<{ id: number; name: string }>;
   }>;
   listCategoryLabels: Array<{ id: number; name: string }>;
 };
@@ -780,21 +770,15 @@ export const CreatePaymentHistoryDialog_CreatePaymentHistoryDocument = gql`
     $paymentDate: String!
     $price: Int!
     $note: String
+    $categoryLabelIds: [Int!]!
   ) {
     createPaymentHistory(
       categoryId: $categoryId
       paymentDate: $paymentDate
       price: $price
       note: $note
+      categoryLabelIds: $categoryLabelIds
     )
-  }
-`;
-export const ListCategoryLabelsFromCategoryIdDocument = gql`
-  query listCategoryLabelsFromCategoryId($categoryId: Int!) {
-    listCategoryLabelsFromCategoryId(categoryId: $categoryId) {
-      id
-      name
-    }
   }
 `;
 export const DeletePaymentHistoryDialog_DeletePaymentHistoryDocument = gql`
@@ -818,6 +802,10 @@ export const PaymentHistoriesPageDocument = gql`
       paymentDate
       note
       price
+      labels {
+        id
+        name
+      }
     }
   }
 `;
@@ -1017,21 +1005,6 @@ export function getSdk(
           ),
         'createPaymentHistoryDialog_CreatePaymentHistory',
         'mutation',
-      );
-    },
-    listCategoryLabelsFromCategoryId(
-      variables: ListCategoryLabelsFromCategoryIdQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<ListCategoryLabelsFromCategoryIdQuery> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<ListCategoryLabelsFromCategoryIdQuery>(
-            ListCategoryLabelsFromCategoryIdDocument,
-            variables,
-            { ...requestHeaders, ...wrappedRequestHeaders },
-          ),
-        'listCategoryLabelsFromCategoryId',
-        'query',
       );
     },
     deletePaymentHistoryDialog_DeletePaymentHistory(

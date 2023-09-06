@@ -21,6 +21,7 @@ type TimeCardComboBoxProps<T> = {
   disabled?: boolean;
   ariaLabel?: string;
   label?: string;
+  placeholder: string;
   filterOptions?: (options: T[], state: FilterOptionsState<T>) => T[];
   getOptionLabel?: (option: T) => string;
   onChange?: (
@@ -39,6 +40,7 @@ const MoneygerAutocomplete = <T,>({
   disabled,
   ariaLabel,
   label,
+  placeholder,
   filterOptions,
   getOptionLabel,
   onChange,
@@ -59,10 +61,11 @@ const MoneygerAutocomplete = <T,>({
           label={label}
           error={!!errorMessage}
           helperText={errorMessage}
+          placeholder={placeholder}
         />
       );
     },
-    [value, ariaLabel, label, errorMessage, size],
+    [value, ariaLabel, label, errorMessage, size, placeholder],
   );
 
   const renderOption = useCallback(

@@ -24,6 +24,10 @@ const paymentHistoriesPageDocument = graphql(`
       paymentDate
       note
       price
+      labels {
+        id
+        name
+      }
     }
   }
 `);
@@ -43,6 +47,12 @@ const fetchDataSchema = z.object({
       price: z.number(),
       paymentDate: z.string(),
       categoryId: z.number(),
+      labels: z.array(
+        z.object({
+          id: z.number(),
+          name: z.string()
+        })
+      )
     }),
   ),
 });
