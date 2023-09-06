@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "yarn generate && next build",
+    "build": "yarn codegen && yarn prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "format": "yarn prettier --write src",
