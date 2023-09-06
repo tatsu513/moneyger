@@ -1,10 +1,16 @@
+import CategoryLabelsAutocomplate from '@/components/common/CategoryLabelsAutocomplate';
 import MoneygerDialog from '@/components/common/MoneygerDialog';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 import TextButton from '@/components/common/buttons/TextButton';
+import FormContentsBlock from '@/components/common/forms/FormContentsBlock';
 import { graphql } from '@/dao/generated/preset';
-import { maxAmountType, nameType } from '@/models/category';
+import {
+  CategoryLabel,
+  SettingCategoriesPageQuery,
+} from '@/dao/generated/preset/graphql';
+import { labelsType, maxAmountType, nameType } from '@/models/category';
 import DialogState from '@/types/DialogState';
-import { Box, Slide, TextField, Typography } from '@mui/material';
+import { Box, Slide, TextField } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useCallback, useState } from 'react';
@@ -24,10 +30,13 @@ const createCategoryDialogCreateCategoryDocument = graphql(`
 const createCategorySchema = z.object({
   name: nameType,
   maxAmount: maxAmountType,
+  labels: labelsType,
 });
 
+type Label = SettingCategoriesPageQuery['listCategoryLabels'][number];
 type Props = {
   dialogState: DialogState;
+  labels: Label[];
   onClose: () => void;
   events: {
     onSuccess: () => void;
@@ -37,16 +46,19 @@ type Props = {
 };
 const CreateCategoryDialog: React.FC<Props> = ({
   dialogState,
+  labels,
   onClose,
   events,
 }) => {
   const router = useRouter();
   const [name, setName] = useState('');
   const [maxAmount, setMaxAmount] = useState('');
+  const [selectedLabels, setSelectedLabels] = useState<Label[]>([]);
 
   const safeParseResult = createCategorySchema.safeParse({
     name,
     maxAmount,
+    labels: selectedLabels,
   });
 
   const handleChangeName = useCallback(
@@ -74,6 +86,10 @@ const CreateCategoryDialog: React.FC<Props> = ({
     setMaxAmount('');
   }, [onClose]);
 
+  const handlePaymentChange = useCallback((values: CategoryLabel[]) => {
+    setSelectedLabels(values ?? []);
+  }, []);
+
   const submit = useMutation(createCategoryDialogCreateCategoryDocument)[1];
   const handleSubmit = useCallback(async () => {
     events.onProcessing();
@@ -86,12 +102,15 @@ const CreateCategoryDialog: React.FC<Props> = ({
       const result = await submit({
         name: safeParseResult.data.name,
         maxAmount: safeParseResult.data.maxAmount,
-        labelIds: [],
+        labelIds: safeParseResult.data.labels.map((l) => l.id),
       });
       if (result.error) {
-        throw new Error('費目の作成に失敗', { cause: {
-          result, safeParseResult
-        }});
+        throw new Error('費目の作成に失敗', {
+          cause: {
+            result,
+            safeParseResult,
+          },
+        });
       }
       router.refresh();
       events.onSuccess();
@@ -110,10 +129,7 @@ const CreateCategoryDialog: React.FC<Props> = ({
       fullScreen
       TransitionComponent={Transition}
     >
-      <Box mb={3}>
-        <Typography variant="body1" mb={1}>
-          費目名
-        </Typography>
+      <FormContentsBlock label="費目名" required hasMargin>
         <TextField
           value={name}
           fullWidth
@@ -121,11 +137,8 @@ const CreateCategoryDialog: React.FC<Props> = ({
           placeholder="食費"
           size="small"
         />
-      </Box>
-      <Box mb={3}>
-        <Typography variant="body1" mb={1}>
-          上限金額
-        </Typography>
+      </FormContentsBlock>
+      <FormContentsBlock label="上限金額" required hasMargin>
         <TextField
           value={maxAmount}
           fullWidth
@@ -133,7 +146,14 @@ const CreateCategoryDialog: React.FC<Props> = ({
           placeholder="10000"
           size="small"
         />
-      </Box>
+      </FormContentsBlock>
+      <FormContentsBlock label="ラベル" hasMargin>
+        <CategoryLabelsAutocomplate
+          selectedValues={selectedLabels}
+          options={labels}
+          onChange={handlePaymentChange}
+        />
+      </FormContentsBlock>
       <Box display="flex" flexDirection="column" columnGap={2}>
         <PrimaryButton
           label="追加"
@@ -154,5 +174,5 @@ const Transition = React.forwardRef(function Transition(
   },
   ref: React.Ref<unknown>,
 ) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide {...props} direction="up" ref={ref} />;
 });

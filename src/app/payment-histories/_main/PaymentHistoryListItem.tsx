@@ -1,5 +1,11 @@
 'use client';
-import { Box, IconButton, ListItem, ListItemButton, Typography } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  ListItem,
+  ListItemButton,
+  Typography,
+} from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { grey } from '@mui/material/colors';
@@ -8,12 +14,15 @@ import DeletePaymentHistoryDialog from '@/app/payment-histories/_dialog/DeletePa
 import DialogState from '@/types/DialogState';
 import useAlert from '@/hooks/useAlert';
 import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
+import DisplayCategoryLabelsList from '@/components/common/DisplayCategoryLabelsList';
+import { CategoryLabel } from '@/dao/generated/preset/graphql';
 
 type Props = {
   id: number;
   note: string | null;
   price: number;
   paymentDate: string;
+  labels: CategoryLabel[];
 };
 
 const PaymentHistoryListItem: React.FC<Props> = ({
@@ -21,13 +30,15 @@ const PaymentHistoryListItem: React.FC<Props> = ({
   note,
   price,
   paymentDate,
+  labels,
 }) => {
   const router = useRouter();
   const [dialogState, setDialogState] = useState<DialogState>('closed');
 
-  const { alertType, setSuccess, setError, setProcessing, setNone } = useAlert();
+  const { alertType, setSuccess, setError, setProcessing, setNone } =
+    useAlert();
 
-  const closeDialog = useCallback(() => setDialogState('closed'), [])
+  const closeDialog = useCallback(() => setDialogState('closed'), []);
   const handleClick = useCallback(() => {
     router.push(
       `/payment-histories/[paymentHistoryId]`.replace(
@@ -41,7 +52,7 @@ const PaymentHistoryListItem: React.FC<Props> = ({
     e.stopPropagation();
     e.preventDefault();
     setDialogState('open');
-  }, [])
+  }, []);
 
   return (
     <>
@@ -59,25 +70,42 @@ const PaymentHistoryListItem: React.FC<Props> = ({
             px: 0,
             py: 1,
             display: 'flex',
-            alignItems: 'space-between',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
           }}
           onClick={handleClick}
         >
           <Box
-            display='flex'
-            flexDirection='column'
-            alignItems='flex-start'
-            flex={7}
+            display="flex"
+            alignContent="center"
+            justifyContent="space-between"
+            width="100%"
           >
-            <Typography variant="h3Bold" mb={0.5}>
-              {price.toLocaleString()}円
-            </Typography>
-            <Typography variant="body1">{!note ? '-' : note}</Typography>
-          </Box>
-          <Box color={grey[400]} flex={1} textAlign="center">
-            <IconButton color="inherit" onClick={handleDeleteClick} size='small'>
-              <CloseIcon.default fontSize='inherit'/>
-            </IconButton>
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="flex-start"
+              flex={7}
+            >
+              <Typography variant="h3Bold" mb={1}>
+                {price.toLocaleString()}円
+              </Typography>
+              {labels.length > 0 && (
+                <Box mb={0.5}>
+                  <DisplayCategoryLabelsList labels={labels} />
+                </Box>
+              )}
+              {/* <Typography variant="body1">{!note ? '-' : note}</Typography> */}
+            </Box>
+            <Box color={grey[400]} flex={1} textAlign="center">
+              <IconButton
+                color="inherit"
+                onClick={handleDeleteClick}
+                size="small"
+              >
+                <CloseIcon.default fontSize="inherit" />
+              </IconButton>
+            </Box>
           </Box>
         </ListItemButton>
       </ListItem>
@@ -88,7 +116,7 @@ const PaymentHistoryListItem: React.FC<Props> = ({
           id,
           note,
           price,
-          paymentDate
+          paymentDate,
         }}
         onClose={closeDialog}
         events={{

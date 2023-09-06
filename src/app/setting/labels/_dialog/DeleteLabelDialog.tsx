@@ -3,7 +3,7 @@ import MoneygerDialog from '@/components/common/MoneygerDialog';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 import TextButton from '@/components/common/buttons/TextButton';
 import { graphql } from '@/dao/generated/preset';
-import { SettingCategoriesPageQuery } from '@/dao/generated/preset/graphql';
+import { SettingLabelsPageQuery } from '@/dao/generated/preset/graphql';
 import DialogState from '@/types/DialogState';
 import {
   Box,
@@ -16,16 +16,16 @@ import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useCallback, useState } from 'react';
 import { useMutation } from 'urql';
 
-const deleteCategoryDialogDeleteCategoryDocument = graphql(`
-  mutation deleteCategoryDialog_DeleteCategory($id: Int!) {
-    deleteCategory(id: $id)
+const deleteCategoryDialogDeleteCategoryLabelDocument = graphql(`
+  mutation deleteCategoryDialog_DeleteCategoryLabel($categoryLabelId: Int!) {
+    deleteCaregoryLabel(categoryLabelId: $categoryLabelId)
   }
 `);
 
-type Category = SettingCategoriesPageQuery['listCategories'][number];
+type Label = SettingLabelsPageQuery['listCategoryLabels'][number];
 type Props = {
   dialogState: DialogState;
-  category: Category;
+  label: Label;
   onClose: () => void;
   events: {
     onSuccess: () => void;
@@ -33,9 +33,9 @@ type Props = {
     onProcessing: () => void;
   };
 };
-const DeleteCategoryDialog: React.FC<Props> = ({
+const DeleteLabelDialog: React.FC<Props> = ({
   dialogState,
-  category,
+  label,
   onClose,
   events,
 }) => {
@@ -46,28 +46,31 @@ const DeleteCategoryDialog: React.FC<Props> = ({
     setChecked(e.target.checked);
   }, []);
 
-  const submit = useMutation(deleteCategoryDialogDeleteCategoryDocument)[1];
+  const submit = useMutation(
+    deleteCategoryDialogDeleteCategoryLabelDocument,
+  )[1];
   const handleSubmit = useCallback(async () => {
     events.onProcessing();
     if (!checked) return;
     try {
-      const result = await submit({ id: category.id });
+      const result = await submit({ categoryLabelId: label.id });
       if (result.error) {
-        throw new Error('費目の削除に失敗しました');
+        throw new Error('ラベルの削除に失敗しました');
       }
-      events.onSuccess();
       router.refresh();
+      events.onSuccess();
+      onClose();
     } catch (error) {
-      console.error('費目の削除に失敗しました', { error });
+      console.error('ラベルの削除に失敗しました', { error });
       events.onError();
       return;
     }
-  }, [router, category.id, checked, submit, events]);
+  }, [router, label.id, checked, submit, events, onClose]);
   return (
     <MoneygerDialog
       open={dialogState === 'open'}
       onClose={onClose}
-      title="費目を削除"
+      title="ラベルを削除"
       fullWidth
       actions={
         <Box display="flex" justifyContent="flex-end" gap={1}>
@@ -80,18 +83,15 @@ const DeleteCategoryDialog: React.FC<Props> = ({
         </Box>
       }
     >
-      {category == null ? (
+      {label == null ? (
         <CommonLoading />
       ) : (
         <Box>
           <Typography variant="body2" mb={2}>
-            以下のカテゴリを削除します。
+            以下のラベルを削除します。
           </Typography>
           <Typography variant="body1" mb={0.5}>
-            名称：{category.name}
-          </Typography>
-          <Typography variant="body1" mb={2}>
-            上限：{category.maxAmount.toLocaleString()}円
+            名称：{label.name}
           </Typography>
           <FormGroup>
             <FormControlLabel
@@ -109,4 +109,4 @@ const DeleteCategoryDialog: React.FC<Props> = ({
   );
 };
 
-export default DeleteCategoryDialog;
+export default DeleteLabelDialog;

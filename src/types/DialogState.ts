@@ -1,3 +1,3 @@
-type DialogState = "open" | "closed";
+type DialogState = 'open' | 'closed';
 
 export default DialogState;

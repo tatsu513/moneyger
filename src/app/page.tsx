@@ -34,9 +34,9 @@ const schema = z.object({
       id: z.number(),
       name: z.string(),
       maxAmount: z.number(),
-      currentAmount: z.number()
-    })
-  )
+      currentAmount: z.number(),
+    }),
+  ),
 });
 
 export default async function page() {
@@ -44,7 +44,7 @@ export default async function page() {
   const { getClient } = registerRscUrqlClient(cookie);
   try {
     const result = await getClient().query(topPageDocument, {
-      targetDate: dateTimeToStringDate(DateTime.now())
+      targetDate: dateTimeToStringDate(DateTime.now()),
     });
     if (result.error) {
       console.error({ error: result.error, message: 'fetch失敗' });

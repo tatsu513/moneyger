@@ -2,7 +2,7 @@ import PaymentHistoriesMain from '@/app/payment-histories/_main/PaymentHistories
 import { graphql } from '@/dao/generated/preset';
 import registerRscUrqlClient from '@/util/registerRscUrqlClient';
 import { z } from 'zod';
-import { nameType } from '@/models/category';
+import { labelsType, nameType } from '@/models/category';
 import { notFound } from 'next/navigation';
 import checkSessionOnServer from '@/util/checkSessionOnServer';
 import dateTimeToStringDate from '@/logics/dateTimeToStringDate';
@@ -13,6 +13,10 @@ const paymentHistoriesPageDocument = graphql(`
     listCategories(targetDate: $targetDate) {
       id
       name
+      labels {
+        id
+        name
+      }
     }
     listPaymentHistories {
       id
@@ -20,6 +24,10 @@ const paymentHistoriesPageDocument = graphql(`
       paymentDate
       note
       price
+      labels {
+        id
+        name
+      }
     }
   }
 `);
@@ -29,6 +37,7 @@ const fetchDataSchema = z.object({
     z.object({
       id: z.number(),
       name: nameType,
+      labels: labelsType,
     }),
   ),
   listPaymentHistories: z.array(
@@ -38,6 +47,12 @@ const fetchDataSchema = z.object({
       price: z.number(),
       paymentDate: z.string(),
       categoryId: z.number(),
+      labels: z.array(
+        z.object({
+          id: z.number(),
+          name: z.string(),
+        }),
+      ),
     }),
   ),
 });
@@ -47,7 +62,7 @@ export default async function Home() {
   const { getClient } = registerRscUrqlClient(cookie);
   try {
     const res = await getClient().query(paymentHistoriesPageDocument, {
-      targetDate: dateTimeToStringDate(DateTime.now())
+      targetDate: dateTimeToStringDate(DateTime.now()),
     });
     if (res.error) throw res.error;
     const result = fetchDataSchema.parse(res.data);

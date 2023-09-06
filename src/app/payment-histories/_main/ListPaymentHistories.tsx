@@ -11,10 +11,15 @@ type Props = {
   initialState: PaymentHistory[];
 };
 
-const ListPaymentHistories: React.FC<Props> = ({ categoryId, initialState }) => {
+const ListPaymentHistories: React.FC<Props> = ({
+  categoryId,
+  initialState,
+}) => {
   const listPaymentHistories = useMemo(() => {
     if (categoryId == null) return initialState;
-    return initialState.flatMap((s) => (s.categoryId === categoryId ? [s] : []));
+    return initialState.flatMap((s) =>
+      s.categoryId === categoryId ? [s] : [],
+    );
   }, [categoryId, initialState]);
   const listPaymentHistoriesPerDate = useMemo(() => {
     const map: Map<string, PaymentHistory[]> = new Map();
@@ -60,6 +65,7 @@ const ListPaymentHistories: React.FC<Props> = ({ categoryId, initialState }) => 
                   note={v.note ?? null}
                   price={v.price}
                   paymentDate={v.paymentDate}
+                  labels={v.labels}
                 />
                 {values.length !== i + 1 && <Divider />}
               </Box>
