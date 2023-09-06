@@ -37,16 +37,16 @@ const resolvers: Resolvers = {
           return val.categoryId === p.id ? acc + val.price : acc;
         }, 0);
         const labels = categoryLabels.flatMap((l) => {
-          const hasId = p.categoryLabelIds.includes(l.id)
-          return hasId ? [l] : []
-        })
+          const hasId = p.categoryLabelIds.includes(l.id);
+          return hasId ? [l] : [];
+        });
         return {
           ...p,
           currentAmount,
-          labels
+          labels,
         };
       });
-      return data
+      return data;
     },
     category: async (_, { categoryId }) => {
       const categoryPromise = prisma.category.findUnique({
@@ -55,23 +55,25 @@ const resolvers: Resolvers = {
       const historiesPromise = prisma.paymentHistory.findMany({
         where: { categoryId },
       });
-      const categoryLabelPromise = prisma.categoryLabel.findMany()
+      const categoryLabelPromise = prisma.categoryLabel.findMany();
       const [category, histories, labels] = await Promise.all([
         categoryPromise,
         historiesPromise,
-        categoryLabelPromise
+        categoryLabelPromise,
       ]);
       if (category == null) return null;
       const currentAmount = histories.reduce((acc, val) => {
         return val.categoryId === category.id ? acc + val.price : acc;
       }, 0);
-      const includedLabels = labels.flatMap((l) => l.id === categoryId ? [l] : [])
+      const includedLabels = labels.flatMap((l) =>
+        l.id === categoryId ? [l] : [],
+      );
       return {
         id: category.id,
         name: category.name,
         currentAmount,
         maxAmount: category.maxAmount,
-        labels: includedLabels
+        labels: includedLabels,
       };
     },
     // 支払履歴を全て取得
@@ -81,12 +83,12 @@ const resolvers: Resolvers = {
           paymentDate: 'desc',
         },
       });
-      const labelsPromise = prisma.categoryLabel.findMany()
+      const labelsPromise = prisma.categoryLabel.findMany();
 
       const [histories, labels] = await Promise.all([
         historiesPrimise,
-        labelsPromise
-      ])
+        labelsPromise,
+      ]);
       return histories.flatMap((r) => {
         const { dateTime, str } = getJstDateTimeFromJsDate(r.paymentDate);
         if (str == null) {
@@ -95,9 +97,9 @@ const resolvers: Resolvers = {
           );
         }
         const categoryLabels = labels.flatMap((l) => {
-          const isInclude = r.categoryLabelIds.includes(l.id)
-          return isInclude ? [l] : []
-        })
+          const isInclude = r.categoryLabelIds.includes(l.id);
+          return isInclude ? [l] : [];
+        });
         return dateTime.month >=
           DateTime.now().minus({ months: AVAILABLE_MONTH }).month
           ? [{ ...r, paymentDate: str, labels: categoryLabels }]
@@ -113,8 +115,8 @@ const resolvers: Resolvers = {
       const labelsPromise = prisma.categoryLabel.findMany();
       const [histories, labels] = await Promise.all([
         historiesPrimise,
-        labelsPromise
-      ])
+        labelsPromise,
+      ]);
 
       return histories.flatMap((r) => {
         const { dateTime, str } = getJstDateTimeFromJsDate(r.paymentDate);
@@ -124,9 +126,9 @@ const resolvers: Resolvers = {
           );
         }
         const categoryLabels = labels.flatMap((l) => {
-          const isInclude = r.categoryLabelIds.includes(l.id)
-          return isInclude ? [l] : []
-        })
+          const isInclude = r.categoryLabelIds.includes(l.id);
+          return isInclude ? [l] : [];
+        });
         return dateTime.month >=
           DateTime.now().minus({ months: AVAILABLE_MONTH }).month
           ? [{ ...r, paymentDate: str, labels: categoryLabels }]
@@ -141,8 +143,8 @@ const resolvers: Resolvers = {
       const labelsPromise = prisma.categoryLabel.findMany();
       const [history, labels] = await Promise.all([
         historyPrimise,
-        labelsPromise
-      ])
+        labelsPromise,
+      ]);
       if (history == null) {
         throw Error('支払履歴が見つかりません');
       }
@@ -153,9 +155,9 @@ const resolvers: Resolvers = {
         );
       }
       const categoryLabels = labels.flatMap((l) => {
-        const isInclude = history.categoryLabelIds.includes(l.id)
-        return isInclude ? [l] : []
-      })
+        const isInclude = history.categoryLabelIds.includes(l.id);
+        return isInclude ? [l] : [];
+      });
       return {
         ...history,
         paymentDate: str,
@@ -205,7 +207,7 @@ const resolvers: Resolvers = {
                 id: user.id,
               },
             },
-            categoryLabelIds: labelIds
+            categoryLabelIds: labelIds,
           },
         })
         .catch((err) => {
@@ -221,7 +223,7 @@ const resolvers: Resolvers = {
         data: {
           name,
           maxAmount,
-          categoryLabelIds: labelIds
+          categoryLabelIds: labelIds,
         },
       });
       return target.id;
@@ -252,7 +254,7 @@ const resolvers: Resolvers = {
               id: user.id,
             },
           },
-          categoryLabelIds
+          categoryLabelIds,
         },
       });
       return newData.id;
@@ -268,7 +270,7 @@ const resolvers: Resolvers = {
           note,
           price,
           paymentDate,
-          categoryLabelIds: labelIds
+          categoryLabelIds: labelIds,
         },
       });
       return target.id;
@@ -280,33 +282,51 @@ const resolvers: Resolvers = {
       return target.id;
     },
     createCategoryLabel: async (_, { categoryId, labels }) => {
-      const target = await prisma.categoryLabel.createMany({
-        data: labels.map((l) => ({ name: l })),
-        skipDuplicates: true,
-      }).catch((err) => {
-        console.error('カテゴリラベルの登録に失敗しました', { err, categoryId, labels });
-        throw new GraphQLError('カテゴリラベルの登録に失敗しました')
-      })
-      return target.count
+      const target = await prisma.categoryLabel
+        .createMany({
+          data: labels.map((l) => ({ name: l })),
+          skipDuplicates: true,
+        })
+        .catch((err) => {
+          console.error('カテゴリラベルの登録に失敗しました', {
+            err,
+            categoryId,
+            labels,
+          });
+          throw new GraphQLError('カテゴリラベルの登録に失敗しました');
+        });
+      return target.count;
     },
     updateCaregoryLabel: async (_, { categoryLabelId, name }) => {
-      const target = await prisma.categoryLabel.update({
-        where: { id: categoryLabelId },
-        data: { name }
-      }).catch((err) => {
-        console.error('カテゴリラベルの更新に失敗しました', { err, categoryLabelId, name });
-        throw new GraphQLError('カテゴリラベルの更新に失敗しました')
-      })
-      return target.id
+      const target = await prisma.categoryLabel
+        .update({
+          where: { id: categoryLabelId },
+          data: { name },
+        })
+        .catch((err) => {
+          console.error('カテゴリラベルの更新に失敗しました', {
+            err,
+            categoryLabelId,
+            name,
+          });
+          throw new GraphQLError('カテゴリラベルの更新に失敗しました');
+        });
+      return target.id;
     },
     deleteCaregoryLabel: async (_, { categoryLabelId }) => {
-      const target = await prisma.categoryLabel.delete({
-        where: { id: categoryLabelId },
-      }).catch((err) => {
-        console.error('カテゴリラベルの削除に失敗しました', { err, categoryLabelId, name });
-        throw new GraphQLError('カテゴリラベルの削除に失敗しました')
-      })
-      return target.id
+      const target = await prisma.categoryLabel
+        .delete({
+          where: { id: categoryLabelId },
+        })
+        .catch((err) => {
+          console.error('カテゴリラベルの削除に失敗しました', {
+            err,
+            categoryLabelId,
+            name,
+          });
+          throw new GraphQLError('カテゴリラベルの削除に失敗しました');
+        });
+      return target.id;
     },
   },
 };

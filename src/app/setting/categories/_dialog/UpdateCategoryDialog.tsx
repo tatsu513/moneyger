@@ -20,7 +20,12 @@ const updateCategoryDialogUpdateCategoryDocument = graphql(`
     $maxAmount: Int!
     $labelIds: [Int!]!
   ) {
-    updateCategory(id: $id, name: $name, maxAmount: $maxAmount, labelIds: $labelIds)
+    updateCategory(
+      id: $id
+      name: $name
+      maxAmount: $maxAmount
+      labelIds: $labelIds
+    )
   }
 `);
 
@@ -28,15 +33,15 @@ const updateSchema = z.object({
   id: z.number(),
   name: nameType,
   maxAmount: maxAmountType,
-  labels: labelsType
+  labels: labelsType,
 });
 
-type Category = SettingCategoriesPageQuery['listCategories'][number]
-type Label = SettingCategoriesPageQuery['listCategoryLabels'][number]
+type Category = SettingCategoriesPageQuery['listCategories'][number];
+type Label = SettingCategoriesPageQuery['listCategoryLabels'][number];
 type Props = {
   dialogState: DialogState;
   category: Category;
-  labels: Label[]
+  labels: Label[];
   onClose: () => void;
   events: {
     onSuccess: () => void;
@@ -51,25 +56,27 @@ const UpdateCategoryDialog: React.FC<Props> = ({
   onClose,
   events,
 }) => {
-  console.log({ category })
+  console.log({ category });
   const router = useRouter();
   const [name, setName] = useState(category.name);
   const [maxAmount, setMaxAmount] = useState(category.maxAmount.toString());
   const [selectedLabels, setSelectedLabels] = useState<Label[]>(
     category.labels?.flatMap((l) => {
-      if (l == null) return []
-      return [{
-        id: l.id,
-        name: l.name
-      }]
-    }) ?? []
+      if (l == null) return [];
+      return [
+        {
+          id: l.id,
+          name: l.name,
+        },
+      ];
+    }) ?? [],
   );
 
   const safeParseResult = updateSchema.safeParse({
     id: category.id,
     name,
     maxAmount,
-    labels: selectedLabels
+    labels: selectedLabels,
   });
 
   const handleChangeName = useCallback(
@@ -106,11 +113,8 @@ const UpdateCategoryDialog: React.FC<Props> = ({
     stringify: (label: Label) => label.name,
   });
   const handlePaymentChange = useCallback(
-    (
-      _e: React.SyntheticEvent<Element, Event>,
-      values: Label[] | null,
-    ) => {
-      console.log({values })
+    (_e: React.SyntheticEvent<Element, Event>, values: Label[] | null) => {
+      console.log({ values });
       setSelectedLabels(values ?? []);
     },
     [],
@@ -124,13 +128,13 @@ const UpdateCategoryDialog: React.FC<Props> = ({
       events.onError();
       return;
     }
-    console.log({ d: safeParseResult.data.labels })
+    console.log({ d: safeParseResult.data.labels });
     try {
       const result = await submit({
         id: safeParseResult.data.id,
         name: safeParseResult.data.name,
         maxAmount: safeParseResult.data.maxAmount,
-        labelIds: safeParseResult.data.labels.map((l) => l.id)
+        labelIds: safeParseResult.data.labels.map((l) => l.id),
       });
       if (result.error) {
         throw new Error('費目の更新に失敗しました');

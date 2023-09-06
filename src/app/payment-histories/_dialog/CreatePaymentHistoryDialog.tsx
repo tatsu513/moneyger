@@ -6,19 +6,17 @@ import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 import TextButton from '@/components/common/buttons/TextButton';
 import FormContentsBlock from '@/components/common/forms/FormContentsBlock';
 import { graphql } from '@/dao/generated/preset';
-import { CategoryLabel, PaymentHistoriesPageQuery } from '@/dao/generated/preset/graphql';
+import {
+  CategoryLabel,
+  PaymentHistoriesPageQuery,
+} from '@/dao/generated/preset/graphql';
 import {
   createPaymentHistorySchema,
   editCreatePaymentHistorySchema,
   priceType,
 } from '@/models/paymentHistory';
 import DialogState from '@/types/DialogState';
-import {
-  Box,
-  Slide,
-  TextField,
-  createFilterOptions,
-} from '@mui/material';
+import { Box, Slide, TextField, createFilterOptions } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
@@ -68,14 +66,14 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
   const [paymentDate, setPaymentDate] = useState<DateTime | null>(null);
   const [price, setPrice] = useState<string>('');
   const [note, setNote] = useState<string>('');
-  const [labels, setLabels] = useState<CategoryLabel[]>([])
+  const [labels, setLabels] = useState<CategoryLabel[]>([]);
 
   const safeParseResult = editCreatePaymentHistorySchema.safeParse({
     categoryId: category?.id,
     paymentDate,
     price,
     note,
-    categoryLabels: labels
+    categoryLabels: labels,
   });
 
   const handlePaymentChange = useCallback(
@@ -115,7 +113,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
     setPaymentDate(null);
     setPrice('');
     setNote('');
-    setLabels([])
+    setLabels([]);
   }, [onClose]);
 
   const submit = useMutation(
@@ -128,7 +126,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
       paymentDate: paymentDate?.toISO(),
       price: Number(price),
       note,
-      categoryLabelIds: labels.map((i) => i.id)
+      categoryLabelIds: labels.map((i) => i.id),
     };
     const parseResult = createPaymentHistorySchema.safeParse({ ...data });
     if (!parseResult.success) {
@@ -145,7 +143,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
         paymentDate: parseResult.data.paymentDate,
         price: parseResult.data.price,
         note: parseResult.data.note,
-        categoryLabelIds: parseResult.data.categoryLabelIds
+        categoryLabelIds: parseResult.data.categoryLabelIds,
       });
       if (result.error) {
         throw new Error('支払いの作成に失敗しました');
@@ -158,7 +156,17 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
       events.onError();
       return;
     }
-  }, [submit, handleClose, category, paymentDate, price, note, router, labels, events]);
+  }, [
+    submit,
+    handleClose,
+    category,
+    paymentDate,
+    price,
+    note,
+    router,
+    labels,
+    events,
+  ]);
 
   const getOptionLabel = useCallback(
     (option: LocalCategoryType[number]): string => option.name,
@@ -171,8 +179,8 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
   });
 
   const handleChange = useCallback((values: CategoryLabel[]) => {
-    setLabels(values)
-  }, [])
+    setLabels(values);
+  }, []);
 
   return (
     <MoneygerDialog
@@ -182,7 +190,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
       fullScreen
       TransitionComponent={Transition}
     >
-      <FormContentsBlock label='費目' required hasMargin>
+      <FormContentsBlock label="費目" required hasMargin>
         <MoneygerAutocomplete
           id="payment-history-category"
           value={category}
@@ -196,11 +204,11 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
         />
       </FormContentsBlock>
 
-      <FormContentsBlock label='支払日' required hasMargin>
+      <FormContentsBlock label="支払日" required hasMargin>
         <MoneygerDatePicker value={paymentDate} onChange={handleChangeDate} />
       </FormContentsBlock>
 
-      <FormContentsBlock label='支払金額' required hasMargin>
+      <FormContentsBlock label="支払金額" required hasMargin>
         <TextField
           value={price}
           fullWidth
@@ -210,15 +218,15 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
         />
       </FormContentsBlock>
 
-      <FormContentsBlock label='ラベル' hasMargin>
+      <FormContentsBlock label="ラベル" hasMargin>
         <CategoryLabelsAutocomplate
           selectedValues={labels}
           options={category?.labels ?? []}
           onChange={handleChange}
         />
       </FormContentsBlock>
-      
-      <FormContentsBlock label='メモ' hasMargin>
+
+      <FormContentsBlock label="メモ" hasMargin>
         <TextField
           value={note}
           fullWidth

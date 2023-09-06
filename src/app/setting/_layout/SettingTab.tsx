@@ -5,8 +5,8 @@ import { Box, Tab } from '@mui/material';
 import { TabContext, TabList } from '@mui/lab';
 import { usePathname, useRouter } from 'next/navigation';
 
-const category = "Category"
-const label = "Label"
+const category = 'Category';
+const label = 'Label';
 
 const SettingTab: React.FC = () => {
   const router = useRouter();
@@ -14,29 +14,32 @@ const SettingTab: React.FC = () => {
 
   const value = useMemo(() => {
     switch (pathname) {
-      case "/setting/categories":
-        return category
-      case "/setting/labels":
-        return label  
+      case '/setting/categories':
+        return category;
+      case '/setting/labels':
+        return label;
       default:
-        return category
+        return category;
     }
-  }, [pathname])
+  }, [pathname]);
 
-  const handleChange = useCallback((_e: React.SyntheticEvent, newValue: string) => {
-    switch (newValue) {
-      case category:
-        router.push('/setting/categories')
-        break;
-      case label:
-        router.push('/setting/labels')
-        break;
-      default:
-        console.warn('不正な遷移です。何も起こりません')
-        break;
-    }
-  }, [router]);
-  
+  const handleChange = useCallback(
+    (_e: React.SyntheticEvent, newValue: string) => {
+      switch (newValue) {
+        case category:
+          router.push('/setting/categories');
+          break;
+        case label:
+          router.push('/setting/labels');
+          break;
+        default:
+          console.warn('不正な遷移です。何も起こりません');
+          break;
+      }
+    },
+    [router],
+  );
+
   return (
     <TabContext value={value}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

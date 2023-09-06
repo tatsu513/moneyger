@@ -22,7 +22,7 @@ const deleteCategoryDialogDeleteCategoryDocument = graphql(`
   }
 `);
 
-type Category = SettingCategoriesPageQuery['listCategories'][number]
+type Category = SettingCategoriesPageQuery['listCategories'][number];
 type Props = {
   dialogState: DialogState;
   category: Category;
@@ -56,7 +56,7 @@ const DeleteCategoryDialog: React.FC<Props> = ({
         throw new Error('費目の削除に失敗しました');
       }
       events.onSuccess();
-      router.refresh()
+      router.refresh();
     } catch (error) {
       console.error('費目の削除に失敗しました', { error });
       events.onError();

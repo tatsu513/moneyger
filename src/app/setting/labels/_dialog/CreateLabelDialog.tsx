@@ -46,30 +46,35 @@ const CreateLabelDialog: React.FC<Props> = ({
 }) => {
   const router = useRouter();
   const [categoryId, setCategoryId] = useState<number | null>(addCategoryId);
-  const [labels, setLabels] = useState([{ name: "", index: 0 }]);
+  const [labels, setLabels] = useState([{ name: '', index: 0 }]);
 
   const safeParseResult = createCategorySchema.safeParse({
     categoryId,
     labels: labels.map((l) => l.name),
   });
-  console.log({ safeParseResult })
+  console.log({ safeParseResult });
 
   const handleLabelInput = useCallback((index: number, value: string) => {
-    setLabels((prev) => prev.map((p, i) => index === i ? { name: value, index } : p))
-  }, [])
+    setLabels((prev) =>
+      prev.map((p, i) => (index === i ? { name: value, index } : p)),
+    );
+  }, []);
 
   const handleAddClick = useCallback(() => {
-    setLabels((prev) => [...prev, { name: "", index: prev.length }])
-  }, [])
+    setLabels((prev) => [...prev, { name: '', index: prev.length }]);
+  }, []);
 
-  const handleDeleteClick = useCallback((index: number) => {
-    setLabels(labels.filter((l) => l.index !== index))
-  }, [labels])
+  const handleDeleteClick = useCallback(
+    (index: number) => {
+      setLabels(labels.filter((l) => l.index !== index));
+    },
+    [labels],
+  );
 
   const handleClose = useCallback(() => {
     onClose();
     setCategoryId(null);
-    setLabels([{ name: "", index: 0 }]);
+    setLabels([{ name: '', index: 0 }]);
   }, [onClose]);
 
   const submit = useMutation(createLabelDialogCreateLabelDocument)[1];
@@ -86,9 +91,12 @@ const CreateLabelDialog: React.FC<Props> = ({
         labels: safeParseResult.data.labels,
       });
       if (result.error) {
-        throw new Error('費目の作成に失敗', { cause: {
-          result, safeParseResult
-        }});
+        throw new Error('費目の作成に失敗', {
+          cause: {
+            result,
+            safeParseResult,
+          },
+        });
       }
       router.refresh();
       events.onSuccess();
@@ -98,7 +106,15 @@ const CreateLabelDialog: React.FC<Props> = ({
       events.onError();
       return;
     }
-  }, [submit, handleClose, safeParseResult, categoryId, labels, router, events]);
+  }, [
+    submit,
+    handleClose,
+    safeParseResult,
+    categoryId,
+    labels,
+    router,
+    events,
+  ]);
   return (
     <MoneygerDialog
       open={dialogState === 'open'}
@@ -110,14 +126,24 @@ const CreateLabelDialog: React.FC<Props> = ({
       <Box>
         <Box mb={1}>
           <Typography variant="body1">ラベル名</Typography>
-          <Typography variant='caption'>※1度に10個まで登録可能</Typography>
+          <Typography variant="caption">※1度に10個まで登録可能</Typography>
         </Box>
         {labels.map((l) => (
-          <LabelNameInputBlock key={`index-num-${l.index}`} label={l} onInput={handleLabelInput} onDelete={handleDeleteClick} />
+          <LabelNameInputBlock
+            key={`index-num-${l.index}`}
+            label={l}
+            onInput={handleLabelInput}
+            onDelete={handleDeleteClick}
+          />
         ))}
       </Box>
       <Box textAlign="center" mb={4}>
-        <TextButton label='フォームを追加' disabled={labels.length >= 10 || !safeParseResult.success}  onClick={handleAddClick} startIcon={<AddIcon.default />}/>
+        <TextButton
+          label="フォームを追加"
+          disabled={labels.length >= 10 || !safeParseResult.success}
+          onClick={handleAddClick}
+          startIcon={<AddIcon.default />}
+        />
       </Box>
       <Box display="flex" flexDirection="column" columnGap={2}>
         <PrimaryButton
@@ -134,24 +160,27 @@ const CreateLabelDialog: React.FC<Props> = ({
 export default CreateLabelDialog;
 
 type LabelNameInputBlockProps = {
-  label: { name: string, index: number};
+  label: { name: string; index: number };
   onInput: (index: number, value: string) => void;
   onDelete: (index: number) => void;
-}
+};
 const LabelNameInputBlock: React.FC<LabelNameInputBlockProps> = ({
   label,
   onInput,
   onDelete,
 }) => {
-  const handleInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    onInput(label.index, e.target.value)
-  }, [label.index, onInput]);
+  const handleInput = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      onInput(label.index, e.target.value);
+    },
+    [label.index, onInput],
+  );
 
   const handleDeleteClick = useCallback(() => {
-    onDelete(label.index)
-  }, [label.index, onDelete])
+    onDelete(label.index);
+  }, [label.index, onDelete]);
   return (
-    <Box mb={1} display="flex" alignItems="center"> 
+    <Box mb={1} display="flex" alignItems="center">
       <TextField
         value={label.name}
         fullWidth
@@ -164,16 +193,16 @@ const LabelNameInputBlock: React.FC<LabelNameInputBlockProps> = ({
           <IconButton
             color="inherit"
             onClick={handleDeleteClick}
-            size='small'
+            size="small"
             disabled={label.index === 0}
           >
-            <CloseIcon.default fontSize='inherit'/>
+            <CloseIcon.default fontSize="inherit" />
           </IconButton>
         </Box>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {

@@ -10,6 +10,6 @@ export const currentAmountType = z.coerce.number().gte(0).lte(999999);
 export const labelsType = z.array(
   z.object({
     id: z.number(),
-    name: z.string()
-  })
-)
+    name: z.string(),
+  }),
+);

@@ -16,22 +16,25 @@ import CreateLabelDialog from '@/app/setting/labels/_dialog/CreateLabelDialog';
 import DeleteLabelDialog from '@/app/setting/labels/_dialog/DeleteLabelDialog';
 import UpdateLabelDialog from '@/app/setting/labels/_dialog/UpdateLabelDialog';
 
-type Label = SettingLabelsPageQuery['listCategoryLabels'][number]
+type Label = SettingLabelsPageQuery['listCategoryLabels'][number];
 type Props = {
   labels: Label[];
 };
 const SettingLabelsMain: React.FC<Props> = ({ labels }) => {
-  const [createDialogState, setCreateDialogState] = useState<DialogState>('closed');
-  const [updateDialogState, setUpdateDialogState] = useState<DialogState>('closed');
-  const [deleteDialogState, setDeleteDialogState] = useState<DialogState>('closed');
-  const [selectedLabel, setSelectedLabel] = useState<Label | null>(null)
+  const [createDialogState, setCreateDialogState] =
+    useState<DialogState>('closed');
+  const [updateDialogState, setUpdateDialogState] =
+    useState<DialogState>('closed');
+  const [deleteDialogState, setDeleteDialogState] =
+    useState<DialogState>('closed');
+  const [selectedLabel, setSelectedLabel] = useState<Label | null>(null);
 
   const {
     alertType: createAlertType,
     setSuccess: setCreateSuccess,
     setError: setCreateError,
     setProcessing: setCreateProcessing,
-    setNone: setCreateNone
+    setNone: setCreateNone,
   } = useAlert();
 
   const {
@@ -39,7 +42,7 @@ const SettingLabelsMain: React.FC<Props> = ({ labels }) => {
     setSuccess: setUpdateSuccess,
     setError: setUpdateError,
     setProcessing: setUpdateProcessing,
-    setNone: setUpdateNone
+    setNone: setUpdateNone,
   } = useAlert();
 
   const {
@@ -47,23 +50,29 @@ const SettingLabelsMain: React.FC<Props> = ({ labels }) => {
     setSuccess: setDeleteSuccess,
     setError: setDeleteError,
     setProcessing: setDeleteProcessing,
-    setNone: setDeleteNone
+    setNone: setDeleteNone,
   } = useAlert();
 
   const createDialogOpen = useCallback(() => setCreateDialogState('open'), []);
-  const updateDialogOpen = useCallback((id: number) => {
-    setSelectedLabel(labels.find((c) => c.id === id) ?? null)
-    setUpdateDialogState('open')
-  }, [labels]);
-  const deleteDialogOpen = useCallback((id: number) => {
-    setSelectedLabel(labels.find((c) => c.id === id) ?? null)
-    setDeleteDialogState('open')
-  }, [labels]);
+  const updateDialogOpen = useCallback(
+    (id: number) => {
+      setSelectedLabel(labels.find((c) => c.id === id) ?? null);
+      setUpdateDialogState('open');
+    },
+    [labels],
+  );
+  const deleteDialogOpen = useCallback(
+    (id: number) => {
+      setSelectedLabel(labels.find((c) => c.id === id) ?? null);
+      setDeleteDialogState('open');
+    },
+    [labels],
+  );
   const dialogClose = useCallback(() => {
     setCreateDialogState('closed');
-    setUpdateDialogState('closed')
-    setDeleteDialogState('closed')
-    setSelectedLabel(null)
+    setUpdateDialogState('closed');
+    setDeleteDialogState('closed');
+    setSelectedLabel(null);
   }, []);
 
   return (
@@ -90,7 +99,12 @@ const SettingLabelsMain: React.FC<Props> = ({ labels }) => {
         onClose={setDeleteNone}
       />
       <Box display="flex" justifyContent="flex-end" alignItems="center">
-        <SecondaryButton label="ラベルを追加" size="small" startIcon={<AddIcon.default />} onClick={createDialogOpen}/>
+        <SecondaryButton
+          label="ラベルを追加"
+          size="small"
+          startIcon={<AddIcon.default />}
+          onClick={createDialogOpen}
+        />
       </Box>
 
       {labels.length === 0 ? (
@@ -101,7 +115,8 @@ const SettingLabelsMain: React.FC<Props> = ({ labels }) => {
         <List>
           {labels.map((p) => (
             <LabelListItem
-              key={p.name} {...p}
+              key={p.name}
+              {...p}
               onRowClick={updateDialogOpen}
               onDeleteClick={deleteDialogOpen}
             />

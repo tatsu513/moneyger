@@ -22,7 +22,7 @@ const deleteCategoryDialogDeleteCategoryLabelDocument = graphql(`
   }
 `);
 
-type Label = SettingLabelsPageQuery['listCategoryLabels'][number]
+type Label = SettingLabelsPageQuery['listCategoryLabels'][number];
 type Props = {
   dialogState: DialogState;
   label: Label;
@@ -46,7 +46,9 @@ const DeleteLabelDialog: React.FC<Props> = ({
     setChecked(e.target.checked);
   }, []);
 
-  const submit = useMutation(deleteCategoryDialogDeleteCategoryLabelDocument)[1];
+  const submit = useMutation(
+    deleteCategoryDialogDeleteCategoryLabelDocument,
+  )[1];
   const handleSubmit = useCallback(async () => {
     events.onProcessing();
     if (!checked) return;
@@ -55,9 +57,9 @@ const DeleteLabelDialog: React.FC<Props> = ({
       if (result.error) {
         throw new Error('ラベルの削除に失敗しました');
       }
-      router.refresh()
+      router.refresh();
       events.onSuccess();
-      onClose()
+      onClose();
     } catch (error) {
       console.error('ラベルの削除に失敗しました', { error });
       events.onError();

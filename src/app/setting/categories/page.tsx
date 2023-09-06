@@ -31,7 +31,7 @@ const categoriesSchema = z.array(
     id: z.number(),
     name: nameType,
     maxAmount: maxAmountType,
-    labels: labelsType
+    labels: labelsType,
   }),
 );
 
@@ -46,18 +46,15 @@ export default async function page() {
   const { cookie } = await checkSessionOnServer('/categories');
   const { getClient } = registerRscUrqlClient(cookie);
   try {
-    const result = await getClient().query(
-      settingCategoriesPageDocument,
-      {
-        targetDate: dateTimeToStringDate(DateTime.now())
-      },
-    );
+    const result = await getClient().query(settingCategoriesPageDocument, {
+      targetDate: dateTimeToStringDate(DateTime.now()),
+    });
     if (result.error) {
       throw result.error;
     }
     const categories = categoriesSchema.parse(result.data?.listCategories);
-    const labels = categoryLabelsSchema.parse(result.data?.listCategoryLabels)
-    return <SettingCategoriesMain categories={categories} labels={labels}/>;
+    const labels = categoryLabelsSchema.parse(result.data?.listCategoryLabels);
+    return <SettingCategoriesMain categories={categories} labels={labels} />;
   } catch (error) {
     console.error({ error });
     notFound();

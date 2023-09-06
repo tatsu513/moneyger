@@ -25,7 +25,7 @@ const updateSchema = z.object({
   name: z.string(),
 });
 
-type Label = SettingLabelsPageQuery['listCategoryLabels'][number]
+type Label = SettingLabelsPageQuery['listCategoryLabels'][number];
 type Props = {
   dialogState: DialogState;
   label: Label;
@@ -80,14 +80,14 @@ const UpdateLabelDialog: React.FC<Props> = ({
       }
       router.refresh();
       events.onSuccess();
-      onClose()
+      onClose();
       handleClose();
     } catch (error) {
       console.error('費目の更新に失敗しました', { error });
       events.onError();
       return;
     }
-  }, [safeParseResult, name ,submit, handleClose, router, events, onClose]);
+  }, [safeParseResult, name, submit, handleClose, router, events, onClose]);
 
   return (
     <MoneygerDialog

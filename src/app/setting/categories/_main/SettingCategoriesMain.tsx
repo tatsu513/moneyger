@@ -14,17 +14,21 @@ import SecondaryButton from '@/components/common/buttons/SecondaryButton';
 import UpdateCategoryDialog from '@/app/setting/categories/_dialog/UpdateCategoryDialog';
 import DeleteCategoryDialog from '@/app/setting/categories/_dialog/DeleteCategoryDialog';
 
-type Category = SettingCategoriesPageQuery['listCategories'][number]
-type Label = SettingCategoriesPageQuery['listCategoryLabels'][number]
+type Category = SettingCategoriesPageQuery['listCategories'][number];
+type Label = SettingCategoriesPageQuery['listCategoryLabels'][number];
 type Props = {
   categories: Category[];
   labels: Label[];
 };
 const SettingCategoriesMain: React.FC<Props> = ({ categories, labels }) => {
   const [dialogState, setDialogState] = useState<DialogState>('closed');
-  const [updateDialogState, setUpdateDialogState] = useState<DialogState>('closed');
-  const [deleteDialogState, setDeleteDialogState] = useState<DialogState>('closed');
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
+  const [updateDialogState, setUpdateDialogState] =
+    useState<DialogState>('closed');
+  const [deleteDialogState, setDeleteDialogState] =
+    useState<DialogState>('closed');
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null,
+  );
 
   const { alertType, setSuccess, setError, setProcessing, setNone } =
     useAlert();
@@ -34,7 +38,7 @@ const SettingCategoriesMain: React.FC<Props> = ({ categories, labels }) => {
     setSuccess: setUpdateSuccess,
     setError: setUpdateError,
     setProcessing: setUpdateProcessing,
-    setNone: setUpdateNone
+    setNone: setUpdateNone,
   } = useAlert();
 
   const {
@@ -42,27 +46,29 @@ const SettingCategoriesMain: React.FC<Props> = ({ categories, labels }) => {
     setSuccess: setDeleteSuccess,
     setError: setDeleteError,
     setProcessing: setDeleteProcessing,
-    setNone: setDeleteNone
+    setNone: setDeleteNone,
   } = useAlert();
 
   const dialogOpen = useCallback(() => setDialogState('open'), []);
-  const updateDialogOpen = useCallback((id: number) => {
-    setSelectedCategory(
-      categories.find((c) => c.id === id) ?? null
-    )
-    setUpdateDialogState('open')
-  }, [categories]);
-  const deleteDialogOpen = useCallback((id: number) => {
-    setSelectedCategory(
-      categories.find((c) => c.id === id) ?? null
-    )
-    setDeleteDialogState('open')
-  }, [categories]);
+  const updateDialogOpen = useCallback(
+    (id: number) => {
+      setSelectedCategory(categories.find((c) => c.id === id) ?? null);
+      setUpdateDialogState('open');
+    },
+    [categories],
+  );
+  const deleteDialogOpen = useCallback(
+    (id: number) => {
+      setSelectedCategory(categories.find((c) => c.id === id) ?? null);
+      setDeleteDialogState('open');
+    },
+    [categories],
+  );
   const dialogClose = useCallback(() => {
     setDialogState('closed');
-    setUpdateDialogState('closed')
-    setDeleteDialogState('closed')
-    setSelectedCategory(null)
+    setUpdateDialogState('closed');
+    setDeleteDialogState('closed');
+    setSelectedCategory(null);
   }, []);
 
   return (
@@ -89,7 +95,12 @@ const SettingCategoriesMain: React.FC<Props> = ({ categories, labels }) => {
         onClose={setDeleteNone}
       />
       <Box display="flex" justifyContent="flex-end" alignItems="center">
-        <SecondaryButton label="費目を追加" size="small" startIcon={<AddIcon.default />} onClick={dialogOpen}/>
+        <SecondaryButton
+          label="費目を追加"
+          size="small"
+          startIcon={<AddIcon.default />}
+          onClick={dialogOpen}
+        />
       </Box>
 
       {categories.length === 0 ? (
@@ -100,11 +111,12 @@ const SettingCategoriesMain: React.FC<Props> = ({ categories, labels }) => {
         <List>
           {categories.map((p) => (
             <CategoriesListItem
-              key={p.name} {...p}
+              key={p.name}
+              {...p}
               id={p.id}
               name={p.name}
               maxAmount={p.maxAmount}
-              labels={p.labels.flatMap((l) => l ? [l] : []) ?? []}
+              labels={p.labels.flatMap((l) => (l ? [l] : [])) ?? []}
               onRowClick={updateDialogOpen}
               onDeleteClick={deleteDialogOpen}
             />
@@ -134,17 +146,17 @@ const SettingCategoriesMain: React.FC<Props> = ({ categories, labels }) => {
               onProcessing: setUpdateProcessing,
             }}
           />
-        <DeleteCategoryDialog
-          dialogState={deleteDialogState}
-          category={selectedCategory}
-          onClose={dialogClose}
-          events={{
-            onSuccess: setDeleteSuccess,
-            onError: setDeleteError,
-            onProcessing: setDeleteProcessing,
-          }}
-        />
-      </>
+          <DeleteCategoryDialog
+            dialogState={deleteDialogState}
+            category={selectedCategory}
+            onClose={dialogClose}
+            events={{
+              onSuccess: setDeleteSuccess,
+              onError: setDeleteError,
+              onProcessing: setDeleteProcessing,
+            }}
+          />
+        </>
       )}
     </Box>
   );

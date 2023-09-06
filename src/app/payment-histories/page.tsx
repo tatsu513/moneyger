@@ -37,7 +37,7 @@ const fetchDataSchema = z.object({
     z.object({
       id: z.number(),
       name: nameType,
-      labels: labelsType
+      labels: labelsType,
     }),
   ),
   listPaymentHistories: z.array(
@@ -50,9 +50,9 @@ const fetchDataSchema = z.object({
       labels: z.array(
         z.object({
           id: z.number(),
-          name: z.string()
-        })
-      )
+          name: z.string(),
+        }),
+      ),
     }),
   ),
 });
@@ -62,7 +62,7 @@ export default async function Home() {
   const { getClient } = registerRscUrqlClient(cookie);
   try {
     const res = await getClient().query(paymentHistoriesPageDocument, {
-      targetDate: dateTimeToStringDate(DateTime.now())
+      targetDate: dateTimeToStringDate(DateTime.now()),
     });
     if (res.error) throw res.error;
     const result = fetchDataSchema.parse(res.data);

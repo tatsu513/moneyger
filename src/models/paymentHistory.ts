@@ -9,22 +9,21 @@ export const priceType = z.coerce.number().gte(1).lte(999999);
 
 export const noteType = z.string().nullable();
 
-export const categoryLabelIdsType = z.array(z.number())
+export const categoryLabelIdsType = z.array(z.number());
 
 export const categoryLabelsType = z.array(
   z.object({
     id: z.number(),
-    name: z.string()
-  })
-)
-
+    name: z.string(),
+  }),
+);
 
 export const createPaymentHistorySchema = z.object({
   categoryId: z.number(),
   paymentDate: z.string(),
   price: priceType,
   note: noteType,
-  categoryLabelIds: categoryLabelIdsType
+  categoryLabelIds: categoryLabelIdsType,
 });
 
 export const editCreatePaymentHistorySchema = z.object({
@@ -32,5 +31,5 @@ export const editCreatePaymentHistorySchema = z.object({
   paymentDate: paymentDateType,
   price: priceType,
   note: noteType,
-  categoryLabels: categoryLabelsType
+  categoryLabels: categoryLabelsType,
 });

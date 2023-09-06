@@ -7,9 +7,9 @@ type Props = {
   label: string;
   fullWidth?: boolean;
   disabled?: boolean;
-  startIcon?: React.ReactNode
-  endIcon?: React.ReactNode
-  size?: 'small' | 'normal'
+  startIcon?: React.ReactNode;
+  endIcon?: React.ReactNode;
+  size?: 'small' | 'normal';
   onClick: () => void;
 };
 const TextButton: React.FC<Props> = ({
@@ -29,7 +29,13 @@ const TextButton: React.FC<Props> = ({
       onClick={onClick}
       startIcon={startIcon}
       endIcon={endIcon}
-      sx={{ color: grey[900], fontSize: size === 'normal' ? theme.typography.body1.fontSize : theme.typography.body2.fontSize }}
+      sx={{
+        color: grey[900],
+        fontSize:
+          size === 'normal'
+            ? theme.typography.body1.fontSize
+            : theme.typography.body2.fontSize,
+      }}
     >
       {label}
     </Button>

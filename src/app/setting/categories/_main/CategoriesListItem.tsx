@@ -18,9 +18,9 @@ type Props = {
   id: number;
   name: string;
   maxAmount: number;
-  labels: SettingCategoriesPageQuery['listCategoryLabels']
+  labels: SettingCategoriesPageQuery['listCategoryLabels'];
   onRowClick: (categoryId: number) => void;
-  onDeleteClick: (categoryId: number) => void
+  onDeleteClick: (categoryId: number) => void;
 };
 
 const CategoriesListItem: React.FC<Props> = ({
@@ -35,11 +35,14 @@ const CategoriesListItem: React.FC<Props> = ({
     onRowClick(id);
   }, [onRowClick, id]);
 
-  const handleDeleteClick  = useCallback((e: React.MouseEvent<HTMLElement>) => {
-    onDeleteClick(id);
-    e.stopPropagation();
-    e.preventDefault();
-  }, [onDeleteClick, id]);
+  const handleDeleteClick = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      onDeleteClick(id);
+      e.stopPropagation();
+      e.preventDefault();
+    },
+    [onDeleteClick, id],
+  );
   return (
     <ListItem divider disablePadding>
       <ListItemButton
@@ -47,12 +50,18 @@ const CategoriesListItem: React.FC<Props> = ({
           pl: 1,
           pr: 0,
           py: 1,
-          display: "flex",
-          flexDirection: "column"
+          display: 'flex',
+          flexDirection: 'column',
         }}
         onClick={handleClick}
       >
-        <Box display="flex" justifyContent='space-between' alignItems="center" width="100%" mb={0.5}>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          width="100%"
+          mb={0.5}
+        >
           <Typography variant="body1">{name}</Typography>
           <Box display="flex" alignItems="center">
             <Box textAlign="right">
@@ -62,14 +71,18 @@ const CategoriesListItem: React.FC<Props> = ({
             </Box>
             <Box color={grey[400]}>
               <Box>
-                <IconButton color="inherit" onClick={handleDeleteClick} size='small'>
-                  <CloseIcon.default fontSize='inherit'/>
+                <IconButton
+                  color="inherit"
+                  onClick={handleDeleteClick}
+                  size="small"
+                >
+                  <CloseIcon.default fontSize="inherit" />
                 </IconButton>
               </Box>
             </Box>
           </Box>
         </Box>
-        <DisplayCategoryLabelsList labels={labels}/>
+        <DisplayCategoryLabelsList labels={labels} />
       </ListItemButton>
       <Divider />
     </ListItem>

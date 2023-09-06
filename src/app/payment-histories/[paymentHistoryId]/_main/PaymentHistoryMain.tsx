@@ -27,7 +27,7 @@ const PaymentHistoryMain: React.FC<Props> = ({
   paymentHistory,
   listCategories,
 }) => {
-  const router = useRouter()
+  const router = useRouter();
   const [updateDialogState, setUpdateDialogState] =
     useState<DialogState>('closed');
   const {
@@ -50,18 +50,16 @@ const PaymentHistoryMain: React.FC<Props> = ({
   const labelContents = useMemo(() => {
     return (
       <Box display="flex" justifyContent="flex-end" columnGap={1}>
-        {
-          paymentHistory?.labels?.map((l) => (
-            <Chip key={l.id.toString()} label={l.name} size="small" />
-          )) ?? <></>
-        }
+        {paymentHistory?.labels?.map((l) => (
+          <Chip key={l.id.toString()} label={l.name} size="small" />
+        )) ?? <></>}
       </Box>
-    )
+    );
   }, [paymentHistory?.labels]);
 
   const back = useCallback(() => {
-    router.push('/payment-histories')
-  }, [router])
+    router.push('/payment-histories');
+  }, [router]);
 
   if (category == null) {
     return (
@@ -70,7 +68,7 @@ const PaymentHistoryMain: React.FC<Props> = ({
       </Typography>
     );
   }
-  
+
   return (
     <>
       <MoneygerSnackBar
@@ -81,9 +79,13 @@ const PaymentHistoryMain: React.FC<Props> = ({
         onClose={updateSetNone}
       />
       <Box mb={1}>
-        <TextButton label='一覧へ' startIcon={<ArrowBackIosNewIcon.default />} onClick={back}/>
+        <TextButton
+          label="一覧へ"
+          startIcon={<ArrowBackIosNewIcon.default />}
+          onClick={back}
+        />
       </Box>
-      
+
       <Box mb={2}>
         <PageTitle title="支払い詳細" />
       </Box>

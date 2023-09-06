@@ -26,10 +26,7 @@ export default async function page() {
   const { cookie } = await checkSessionOnServer('/categories');
   const { getClient } = registerRscUrqlClient(cookie);
   try {
-    const result = await getClient().query(
-      settingLablesPageDocument,
-      {}
-    );
+    const result = await getClient().query(settingLablesPageDocument, {});
     if (result.error) {
       throw result.error;
     }

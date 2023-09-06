@@ -15,7 +15,7 @@ type Props = {
   id: number;
   name: string;
   onRowClick: (categoryId: number) => void;
-  onDeleteClick: (categoryId: number) => void
+  onDeleteClick: (categoryId: number) => void;
 };
 
 const LabelListItem: React.FC<Props> = ({
@@ -28,11 +28,14 @@ const LabelListItem: React.FC<Props> = ({
     onRowClick(id);
   }, [onRowClick, id]);
 
-  const handleDeleteClick  = useCallback((e: React.MouseEvent<HTMLElement>) => {
-    onDeleteClick(id);
-    e.stopPropagation();
-    e.preventDefault();
-  }, [onDeleteClick, id]);
+  const handleDeleteClick = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      onDeleteClick(id);
+      e.stopPropagation();
+      e.preventDefault();
+    },
+    [onDeleteClick, id],
+  );
   return (
     <ListItem divider disablePadding>
       <ListItemButton
@@ -49,8 +52,12 @@ const LabelListItem: React.FC<Props> = ({
         <Typography variant="body1">{name}</Typography>
         <Box color={grey[400]}>
           <Box>
-            <IconButton color="inherit" onClick={handleDeleteClick} size='small'>
-              <CloseIcon.default fontSize='inherit'/>
+            <IconButton
+              color="inherit"
+              onClick={handleDeleteClick}
+              size="small"
+            >
+              <CloseIcon.default fontSize="inherit" />
             </IconButton>
           </Box>
         </Box>

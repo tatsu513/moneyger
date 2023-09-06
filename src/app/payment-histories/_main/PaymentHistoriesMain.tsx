@@ -6,7 +6,10 @@ import ListPaymentHistories from '@/app/payment-histories/_main/ListPaymentHisto
 import DialogState from '@/types/DialogState';
 import MoneygerAutocomplete from '@/components/common/MoneygerAutocomplete';
 import CreatePaymentHistoryDialog from '@/app/payment-histories/_dialog/CreatePaymentHistoryDialog';
-import { PaymentHistoriesPageQuery, PaymentHistory } from '@/dao/generated/preset/graphql';
+import {
+  PaymentHistoriesPageQuery,
+  PaymentHistory,
+} from '@/dao/generated/preset/graphql';
 import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
 import useAlert from '@/hooks/useAlert';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
@@ -88,7 +91,7 @@ const PaymentHistoriesMain: React.FC<Props> = ({
             getOptionLabel={getOptionLabel}
             onChange={handleChangePayment}
             size="small"
-            placeholder='費目で絞り込む'
+            placeholder="費目で絞り込む"
           />
         </Box>
       </Box>
