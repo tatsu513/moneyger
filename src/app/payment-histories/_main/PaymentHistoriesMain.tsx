@@ -88,6 +88,7 @@ const PaymentHistoriesMain: React.FC<Props> = ({
             getOptionLabel={getOptionLabel}
             onChange={handleChangePayment}
             size="small"
+            placeholder='費目で絞り込む'
           />
         </Box>
       </Box>

@@ -7,6 +7,7 @@ import { nameType } from '@/models/category';
 import checkSessionOnServer from '@/util/checkSessionOnServer';
 import dateTimeToStringDate from '@/logics/dateTimeToStringDate';
 import { DateTime } from 'luxon';
+import { categoryLabelsType, noteType, priceType } from '@/models/paymentHistory';
 
 const paymentHistoryPageDocument = graphql(`
   query paymentHistoryPage($paymentHistoryId: Int!) {
@@ -16,6 +17,10 @@ const paymentHistoryPageDocument = graphql(`
       paymentDate
       note
       price
+      labels {
+        id
+        name
+      }
     }
   }
 `);
@@ -25,6 +30,10 @@ const paymentHistoryPageListCategoriesDocument = graphql(`
     listCategories(targetDate: $targetDate) {
       id
       name
+      labels {
+        id
+        name
+      }
     }
   }
 `);
@@ -37,14 +46,16 @@ const paymentHistorySchema = z.object({
   id: z.number(),
   categoryId: z.number(),
   paymentDate: z.string(),
-  note: z.string().nullable(),
-  price: z.number(),
+  note: noteType,
+  price: priceType,
+  labels: categoryLabelsType
 });
 
-const paymentSchema = z.array(
+const categorySchema = z.array(
   z.object({
     id: z.number(),
     name: nameType,
+    labels: categoryLabelsType
   }),
 );
 
@@ -72,7 +83,7 @@ export default async function Home({
     );
     if (listCategoriesRes.error) throw listCategoriesRes.error;
     const result = paymentHistorySchema.parse(res.data?.paymentHistory);
-    const listPaymentResult = paymentSchema.parse(
+    const listPaymentResult = categorySchema.parse(
       listCategoriesRes.data?.listCategories,
     );
     return (

@@ -1,15 +1,17 @@
+import CategoryLabelsAutocomplate from '@/components/common/CategoryLabelsAutocomplate';
 import CommonLoading from '@/components/common/CommonLoading';
 import MoneygerAutocomplete from '@/components/common/MoneygerAutocomplete';
 import MoneygerDatePicker from '@/components/common/MoneygerDatePicker';
 import MoneygerDialog from '@/components/common/MoneygerDialog';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 import TextButton from '@/components/common/buttons/TextButton';
+import FormContentsBlock from '@/components/common/forms/FormContentsBlock';
 import { graphql } from '@/dao/generated/preset';
-import { PaymentHistory } from '@/dao/generated/preset/graphql';
+import { CategoryLabel, PaymentHistory, PaymentHistoryPageListCategoriesQuery } from '@/dao/generated/preset/graphql';
 import stringDateToDateTime from '@/logics/stringDateToDateTime';
-import { noteType, paymentDateType, priceType } from '@/models/paymentHistory';
+import { categoryLabelIdsType, categoryLabelsType, noteType, paymentDateType, priceType } from '@/models/paymentHistory';
 import DialogState from '@/types/DialogState';
-import { Box, TextField, Typography, createFilterOptions } from '@mui/material';
+import { Box, TextField, createFilterOptions } from '@mui/material';
 import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useCallback, useState } from 'react';
@@ -17,12 +19,13 @@ import { useMutation } from 'urql';
 import { z } from 'zod';
 
 const updatePaymentHistoryDialogUpdatePaymentHistoryDocument = graphql(`
-  mutation createPaymentHistoryDialog_UpdateHistoryPayment(
+  mutation updatePaymentHistoryDialog_UpdateHistoryPayment(
     $id: Int!
     $categoryId: Int!
     $paymentDate: String!
     $price: Int!
     $note: String
+    $labelIds: [Int!]!
   ) {
     updatePaymentHistory(
       id: $id
@@ -30,6 +33,7 @@ const updatePaymentHistoryDialogUpdatePaymentHistoryDocument = graphql(`
       paymentDate: $paymentDate
       price: $price
       note: $note
+      labelIds: $labelIds
     )
   }
 `);
@@ -40,6 +44,7 @@ const editUpdateSchema = z.object({
   paymentDate: paymentDateType,
   price: priceType,
   note: noteType,
+  labels: categoryLabelsType
 });
 
 const updateSchema = z.object({
@@ -48,17 +53,15 @@ const updateSchema = z.object({
   paymentDate: z.string(),
   price: priceType,
   note: noteType,
+  labelIds: categoryLabelIdsType
 });
 
-type LocalCategoryType = {
-  id: number;
-  name: string;
-};
 
+type ListCategories = PaymentHistoryPageListCategoriesQuery['listCategories']
 type Props = {
   dialogState: DialogState;
   paymentHistory: PaymentHistory;
-  listCategories: LocalCategoryType[];
+  listCategories: ListCategories;
   onClose: () => void;
   events: {
     onSuccess: () => void;
@@ -74,14 +77,18 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
   events,
 }) => {
   const router = useRouter();
-  const [category, setCategory] = useState<LocalCategoryType | null>(
-    listCategories.find((p) => p.id === paymentHistory.categoryId) ?? null,
+  const [category, setCategory] = useState<ListCategories[number] | null>(
+    listCategories?.find((c) => c.id === paymentHistory.categoryId) ?? null
   );
   const [price, setPrice] = useState(paymentHistory.price.toString());
   const [note, setNote] = useState(paymentHistory.note);
   const [paymentDate, setPaymentDate] = useState<DateTime | null>(
     stringDateToDateTime(paymentHistory.paymentDate),
   );
+  const [labels, setLabels] = useState<CategoryLabel[]>(
+    paymentHistory.labels
+  )
+  console.log({ labels })
 
   const safeParseResult = editUpdateSchema.safeParse({
     id: paymentHistory.id,
@@ -89,7 +96,9 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
     paymentDate,
     price,
     note,
+    labels
   });
+
 
   const handleChangeDate = useCallback((date: DateTime | null) => {
     setPaymentDate(date);
@@ -126,31 +135,22 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
   )[1];
   const handleSubmit = useCallback(async () => {
     events.onProcessing();
-    const parseResult = updateSchema.safeParse({
+    const data = {
       id: paymentHistory.id,
       categoryId: category?.id,
       paymentDate: paymentDate?.toISO(),
       price,
       note,
-    });
+      labelIds: labels.map((l) => l.id),
+    }
+    const parseResult = updateSchema.safeParse(data);
     if (!parseResult.success) {
-      console.error('入力値を確認してください', {
-        category,
-        paymentDate,
-        price,
-        note,
-      });
+      console.error('入力値を確認してください', { error: parseResult.error, data});
       events.onError();
       return;
     }
     try {
-      const result = await submit({
-        id: parseResult.data.id,
-        categoryId: parseResult.data.categoryId,
-        paymentDate: parseResult.data.paymentDate,
-        price: parseResult.data.price,
-        note: parseResult.data.note,
-      });
+      const result = await submit(parseResult.data);
       if (result.error) {
         console.error({ error: result.error });
         throw new Error('支払いの更新に失敗しました');
@@ -173,12 +173,13 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
     price,
     paymentDate,
     events,
+    labels
   ]);
 
   const handlePaymentChange = useCallback(
     (
       _e: React.SyntheticEvent<Element, Event>,
-      value: LocalCategoryType | null,
+      value: ListCategories[number] | null,
     ) => {
       setCategory(value);
     },
@@ -186,14 +187,18 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
   );
 
   const getOptionLabel = useCallback(
-    (option: LocalCategoryType): string => option.name,
+    (option: ListCategories[number]): string => option.name,
     [],
   );
 
   const filterOptions = createFilterOptions({
     matchFrom: 'any',
-    stringify: (category: LocalCategoryType) => category.name,
+    stringify: (category: ListCategories[number]) => category.name,
   });
+
+  const handleChange = useCallback((values: CategoryLabel[]) => {
+    setLabels(values)
+  }, [])
 
   return (
     <MoneygerDialog
@@ -216,10 +221,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
         <CommonLoading />
       ) : (
         <>
-          <Box mb={3}>
-            <Typography variant="body1" mb={1}>
-              費目
-            </Typography>
+          <FormContentsBlock label='費目' required hasMargin>
             <MoneygerAutocomplete
               id="payment-history-category"
               value={category}
@@ -230,21 +232,18 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
               filterOptions={filterOptions}
               onChange={handlePaymentChange}
               size="small"
+              placeholder='費目を選択'
             />
-          </Box>
-          <Box mb={3}>
-            <Typography variant="body1" mb={1}>
-              支払日
-            </Typography>
+          </FormContentsBlock>
+
+          <FormContentsBlock label='支払日' required hasMargin>
             <MoneygerDatePicker
               value={paymentDate}
               onChange={handleChangeDate}
             />
-          </Box>
-          <Box mb={3}>
-            <Typography variant="body1" mb={1}>
-              支払金額
-            </Typography>
+          </FormContentsBlock>
+
+          <FormContentsBlock label='支払金額' required hasMargin>
             <TextField
               value={price}
               fullWidth
@@ -252,12 +251,17 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
               placeholder="10000"
               size="small"
             />
-          </Box>
+          </FormContentsBlock>
 
-          <Box>
-            <Typography variant="body1" mb={1}>
-              メモ
-            </Typography>
+          <FormContentsBlock label='ラベル' hasMargin>
+            <CategoryLabelsAutocomplate
+              selectedValues={labels}
+              options={category?.labels ?? []}
+              onChange={handleChange}
+            />
+          </FormContentsBlock>
+
+          <FormContentsBlock label='メモ'>
             <TextField
               value={note}
               fullWidth
@@ -266,7 +270,7 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
               rows={3}
               placeholder="メモ"
             />
-          </Box>
+          </FormContentsBlock>
         </>
       )}
     </MoneygerDialog>

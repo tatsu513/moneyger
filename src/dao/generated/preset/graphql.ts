@@ -112,6 +112,7 @@ export type MutationUpdateCategoryArgs = {
 export type MutationUpdatePaymentHistoryArgs = {
   categoryId: Scalars['Int']['input'];
   id: Scalars['Int']['input'];
+  labelIds: Array<Scalars['Int']['input']>;
   note?: InputMaybe<Scalars['String']['input']>;
   paymentDate: Scalars['String']['input'];
   price: Scalars['Int']['input'];
@@ -205,16 +206,17 @@ export type PaymentSummaryQuery = {
   }>;
 };
 
-export type CreatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables =
+export type UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables =
   Exact<{
     id: Scalars['Int']['input'];
     categoryId: Scalars['Int']['input'];
     paymentDate: Scalars['String']['input'];
     price: Scalars['Int']['input'];
     note?: InputMaybe<Scalars['String']['input']>;
+    labelIds: Array<Scalars['Int']['input']>;
   }>;
 
-export type CreatePaymentHistoryDialog_UpdateHistoryPaymentMutation = {
+export type UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutation = {
   updatePaymentHistory: number;
 };
 
@@ -229,6 +231,7 @@ export type PaymentHistoryPageQuery = {
     paymentDate: string;
     note?: string | null;
     price: number;
+    labels: Array<{ id: number; name: string }>;
   } | null;
 };
 
@@ -237,7 +240,11 @@ export type PaymentHistoryPageListCategoriesQueryVariables = Exact<{
 }>;
 
 export type PaymentHistoryPageListCategoriesQuery = {
-  listCategories: Array<{ id: number; name: string }>;
+  listCategories: Array<{
+    id: number;
+    name: string;
+    labels: Array<{ id: number; name: string }>;
+  }>;
 };
 
 export type CreatePaymentHistoryDialog_CreatePaymentHistoryMutationVariables =
@@ -570,7 +577,7 @@ export const PaymentSummaryDocument = {
     },
   ],
 } as unknown as DocumentNode<PaymentSummaryQuery, PaymentSummaryQueryVariables>;
-export const CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument = {
+export const UpdatePaymentHistoryDialog_UpdateHistoryPaymentDocument = {
   kind: 'Document',
   definitions: [
     {
@@ -578,7 +585,7 @@ export const CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument = {
       operation: 'mutation',
       name: {
         kind: 'Name',
-        value: 'createPaymentHistoryDialog_UpdateHistoryPayment',
+        value: 'updatePaymentHistoryDialog_UpdateHistoryPayment',
       },
       variableDefinitions: [
         {
@@ -630,6 +637,26 @@ export const CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument = {
           variable: { kind: 'Variable', name: { kind: 'Name', value: 'note' } },
           type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
         },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'labelIds' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'ListType',
+              type: {
+                kind: 'NonNullType',
+                type: {
+                  kind: 'NamedType',
+                  name: { kind: 'Name', value: 'Int' },
+                },
+              },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: 'SelectionSet',
@@ -678,6 +705,14 @@ export const CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument = {
                   name: { kind: 'Name', value: 'note' },
                 },
               },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'labelIds' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'labelIds' },
+                },
+              },
             ],
           },
         ],
@@ -685,8 +720,8 @@ export const CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  CreatePaymentHistoryDialog_UpdateHistoryPaymentMutation,
-  CreatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables
+  UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutation,
+  UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables
 >;
 export const PaymentHistoryPageDocument = {
   kind: 'Document',
@@ -732,6 +767,17 @@ export const PaymentHistoryPageDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'paymentDate' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'note' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'price' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'labels' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -787,6 +833,17 @@ export const PaymentHistoryPageListCategoriesDocument = {
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'labels' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                    ],
+                  },
+                },
               ],
             },
           },

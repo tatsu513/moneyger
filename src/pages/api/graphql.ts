@@ -259,7 +259,7 @@ const resolvers: Resolvers = {
     },
     updatePaymentHistory: async (
       _,
-      { id, categoryId, note, price, paymentDate },
+      { id, categoryId, note, price, paymentDate, labelIds },
     ) => {
       const target = await prisma.paymentHistory.update({
         where: { id },
@@ -268,6 +268,7 @@ const resolvers: Resolvers = {
           note,
           price,
           paymentDate,
+          categoryLabelIds: labelIds
         },
       });
       return target.id;

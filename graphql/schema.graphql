@@ -95,6 +95,7 @@ type Mutation {
     note: String
     price: Int!
     paymentDate: String!
+    labelIds: [Int!]!
   ): Int!
   # 支払履歴を削除
   deletePaymentHistory(id: Int!): Int!

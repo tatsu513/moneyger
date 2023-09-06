@@ -118,6 +118,7 @@ export type MutationUpdateCategoryArgs = {
 export type MutationUpdatePaymentHistoryArgs = {
   categoryId: Scalars['Int']['input'];
   id: Scalars['Int']['input'];
+  labelIds: Array<Scalars['Int']['input']>;
   note?: InputMaybe<Scalars['String']['input']>;
   paymentDate: Scalars['String']['input'];
   price: Scalars['Int']['input'];
@@ -405,7 +406,7 @@ export type MutationResolvers<
     ContextType,
     RequireFields<
       MutationUpdatePaymentHistoryArgs,
-      'categoryId' | 'id' | 'paymentDate' | 'price'
+      'categoryId' | 'id' | 'labelIds' | 'paymentDate' | 'price'
     >
   >;
 };
@@ -542,16 +543,17 @@ export type PaymentSummaryQuery = {
   }>;
 };
 
-export type CreatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables =
+export type UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables =
   Exact<{
     id: Scalars['Int']['input'];
     categoryId: Scalars['Int']['input'];
     paymentDate: Scalars['String']['input'];
     price: Scalars['Int']['input'];
     note?: InputMaybe<Scalars['String']['input']>;
+    labelIds: Array<Scalars['Int']['input']>;
   }>;
 
-export type CreatePaymentHistoryDialog_UpdateHistoryPaymentMutation = {
+export type UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutation = {
   updatePaymentHistory: number;
 };
 
@@ -566,6 +568,7 @@ export type PaymentHistoryPageQuery = {
     paymentDate: string;
     note?: string | null;
     price: number;
+    labels: Array<{ id: number; name: string }>;
   } | null;
 };
 
@@ -574,7 +577,11 @@ export type PaymentHistoryPageListCategoriesQueryVariables = Exact<{
 }>;
 
 export type PaymentHistoryPageListCategoriesQuery = {
-  listCategories: Array<{ id: number; name: string }>;
+  listCategories: Array<{
+    id: number;
+    name: string;
+    labels: Array<{ id: number; name: string }>;
+  }>;
 };
 
 export type CreatePaymentHistoryDialog_CreatePaymentHistoryMutationVariables =
@@ -728,13 +735,14 @@ export const PaymentSummaryDocument = gql`
     }
   }
 `;
-export const CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument = gql`
-  mutation createPaymentHistoryDialog_UpdateHistoryPayment(
+export const UpdatePaymentHistoryDialog_UpdateHistoryPaymentDocument = gql`
+  mutation updatePaymentHistoryDialog_UpdateHistoryPayment(
     $id: Int!
     $categoryId: Int!
     $paymentDate: String!
     $price: Int!
     $note: String
+    $labelIds: [Int!]!
   ) {
     updatePaymentHistory(
       id: $id
@@ -742,6 +750,7 @@ export const CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument = gql`
       paymentDate: $paymentDate
       price: $price
       note: $note
+      labelIds: $labelIds
     )
   }
 `;
@@ -753,6 +762,10 @@ export const PaymentHistoryPageDocument = gql`
       paymentDate
       note
       price
+      labels {
+        id
+        name
+      }
     }
   }
 `;
@@ -761,6 +774,10 @@ export const PaymentHistoryPageListCategoriesDocument = gql`
     listCategories(targetDate: $targetDate) {
       id
       name
+      labels {
+        id
+        name
+      }
     }
   }
 `;
@@ -947,18 +964,18 @@ export function getSdk(
         'query',
       );
     },
-    createPaymentHistoryDialog_UpdateHistoryPayment(
-      variables: CreatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables,
+    updatePaymentHistoryDialog_UpdateHistoryPayment(
+      variables: UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables,
       requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<CreatePaymentHistoryDialog_UpdateHistoryPaymentMutation> {
+    ): Promise<UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutation> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<CreatePaymentHistoryDialog_UpdateHistoryPaymentMutation>(
-            CreatePaymentHistoryDialog_UpdateHistoryPaymentDocument,
+          client.request<UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutation>(
+            UpdatePaymentHistoryDialog_UpdateHistoryPaymentDocument,
             variables,
             { ...requestHeaders, ...wrappedRequestHeaders },
           ),
-        'createPaymentHistoryDialog_UpdateHistoryPayment',
+        'updatePaymentHistoryDialog_UpdateHistoryPayment',
         'mutation',
       );
     },
