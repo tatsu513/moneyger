@@ -17,7 +17,7 @@ import { grey } from '@/color';
 const createLabelDialogCreateLabelDocument = graphql(`
   mutation createLabelDialog_CreateLabel(
     $categoryId: Int
-    $labels: [String!]
+    $labels: [String!]!
   ) {
     createCategoryLabel(categoryId: $categoryId, labels: $labels)
   }

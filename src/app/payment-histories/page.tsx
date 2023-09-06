@@ -13,6 +13,9 @@ const paymentHistoriesPageDocument = graphql(`
     listCategories(targetDate: $targetDate) {
       id
       name
+      labels {
+        id
+      }
     }
     listPaymentHistories {
       id

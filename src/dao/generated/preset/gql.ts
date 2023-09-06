@@ -27,9 +27,11 @@ const documents = {
     types.PaymentHistoryPageListCategoriesDocument,
   '\n  mutation createPaymentHistoryDialog_CreatePaymentHistory(\n    $categoryId: Int!\n    $paymentDate: String!\n    $price: Int!\n    $note: String\n  ) {\n    createPaymentHistory(\n      categoryId: $categoryId\n      paymentDate: $paymentDate\n      price: $price\n      note: $note\n    )\n  }\n':
     types.CreatePaymentHistoryDialog_CreatePaymentHistoryDocument,
+  '\n  query listCategoryLabelsFromCategoryId($categoryId: Int!) {\n    listCategoryLabelsFromCategoryId(categoryId: $categoryId) {\n      id\n      name\n    }\n  }\n':
+    types.ListCategoryLabelsFromCategoryIdDocument,
   '\n  mutation deletePaymentHistoryDialog_DeletePaymentHistory($id: Int!) {\n    deletePaymentHistory(id: $id)\n  }\n':
     types.DeletePaymentHistoryDialog_DeletePaymentHistoryDocument,
-  '\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n':
+  '\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      labels {\n        id\n      }\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n':
     types.PaymentHistoriesPageDocument,
   '\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n    $labelIds: [Int!]!\n  ) {\n    createCategory(name: $name, maxAmount: $maxAmount, labelIds: $labelIds)\n  }\n':
     types.CreateCategoryDialog_CreateCategoryDocument,
@@ -39,7 +41,7 @@ const documents = {
     types.UpdateCategoryDialog_UpdateCategoryDocument,
   '\n  query settingCategoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      maxAmount\n      labels {\n        id\n        name\n      }\n    }\n    listCategoryLabels {\n      id\n      name\n    }\n  }\n':
     types.SettingCategoriesPageDocument,
-  '\n  mutation createLabelDialog_CreateLabel(\n    $categoryId: Int\n    $labels: [String!]\n  ) {\n    createCategoryLabel(categoryId: $categoryId, labels: $labels)\n  }\n':
+  '\n  mutation createLabelDialog_CreateLabel(\n    $categoryId: Int\n    $labels: [String!]!\n  ) {\n    createCategoryLabel(categoryId: $categoryId, labels: $labels)\n  }\n':
     types.CreateLabelDialog_CreateLabelDocument,
   '\n  mutation deleteCategoryDialog_DeleteCategoryLabel($categoryLabelId: Int!) {\n    deleteCaregoryLabel(categoryLabelId: $categoryLabelId)\n  }\n':
     types.DeleteCategoryDialog_DeleteCategoryLabelDocument,
@@ -109,14 +111,20 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
+  source: '\n  query listCategoryLabelsFromCategoryId($categoryId: Int!) {\n    listCategoryLabelsFromCategoryId(categoryId: $categoryId) {\n      id\n      name\n    }\n  }\n',
+): (typeof documents)['\n  query listCategoryLabelsFromCategoryId($categoryId: Int!) {\n    listCategoryLabelsFromCategoryId(categoryId: $categoryId) {\n      id\n      name\n    }\n  }\n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
   source: '\n  mutation deletePaymentHistoryDialog_DeletePaymentHistory($id: Int!) {\n    deletePaymentHistory(id: $id)\n  }\n',
 ): (typeof documents)['\n  mutation deletePaymentHistoryDialog_DeletePaymentHistory($id: Int!) {\n    deletePaymentHistory(id: $id)\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n',
-): (typeof documents)['\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n'];
+  source: '\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      labels {\n        id\n      }\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n',
+): (typeof documents)['\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      labels {\n        id\n      }\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -145,8 +153,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation createLabelDialog_CreateLabel(\n    $categoryId: Int\n    $labels: [String!]\n  ) {\n    createCategoryLabel(categoryId: $categoryId, labels: $labels)\n  }\n',
-): (typeof documents)['\n  mutation createLabelDialog_CreateLabel(\n    $categoryId: Int\n    $labels: [String!]\n  ) {\n    createCategoryLabel(categoryId: $categoryId, labels: $labels)\n  }\n'];
+  source: '\n  mutation createLabelDialog_CreateLabel(\n    $categoryId: Int\n    $labels: [String!]!\n  ) {\n    createCategoryLabel(categoryId: $categoryId, labels: $labels)\n  }\n',
+): (typeof documents)['\n  mutation createLabelDialog_CreateLabel(\n    $categoryId: Int\n    $labels: [String!]!\n  ) {\n    createCategoryLabel(categoryId: $categoryId, labels: $labels)\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

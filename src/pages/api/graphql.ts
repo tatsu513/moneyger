@@ -161,7 +161,13 @@ const resolvers: Resolvers = {
     listCategoryLabels: async (_, _args) => {
       const labels = await prisma.categoryLabel.findMany();
       return labels;
-    }, 
+    },
+    listCategoryLabelsFromCategoryId: async (_, { categoryId }) => {
+      const labels = await prisma.categoryLabel.findMany({
+        where: { id: categoryId }
+      });
+      return labels;
+    },
   },
   Mutation: {
     createCategory: async (_, { name, maxAmount, labelIds }, { user }) => {
@@ -249,7 +255,7 @@ const resolvers: Resolvers = {
     },
     createCategoryLabel: async (_, { categoryId, labels }) => {
       const target = await prisma.categoryLabel.createMany({
-        data: labels?.map((l) => ({ categoryId, name: l })) ?? [],
+        data: labels.map((l) => ({ name: l })),
         skipDuplicates: true,
       }).catch((err) => {
         console.error('カテゴリラベルの登録に失敗しました', { err, categoryId, labels });

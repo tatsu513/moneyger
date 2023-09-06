@@ -53,6 +53,7 @@ export type Mutation = {
   createCategoryLabel: Scalars['Int']['output'];
   createPaymentHistory: Scalars['Int']['output'];
   deleteCaregoryLabel: Scalars['Int']['output'];
+  deleteCaregoryLabelFromCategory: Scalars['Int']['output'];
   deleteCategory: Scalars['Int']['output'];
   deletePaymentHistory: Scalars['Int']['output'];
   updateCaregoryLabel: Scalars['Int']['output'];
@@ -68,7 +69,7 @@ export type MutationCreateCategoryArgs = {
 
 export type MutationCreateCategoryLabelArgs = {
   categoryId?: InputMaybe<Scalars['Int']['input']>;
-  labels?: InputMaybe<Array<Scalars['String']['input']>>;
+  labels: Array<Scalars['String']['input']>;
 };
 
 export type MutationCreatePaymentHistoryArgs = {
@@ -80,6 +81,11 @@ export type MutationCreatePaymentHistoryArgs = {
 
 export type MutationDeleteCaregoryLabelArgs = {
   categoryLabelId: Scalars['Int']['input'];
+};
+
+export type MutationDeleteCaregoryLabelFromCategoryArgs = {
+  categoryId: Scalars['Int']['input'];
+  categoryLabelIds: Array<Scalars['Int']['input']>;
 };
 
 export type MutationDeleteCategoryArgs = {
@@ -128,6 +134,7 @@ export type Query = {
   category?: Maybe<Category>;
   listCategories: Array<Category>;
   listCategoryLabels: Array<CategoryLabel>;
+  listCategoryLabelsFromCategoryId: Array<CategoryLabel>;
   listPaymentHistories: Array<PaymentHistory>;
   listPaymentHistoriesByCategoryId: Array<PaymentHistory>;
   paymentHistory?: Maybe<PaymentHistory>;
@@ -140,6 +147,10 @@ export type QueryCategoryArgs = {
 
 export type QueryListCategoriesArgs = {
   targetDate?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type QueryListCategoryLabelsFromCategoryIdArgs = {
+  categoryId: Scalars['Int']['input'];
 };
 
 export type QueryListPaymentHistoriesByCategoryIdArgs = {
@@ -244,6 +255,14 @@ export type CreatePaymentHistoryDialog_CreatePaymentHistoryMutation = {
   createPaymentHistory: number;
 };
 
+export type ListCategoryLabelsFromCategoryIdQueryVariables = Exact<{
+  categoryId: Scalars['Int']['input'];
+}>;
+
+export type ListCategoryLabelsFromCategoryIdQuery = {
+  listCategoryLabelsFromCategoryId: Array<{ id: number; name: string }>;
+};
+
 export type DeletePaymentHistoryDialog_DeletePaymentHistoryMutationVariables =
   Exact<{
     id: Scalars['Int']['input'];
@@ -258,7 +277,11 @@ export type PaymentHistoriesPageQueryVariables = Exact<{
 }>;
 
 export type PaymentHistoriesPageQuery = {
-  listCategories: Array<{ id: number; name: string }>;
+  listCategories: Array<{
+    id: number;
+    name: string;
+    labels: Array<{ id: number } | null>;
+  }>;
   listPaymentHistories: Array<{
     id: number;
     categoryId: number;
@@ -313,7 +336,7 @@ export type SettingCategoriesPageQuery = {
 
 export type CreateLabelDialog_CreateLabelMutationVariables = Exact<{
   categoryId?: InputMaybe<Scalars['Int']['input']>;
-  labels?: InputMaybe<Array<Scalars['String']['input']>>;
+  labels: Array<Scalars['String']['input']>;
 }>;
 
 export type CreateLabelDialog_CreateLabelMutation = {
@@ -886,6 +909,58 @@ export const CreatePaymentHistoryDialog_CreatePaymentHistoryDocument = {
   CreatePaymentHistoryDialog_CreatePaymentHistoryMutation,
   CreatePaymentHistoryDialog_CreatePaymentHistoryMutationVariables
 >;
+export const ListCategoryLabelsFromCategoryIdDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'listCategoryLabelsFromCategoryId' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'categoryId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'listCategoryLabelsFromCategoryId' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'categoryId' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'categoryId' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ListCategoryLabelsFromCategoryIdQuery,
+  ListCategoryLabelsFromCategoryIdQueryVariables
+>;
 export const DeletePaymentHistoryDialog_DeletePaymentHistoryDocument = {
   kind: 'Document',
   definitions: [
@@ -975,6 +1050,16 @@ export const PaymentHistoriesPageDocument = {
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'labels' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -1343,12 +1428,15 @@ export const CreateLabelDialog_CreateLabelDocument = {
             name: { kind: 'Name', value: 'labels' },
           },
           type: {
-            kind: 'ListType',
+            kind: 'NonNullType',
             type: {
-              kind: 'NonNullType',
+              kind: 'ListType',
               type: {
-                kind: 'NamedType',
-                name: { kind: 'Name', value: 'String' },
+                kind: 'NonNullType',
+                type: {
+                  kind: 'NamedType',
+                  name: { kind: 'Name', value: 'String' },
+                },
               },
             },
           },

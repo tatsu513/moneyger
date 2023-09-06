@@ -59,6 +59,7 @@ export type Mutation = {
   createCategoryLabel: Scalars['Int']['output'];
   createPaymentHistory: Scalars['Int']['output'];
   deleteCaregoryLabel: Scalars['Int']['output'];
+  deleteCaregoryLabelFromCategory: Scalars['Int']['output'];
   deleteCategory: Scalars['Int']['output'];
   deletePaymentHistory: Scalars['Int']['output'];
   updateCaregoryLabel: Scalars['Int']['output'];
@@ -74,7 +75,7 @@ export type MutationCreateCategoryArgs = {
 
 export type MutationCreateCategoryLabelArgs = {
   categoryId?: InputMaybe<Scalars['Int']['input']>;
-  labels?: InputMaybe<Array<Scalars['String']['input']>>;
+  labels: Array<Scalars['String']['input']>;
 };
 
 export type MutationCreatePaymentHistoryArgs = {
@@ -86,6 +87,11 @@ export type MutationCreatePaymentHistoryArgs = {
 
 export type MutationDeleteCaregoryLabelArgs = {
   categoryLabelId: Scalars['Int']['input'];
+};
+
+export type MutationDeleteCaregoryLabelFromCategoryArgs = {
+  categoryId: Scalars['Int']['input'];
+  categoryLabelIds: Array<Scalars['Int']['input']>;
 };
 
 export type MutationDeleteCategoryArgs = {
@@ -134,6 +140,7 @@ export type Query = {
   category?: Maybe<Category>;
   listCategories: Array<Category>;
   listCategoryLabels: Array<CategoryLabel>;
+  listCategoryLabelsFromCategoryId: Array<CategoryLabel>;
   listPaymentHistories: Array<PaymentHistory>;
   listPaymentHistoriesByCategoryId: Array<PaymentHistory>;
   paymentHistory?: Maybe<PaymentHistory>;
@@ -146,6 +153,10 @@ export type QueryCategoryArgs = {
 
 export type QueryListCategoriesArgs = {
   targetDate?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type QueryListCategoryLabelsFromCategoryIdArgs = {
+  categoryId: Scalars['Int']['input'];
 };
 
 export type QueryListPaymentHistoriesByCategoryIdArgs = {
@@ -338,7 +349,7 @@ export type MutationResolvers<
     ResolversTypes['Int'],
     ParentType,
     ContextType,
-    Partial<MutationCreateCategoryLabelArgs>
+    RequireFields<MutationCreateCategoryLabelArgs, 'labels'>
   >;
   createPaymentHistory?: Resolver<
     ResolversTypes['Int'],
@@ -354,6 +365,15 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationDeleteCaregoryLabelArgs, 'categoryLabelId'>
+  >;
+  deleteCaregoryLabelFromCategory?: Resolver<
+    ResolversTypes['Int'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationDeleteCaregoryLabelFromCategoryArgs,
+      'categoryId' | 'categoryLabelIds'
+    >
   >;
   deleteCategory?: Resolver<
     ResolversTypes['Int'],
@@ -442,6 +462,12 @@ export type QueryResolvers<
     Array<ResolversTypes['CategoryLabel']>,
     ParentType,
     ContextType
+  >;
+  listCategoryLabelsFromCategoryId?: Resolver<
+    Array<ResolversTypes['CategoryLabel']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryListCategoryLabelsFromCategoryIdArgs, 'categoryId'>
   >;
   listPaymentHistories?: Resolver<
     Array<ResolversTypes['PaymentHistory']>,
@@ -567,6 +593,14 @@ export type CreatePaymentHistoryDialog_CreatePaymentHistoryMutation = {
   createPaymentHistory: number;
 };
 
+export type ListCategoryLabelsFromCategoryIdQueryVariables = Exact<{
+  categoryId: Scalars['Int']['input'];
+}>;
+
+export type ListCategoryLabelsFromCategoryIdQuery = {
+  listCategoryLabelsFromCategoryId: Array<{ id: number; name: string }>;
+};
+
 export type DeletePaymentHistoryDialog_DeletePaymentHistoryMutationVariables =
   Exact<{
     id: Scalars['Int']['input'];
@@ -581,7 +615,11 @@ export type PaymentHistoriesPageQueryVariables = Exact<{
 }>;
 
 export type PaymentHistoriesPageQuery = {
-  listCategories: Array<{ id: number; name: string }>;
+  listCategories: Array<{
+    id: number;
+    name: string;
+    labels: Array<{ id: number } | null>;
+  }>;
   listPaymentHistories: Array<{
     id: number;
     categoryId: number;
@@ -636,7 +674,7 @@ export type SettingCategoriesPageQuery = {
 
 export type CreateLabelDialog_CreateLabelMutationVariables = Exact<{
   categoryId?: InputMaybe<Scalars['Int']['input']>;
-  labels?: InputMaybe<Array<Scalars['String']['input']>>;
+  labels: Array<Scalars['String']['input']>;
 }>;
 
 export type CreateLabelDialog_CreateLabelMutation = {
@@ -751,6 +789,14 @@ export const CreatePaymentHistoryDialog_CreatePaymentHistoryDocument = gql`
     )
   }
 `;
+export const ListCategoryLabelsFromCategoryIdDocument = gql`
+  query listCategoryLabelsFromCategoryId($categoryId: Int!) {
+    listCategoryLabelsFromCategoryId(categoryId: $categoryId) {
+      id
+      name
+    }
+  }
+`;
 export const DeletePaymentHistoryDialog_DeletePaymentHistoryDocument = gql`
   mutation deletePaymentHistoryDialog_DeletePaymentHistory($id: Int!) {
     deletePaymentHistory(id: $id)
@@ -761,6 +807,9 @@ export const PaymentHistoriesPageDocument = gql`
     listCategories(targetDate: $targetDate) {
       id
       name
+      labels {
+        id
+      }
     }
     listPaymentHistories {
       id
@@ -818,7 +867,10 @@ export const SettingCategoriesPageDocument = gql`
   }
 `;
 export const CreateLabelDialog_CreateLabelDocument = gql`
-  mutation createLabelDialog_CreateLabel($categoryId: Int, $labels: [String!]) {
+  mutation createLabelDialog_CreateLabel(
+    $categoryId: Int
+    $labels: [String!]!
+  ) {
     createCategoryLabel(categoryId: $categoryId, labels: $labels)
   }
 `;
@@ -966,6 +1018,21 @@ export function getSdk(
         'mutation',
       );
     },
+    listCategoryLabelsFromCategoryId(
+      variables: ListCategoryLabelsFromCategoryIdQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<ListCategoryLabelsFromCategoryIdQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<ListCategoryLabelsFromCategoryIdQuery>(
+            ListCategoryLabelsFromCategoryIdDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'listCategoryLabelsFromCategoryId',
+        'query',
+      );
+    },
     deletePaymentHistoryDialog_DeletePaymentHistory(
       variables: DeletePaymentHistoryDialog_DeletePaymentHistoryMutationVariables,
       requestHeaders?: GraphQLClientRequestHeaders,
@@ -1057,7 +1124,7 @@ export function getSdk(
       );
     },
     createLabelDialog_CreateLabel(
-      variables?: CreateLabelDialog_CreateLabelMutationVariables,
+      variables: CreateLabelDialog_CreateLabelMutationVariables,
       requestHeaders?: GraphQLClientRequestHeaders,
     ): Promise<CreateLabelDialog_CreateLabelMutation> {
       return withWrapper(
