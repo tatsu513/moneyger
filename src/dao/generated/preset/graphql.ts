@@ -43,11 +43,6 @@ export type CategoryLabel = {
   name: Scalars['String']['output'];
 };
 
-export type InputCategoryLabel = {
-  id: Scalars['Int']['input'];
-  name: Scalars['String']['input'];
-};
-
 export type Mutation = {
   createCategory: Scalars['Int']['output'];
   createCategoryLabel: Scalars['Int']['output'];

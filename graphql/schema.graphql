@@ -106,10 +106,3 @@ type Mutation {
   # カテゴリラベルを削除
   deleteCaregoryLabel(categoryLabelId: Int!): Int!
 }
-
-input InputCategoryLabel {
-  #ID
-  id: Int!
-  # ラベル名
-  name: String!
-}

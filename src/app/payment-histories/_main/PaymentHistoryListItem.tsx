@@ -83,7 +83,7 @@ const PaymentHistoryListItem: React.FC<Props> = ({
                   <DisplayCategoryLabelsList labels={labels}/>
                 </Box>
               )}
-              <Typography variant="body1">{!note ? '-' : note}</Typography>
+              {/* <Typography variant="body1">{!note ? '-' : note}</Typography> */}
             </Box>
             <Box color={grey[400]} flex={1} textAlign="center">
               <IconButton color="inherit" onClick={handleDeleteClick} size='small'>

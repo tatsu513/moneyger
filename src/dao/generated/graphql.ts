@@ -49,11 +49,6 @@ export type CategoryLabel = {
   name: Scalars['String']['output'];
 };
 
-export type InputCategoryLabel = {
-  id: Scalars['Int']['input'];
-  name: Scalars['String']['input'];
-};
-
 export type Mutation = {
   createCategory: Scalars['Int']['output'];
   createCategoryLabel: Scalars['Int']['output'];
@@ -280,7 +275,6 @@ export type ResolversTypes = {
   Category: ResolverTypeWrapper<Category>;
   CategoryLabel: ResolverTypeWrapper<CategoryLabel>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
-  InputCategoryLabel: InputCategoryLabel;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   PaymentHistory: ResolverTypeWrapper<PaymentHistory>;
@@ -295,7 +289,6 @@ export type ResolversParentTypes = {
   Category: Category;
   CategoryLabel: CategoryLabel;
   Float: Scalars['Float']['output'];
-  InputCategoryLabel: InputCategoryLabel;
   Int: Scalars['Int']['output'];
   Mutation: {};
   PaymentHistory: PaymentHistory;
