@@ -280,7 +280,7 @@ export type PaymentHistoriesPageQuery = {
   listCategories: Array<{
     id: number;
     name: string;
-    labels: Array<{ id: number } | null>;
+    labels: Array<{ id: number; name: string } | null>;
   }>;
   listPaymentHistories: Array<{
     id: number;
@@ -1057,6 +1057,7 @@ export const PaymentHistoriesPageDocument = {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                     ],
                   },
                 },

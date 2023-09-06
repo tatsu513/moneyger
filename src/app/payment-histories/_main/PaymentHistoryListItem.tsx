@@ -8,12 +8,15 @@ import DeletePaymentHistoryDialog from '@/app/payment-histories/_dialog/DeletePa
 import DialogState from '@/types/DialogState';
 import useAlert from '@/hooks/useAlert';
 import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
+import DisplayCategoryLabelsList from '@/components/common/DisplayCategoryLabelsList';
+import { CategoryLabel } from '@/dao/generated/preset/graphql';
 
 type Props = {
   id: number;
   note: string | null;
   price: number;
   paymentDate: string;
+  labels: CategoryLabel[]
 };
 
 const PaymentHistoryListItem: React.FC<Props> = ({
@@ -21,6 +24,7 @@ const PaymentHistoryListItem: React.FC<Props> = ({
   note,
   price,
   paymentDate,
+  labels,
 }) => {
   const router = useRouter();
   const [dialogState, setDialogState] = useState<DialogState>('closed');
@@ -59,26 +63,30 @@ const PaymentHistoryListItem: React.FC<Props> = ({
             px: 0,
             py: 1,
             display: 'flex',
-            alignItems: 'space-between',
+            flexDirection: "column",
+            alignItems: "flex-start"
           }}
           onClick={handleClick}
         >
-          <Box
-            display='flex'
-            flexDirection='column'
-            alignItems='flex-start'
-            flex={7}
-          >
-            <Typography variant="h3Bold" mb={0.5}>
-              {price.toLocaleString()}円
-            </Typography>
-            <Typography variant="body1">{!note ? '-' : note}</Typography>
+          <Box display="flex" alignContent="center" justifyContent="space-between" width="100%">
+            <Box
+              display='flex'
+              flexDirection='column'
+              alignItems='flex-start'
+              flex={7}
+            >
+              <Typography variant="h3Bold" mb={0.5}>
+                {price.toLocaleString()}円
+              </Typography>
+              <Typography variant="body1">{!note ? '-' : note}</Typography>
+            </Box>
+            <Box color={grey[400]} flex={1} textAlign="center">
+              <IconButton color="inherit" onClick={handleDeleteClick} size='small'>
+                <CloseIcon.default fontSize='inherit'/>
+              </IconButton>
+            </Box>
           </Box>
-          <Box color={grey[400]} flex={1} textAlign="center">
-            <IconButton color="inherit" onClick={handleDeleteClick} size='small'>
-              <CloseIcon.default fontSize='inherit'/>
-            </IconButton>
-          </Box>
+          <DisplayCategoryLabelsList labels={labels}/>
         </ListItemButton>
       </ListItem>
 

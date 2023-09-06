@@ -2,7 +2,7 @@ import PaymentHistoriesMain from '@/app/payment-histories/_main/PaymentHistories
 import { graphql } from '@/dao/generated/preset';
 import registerRscUrqlClient from '@/util/registerRscUrqlClient';
 import { z } from 'zod';
-import { nameType } from '@/models/category';
+import { labelsType, nameType } from '@/models/category';
 import { notFound } from 'next/navigation';
 import checkSessionOnServer from '@/util/checkSessionOnServer';
 import dateTimeToStringDate from '@/logics/dateTimeToStringDate';
@@ -15,6 +15,7 @@ const paymentHistoriesPageDocument = graphql(`
       name
       labels {
         id
+        name
       }
     }
     listPaymentHistories {
@@ -32,6 +33,7 @@ const fetchDataSchema = z.object({
     z.object({
       id: z.number(),
       name: nameType,
+      labels: labelsType
     }),
   ),
   listPaymentHistories: z.array(

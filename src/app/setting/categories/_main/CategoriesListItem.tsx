@@ -2,18 +2,17 @@
 import getDisplayPrice from 'src/logics/getDisplayPrice';
 import {
   Box,
-  Chip,
   Divider,
   IconButton,
   ListItem,
   ListItemButton,
-  Stack,
   Typography,
 } from '@mui/material';
 import React, { useCallback } from 'react';
 import * as CloseIcon from '@mui/icons-material/Close';
 import { grey } from '@/color';
 import { SettingCategoriesPageQuery } from '@/dao/generated/preset/graphql';
+import DisplayCategoryLabelsList from '@/components/common/DisplayCategoryLabelsList';
 
 type Props = {
   id: number;
@@ -70,14 +69,7 @@ const CategoriesListItem: React.FC<Props> = ({
             </Box>
           </Box>
         </Box>
-        <Box textAlign="left" width="100%" display="flex" alignItems="center">
-          <Typography variant='caption' flex={1}>ラベル：</Typography>
-          <Stack direction="row" spacing={1} flex={5.5}>
-            {labels.map((l) => (
-              <Chip key={l.id.toString()} label={l.name} size="small" />
-            ))}
-          </Stack>
-        </Box>
+        <DisplayCategoryLabelsList labels={labels}/>
       </ListItemButton>
       <Divider />
     </ListItem>

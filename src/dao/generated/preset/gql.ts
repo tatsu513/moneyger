@@ -31,7 +31,7 @@ const documents = {
     types.ListCategoryLabelsFromCategoryIdDocument,
   '\n  mutation deletePaymentHistoryDialog_DeletePaymentHistory($id: Int!) {\n    deletePaymentHistory(id: $id)\n  }\n':
     types.DeletePaymentHistoryDialog_DeletePaymentHistoryDocument,
-  '\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      labels {\n        id\n      }\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n':
+  '\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      labels {\n        id\n        name\n      }\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n':
     types.PaymentHistoriesPageDocument,
   '\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n    $labelIds: [Int!]!\n  ) {\n    createCategory(name: $name, maxAmount: $maxAmount, labelIds: $labelIds)\n  }\n':
     types.CreateCategoryDialog_CreateCategoryDocument,
@@ -123,8 +123,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      labels {\n        id\n      }\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n',
-): (typeof documents)['\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      labels {\n        id\n      }\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n'];
+  source: '\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      labels {\n        id\n        name\n      }\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n',
+): (typeof documents)['\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      labels {\n        id\n        name\n      }\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n    }\n  }\n'];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

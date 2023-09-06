@@ -45,7 +45,6 @@ const createPaymentHistoryDialogCreatePaymentDocument = graphql(`
   }
 `);
 
-type Label = CategoryLabel
 type LocalCategoryType = PaymentHistoriesPageQuery['listCategories'];
 type Props = {
   dialogState: DialogState;
@@ -71,7 +70,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
   const [paymentDate, setPaymentDate] = useState<DateTime | null>(null);
   const [price, setPrice] = useState<string>('');
   const [note, setNote] = useState<string>('');
-  const [labels, setLabels] = useState<Label[]>([])
+  const [labels, setLabels] = useState<CategoryLabel[]>([])
 
   const safeParseResult = editCreatePaymentHistorySchema.safeParse({
     categoryId: category?.id,
@@ -256,7 +255,7 @@ const createPaymentHistoryDialog = graphql(`
 
 type CategoryLabelsBlockProps = {
   category: LocalCategoryType[number] | null;
-  values: Label[]
+  values: CategoryLabel[]
   setLabels: Dispatch<SetStateAction<CategoryLabel[]>>
 }
 const CategoryLabelsBlock: React.FC<CategoryLabelsBlockProps> = ({ category, values, setLabels }) => {
@@ -273,17 +272,17 @@ const CategoryLabelsBlock: React.FC<CategoryLabelsBlockProps> = ({ category, val
   const options = useMemo(() => data?.listCategoryLabelsFromCategoryId ?? [], [data?.listCategoryLabelsFromCategoryId])
 
   const getOptionLabel = useCallback(
-    (option: Label): string => option.name,
+    (option: CategoryLabel): string => option.name,
     [],
   );
   const filterOptions = createFilterOptions({
     matchFrom: 'any',
-    stringify: (label: Label) => label.name,
+    stringify: (label: CategoryLabel) => label.name,
   });
   const handlePaymentChange = useCallback(
     (
       _e: SyntheticEvent<Element, Event>,
-      values: Label[] | null,
+      values: CategoryLabel[] | null,
     ) => {
       setLabels(values ?? []);
     },

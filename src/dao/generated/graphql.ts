@@ -618,7 +618,7 @@ export type PaymentHistoriesPageQuery = {
   listCategories: Array<{
     id: number;
     name: string;
-    labels: Array<{ id: number } | null>;
+    labels: Array<{ id: number; name: string } | null>;
   }>;
   listPaymentHistories: Array<{
     id: number;
@@ -809,6 +809,7 @@ export const PaymentHistoriesPageDocument = gql`
       name
       labels {
         id
+        name
       }
     }
     listPaymentHistories {
