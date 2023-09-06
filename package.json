@@ -7,13 +7,7 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "dev.generate": "dotenv -e .env.development.local -- yarn prisma generate dev",
-    "dev.migrate": "dotenv -e .env.development.local -- yarn prisma migrate dev",
-    "dev.studio": "dotenv -e .env.development.local -- yarn prisma studio dev",
-    "dev.migrate-reset": "dotenv -e .env.development.local -- yarn prisma migrate reset dev",
-    "codegen": "graphql-codegen --config codegen.ts",
-    "postinstall": "yarn dev.generate",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build"
+    "format": "yarn prettier --write src"
   },
   "dependencies": {
     "@apollo/server": "^4.7.5",
