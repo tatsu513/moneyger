@@ -20,7 +20,6 @@ const documents = {
     "\n  query paymentHistoryPage($paymentHistoryId: Int!) {\n    paymentHistory(paymentHistoryId: $paymentHistoryId) {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n      labels {\n        id\n        name\n      }\n    }\n  }\n": types.PaymentHistoryPageDocument,
     "\n  query paymentHistoryPageListCategories($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      labels {\n        id\n        name\n      }\n    }\n  }\n": types.PaymentHistoryPageListCategoriesDocument,
     "\n  mutation createPaymentHistoryDialog_CreatePaymentHistory(\n    $categoryId: Int!\n    $paymentDate: String!\n    $price: Int!\n    $note: String\n    $categoryLabelIds: [Int!]!\n  ) {\n    createPaymentHistory(\n      categoryId: $categoryId\n      paymentDate: $paymentDate\n      price: $price\n      note: $note\n      categoryLabelIds: $categoryLabelIds\n    )\n  }\n": types.CreatePaymentHistoryDialog_CreatePaymentHistoryDocument,
-    "\n  query createPaymentHistoryDialog($categoryId: Int!) {\n    listCategoryLabelsByCategoryId(categoryId: $categoryId) {\n      id\n      name\n      categoryId\n    }\n  }\n": types.CreatePaymentHistoryDialogDocument,
     "\n  mutation deletePaymentHistoryDialog_DeletePaymentHistory($id: Int!) {\n    deletePaymentHistory(id: $id)\n  }\n": types.DeletePaymentHistoryDialog_DeletePaymentHistoryDocument,
     "\n  query paymentHistoriesPage($targetDate: String!) {\n    listCategories(targetDate: $targetDate) {\n      id\n      name\n      labels {\n        id\n        name\n      }\n    }\n    listPaymentHistories {\n      id\n      categoryId\n      paymentDate\n      note\n      price\n      labels {\n        id\n        name\n      }\n    }\n  }\n": types.PaymentHistoriesPageDocument,
     "\n  mutation createCategoryDialog_CreateCategory(\n    $name: String!\n    $maxAmount: Int!\n    $labelIds: [Int!]!\n  ) {\n    createCategory(name: $name, maxAmount: $maxAmount, labelIds: $labelIds)\n  }\n": types.CreateCategoryDialog_CreateCategoryDocument,
@@ -76,10 +75,6 @@ export function graphql(source: "\n  query paymentHistoryPageListCategories($tar
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation createPaymentHistoryDialog_CreatePaymentHistory(\n    $categoryId: Int!\n    $paymentDate: String!\n    $price: Int!\n    $note: String\n    $categoryLabelIds: [Int!]!\n  ) {\n    createPaymentHistory(\n      categoryId: $categoryId\n      paymentDate: $paymentDate\n      price: $price\n      note: $note\n      categoryLabelIds: $categoryLabelIds\n    )\n  }\n"): (typeof documents)["\n  mutation createPaymentHistoryDialog_CreatePaymentHistory(\n    $categoryId: Int!\n    $paymentDate: String!\n    $price: Int!\n    $note: String\n    $categoryLabelIds: [Int!]!\n  ) {\n    createPaymentHistory(\n      categoryId: $categoryId\n      paymentDate: $paymentDate\n      price: $price\n      note: $note\n      categoryLabelIds: $categoryLabelIds\n    )\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  query createPaymentHistoryDialog($categoryId: Int!) {\n    listCategoryLabelsByCategoryId(categoryId: $categoryId) {\n      id\n      name\n      categoryId\n    }\n  }\n"): (typeof documents)["\n  query createPaymentHistoryDialog($categoryId: Int!) {\n    listCategoryLabelsByCategoryId(categoryId: $categoryId) {\n      id\n      name\n      categoryId\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
