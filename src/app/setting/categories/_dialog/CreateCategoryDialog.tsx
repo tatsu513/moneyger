@@ -1,14 +1,9 @@
-import CategoryLabelsAutocomplate from '@/components/common/CategoryLabelsAutocomplate';
 import MoneygerDialog from '@/components/common/MoneygerDialog';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 import TextButton from '@/components/common/buttons/TextButton';
 import FormContentsBlock from '@/components/common/forms/FormContentsBlock';
 import { graphql } from '@/dao/generated/preset';
-import {
-  CategoryLabel,
-  SettingCategoriesPageQuery,
-} from '@/dao/generated/preset/graphql';
-import { labelsType, maxAmountType, nameType } from '@/models/category';
+import { maxAmountType, nameType } from '@/models/category';
 import DialogState from '@/types/DialogState';
 import { Box, Slide, TextField } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
@@ -30,13 +25,10 @@ const createCategoryDialogCreateCategoryDocument = graphql(`
 const createCategorySchema = z.object({
   name: nameType,
   maxAmount: maxAmountType,
-  labels: labelsType,
 });
 
-type Label = SettingCategoriesPageQuery['listCategoryLabels'][number];
 type Props = {
   dialogState: DialogState;
-  labels: Label[];
   onClose: () => void;
   events: {
     onSuccess: () => void;
@@ -46,19 +38,16 @@ type Props = {
 };
 const CreateCategoryDialog: React.FC<Props> = ({
   dialogState,
-  labels,
   onClose,
   events,
 }) => {
   const router = useRouter();
   const [name, setName] = useState('');
   const [maxAmount, setMaxAmount] = useState('');
-  const [selectedLabels, setSelectedLabels] = useState<Label[]>([]);
 
   const safeParseResult = createCategorySchema.safeParse({
     name,
     maxAmount,
-    labels: selectedLabels,
   });
 
   const handleChangeName = useCallback(
@@ -86,10 +75,6 @@ const CreateCategoryDialog: React.FC<Props> = ({
     setMaxAmount('');
   }, [onClose]);
 
-  const handlePaymentChange = useCallback((values: CategoryLabel[]) => {
-    setSelectedLabels(values ?? []);
-  }, []);
-
   const submit = useMutation(createCategoryDialogCreateCategoryDocument)[1];
   const handleSubmit = useCallback(async () => {
     events.onProcessing();
@@ -102,7 +87,7 @@ const CreateCategoryDialog: React.FC<Props> = ({
       const result = await submit({
         name: safeParseResult.data.name,
         maxAmount: safeParseResult.data.maxAmount,
-        labelIds: safeParseResult.data.labels.map((l) => l.id),
+        labelIds: [],
       });
       if (result.error) {
         throw new Error('費目の作成に失敗', {
@@ -145,13 +130,6 @@ const CreateCategoryDialog: React.FC<Props> = ({
           onChange={handleChangeMaxAmount}
           placeholder="10000"
           size="small"
-        />
-      </FormContentsBlock>
-      <FormContentsBlock label="ラベル" hasMargin>
-        <CategoryLabelsAutocomplate
-          selectedValues={selectedLabels}
-          options={labels}
-          onChange={handlePaymentChange}
         />
       </FormContentsBlock>
       <Box display="flex" flexDirection="column" columnGap={2}>

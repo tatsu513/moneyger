@@ -5,12 +5,12 @@ import { CategoryLabel } from '@/dao/generated/preset/graphql';
 import { createFilterOptions } from '@mui/material';
 import { SyntheticEvent, useCallback, useMemo } from 'react';
 
-type CategoryLabelsAutocomplate = {
+type CategoryLabelsAutocompleteProps = {
   options: { id: number; name: string }[] | null;
   selectedValues: CategoryLabel[];
   onChange: (values: CategoryLabel[]) => void;
 };
-const CategoryLabelsAutocomplate: React.FC<CategoryLabelsAutocomplate> = ({
+const CategoryLabelsAutocomplete: React.FC<CategoryLabelsAutocompleteProps> = ({
   options,
   selectedValues,
   onChange,
@@ -53,4 +53,4 @@ const CategoryLabelsAutocomplate: React.FC<CategoryLabelsAutocomplate> = ({
     />
   );
 };
-export default CategoryLabelsAutocomplate;
+export default CategoryLabelsAutocomplete;

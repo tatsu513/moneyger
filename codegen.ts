@@ -4,7 +4,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 const config: CodegenConfig = {
   overwrite: true,
   schema: 'graphql/schema.graphql',
-  documents: ['src/app/**/*.{ts,tsx}', 'graphql/queries/**/*.graphql'],
+  documents: ['src/app/**/*.{ts,tsx}', 'src/components/**/*.{ts,tsx}','graphql/queries/**/*.graphql'],
   config: {
     skipTypename: true,
     skipTypeNameForRoot: true,

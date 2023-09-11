@@ -1,5 +1,8 @@
-import CategoryLabelsAutocomplate from '@/components/common/CategoryLabelsAutocomplate';
+import { grey } from '@/color';
+import CategoryLabelsAutocompleteWithSuspense from '@/components/common/CategoryLabelsAutocompleteWithSuspense';
 import CommonLoading from '@/components/common/CommonLoading';
+import FetchErrorBoundary from '@/components/common/FetchErrorBoundary';
+import InlineLoading from '@/components/common/InlineLoading';
 import MoneygerAutocomplete from '@/components/common/MoneygerAutocomplete';
 import MoneygerDatePicker from '@/components/common/MoneygerDatePicker';
 import MoneygerDialog from '@/components/common/MoneygerDialog';
@@ -21,10 +24,10 @@ import {
   priceType,
 } from '@/models/paymentHistory';
 import DialogState from '@/types/DialogState';
-import { Box, TextField, createFilterOptions } from '@mui/material';
+import { Box, TextField, Typography, createFilterOptions } from '@mui/material';
 import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
-import React, { ChangeEvent, useCallback, useState } from 'react';
+import React, { ChangeEvent, Suspense, useCallback, useState } from 'react';
 import { useMutation } from 'urql';
 import { z } from 'zod';
 
@@ -95,7 +98,6 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
     stringDateToDateTime(paymentHistory.paymentDate),
   );
   const [labels, setLabels] = useState<CategoryLabel[]>(paymentHistory.labels);
-  console.log({ labels });
 
   const safeParseResult = editUpdateSchema.safeParse({
     id: paymentHistory.id,
@@ -263,11 +265,21 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
           </FormContentsBlock>
 
           <FormContentsBlock label="ラベル" hasMargin>
-            <CategoryLabelsAutocomplate
-              selectedValues={labels}
-              options={category?.labels ?? []}
-              onChange={handleChange}
-            />
+            {category == null ? (
+              <Typography variant="body1" color={grey[500]}>
+                費目を選択してください
+              </Typography>
+            ) : (
+              <FetchErrorBoundary>
+                <Suspense fallback={<InlineLoading height={40} />}>
+                  <CategoryLabelsAutocompleteWithSuspense
+                    selectedValues={labels}
+                    categoryId={category.id}
+                    onChange={handleChange}
+                  />
+                </Suspense>
+              </FetchErrorBoundary>
+            )}
           </FormContentsBlock>
 
           <FormContentsBlock label="メモ">
