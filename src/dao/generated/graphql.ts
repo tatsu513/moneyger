@@ -436,7 +436,7 @@ export type SettingCategoriesPageQueryVariables = Exact<{
 }>;
 
 
-export type SettingCategoriesPageQuery = { listCategories: Array<{ id: number, name: string, maxAmount: number, labels: Array<{ id: number, name: string }> }>, listCategoryLabels: Array<{ id: number, name: string }> };
+export type SettingCategoriesPageQuery = { listCategories: Array<{ id: number, name: string, maxAmount: number }>, listCategoryLabels: Array<{ id: number, name: string, categoryId?: number | null }> };
 
 export type CreateLabelDialog_CreateLabelMutationVariables = Exact<{
   input: Array<CreateCategoryLabelInput>;
@@ -599,14 +599,11 @@ export const SettingCategoriesPageDocument = gql`
     id
     name
     maxAmount
-    labels {
-      id
-      name
-    }
   }
   listCategoryLabels {
     id
     name
+    categoryId
   }
 }
     `;
