@@ -4,7 +4,14 @@ import TextButton from '@/components/common/buttons/TextButton';
 import { graphql } from '@/dao/generated/preset';
 import { categoryIdType } from '@/models/label';
 import DialogState from '@/types/DialogState';
-import { Box, Divider, IconButton, Slide, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Divider,
+  IconButton,
+  Slide,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useCallback, useState } from 'react';
@@ -26,15 +33,15 @@ const createCategorySchema = z.array(
   z.object({
     categoryId: categoryIdType.nullable(),
     label: z.string().min(1),
-  })
-)
+  }),
+);
 
-type Categories = SettingLabelsPageQuery['listCategories']
+type Categories = SettingLabelsPageQuery['listCategories'];
 type EditCategories = {
   label: string;
   categoryId: string | null;
-  index: number
-}
+  index: number;
+};
 type Props = {
   dialogState: DialogState;
   categories: Categories;
@@ -52,37 +59,45 @@ const CreateLabelDialog: React.FC<Props> = ({
   events,
 }) => {
   const router = useRouter();
-  const [data, setData] = useState<EditCategories[]>([{ label: '', categoryId: null, index: 0 }])
-  const safeParseResult = createCategorySchema.safeParse(data.map((d) => ({
-    label: d.label,
-    categoryId: d.categoryId != null ? Number(d.categoryId) : null,
-  })));
+  const [data, setData] = useState<EditCategories[]>([
+    { label: '', categoryId: null, index: 0 },
+  ]);
+  const safeParseResult = createCategorySchema.safeParse(
+    data.map((d) => ({
+      label: d.label,
+      categoryId: d.categoryId != null ? Number(d.categoryId) : null,
+    })),
+  );
 
   const handleLabelInput = useCallback((index: number, value: string) => {
-    setData((prev) =>prev.map((p, i) => index === i
-      ? { ...p, label: value }
-      : p
-    ))
+    setData((prev) =>
+      prev.map((p, i) => (index === i ? { ...p, label: value } : p)),
+    );
   }, []);
 
-  const handleCategoryChange = useCallback((index: number, value: Categories[number] | null) => {
-    setData((prev) => prev.map((p, i) => index === i
-      ? { ...p, categoryId: value?.id.toString() ?? null }
-      : p
-    ))
-  }, [setData]);
+  const handleCategoryChange = useCallback(
+    (index: number, value: Categories[number] | null) => {
+      setData((prev) =>
+        prev.map((p, i) =>
+          index === i ? { ...p, categoryId: value?.id.toString() ?? null } : p,
+        ),
+      );
+    },
+    [setData],
+  );
 
   const handleDeleteClick = useCallback(
     (index: number) => {
-      setData(data.filter((d) => d.index !== index))
+      setData(data.filter((d) => d.index !== index));
     },
     [data, setData],
   );
 
   const handleAddClick = useCallback(() => {
-    setData((prev) =>
-      [...prev, { label: '', index: prev.length, categoryId: null }]
-    );
+    setData((prev) => [
+      ...prev,
+      { label: '', index: prev.length, categoryId: null },
+    ]);
   }, []);
 
   const handleClose = useCallback(() => {
@@ -99,7 +114,7 @@ const CreateLabelDialog: React.FC<Props> = ({
       return;
     }
     try {
-      const result = await submit({input: safeParseResult.data});
+      const result = await submit({ input: safeParseResult.data });
       if (result.error) {
         throw new Error('費目の作成に失敗', {
           cause: {
@@ -116,14 +131,7 @@ const CreateLabelDialog: React.FC<Props> = ({
       events.onError();
       return;
     }
-  }, [
-    submit,
-    handleClose,
-    safeParseResult,
-    router,
-    events,
-    data
-  ]);
+  }, [submit, handleClose, safeParseResult, router, events, data]);
   return (
     <MoneygerDialog
       open={dialogState === 'open'}
@@ -142,7 +150,9 @@ const CreateLabelDialog: React.FC<Props> = ({
             <Typography variant="body2" mb={1}>{`ラベル${i + 1}`}</Typography>
             <LabelNameInputBlock
               label={{ name: d.label, index: d.index }}
-              selectedCategory={categories.find((c) => c.id.toString() === d.categoryId) ?? null}
+              selectedCategory={
+                categories.find((c) => c.id.toString() === d.categoryId) ?? null
+              }
               categories={categories}
               onInput={handleLabelInput}
               onChange={handleCategoryChange}
@@ -197,7 +207,8 @@ const LabelNameInputBlock: React.FC<LabelNameInputBlockProps> = ({
     [label.index, onInput],
   );
 
-  const handleOnChange = useCallback((value: Categories[number] | null) => {
+  const handleOnChange = useCallback(
+    (value: Categories[number] | null) => {
       onChange(label.index, value);
     },
     [label.index, onChange],
@@ -216,11 +227,11 @@ const LabelNameInputBlock: React.FC<LabelNameInputBlockProps> = ({
           placeholder={`ラベル${label.index + 1}を入力`}
           size="small"
         />
-       <CategoryAutocomplete
-        selectedValue={selectedCategory}
-        options={categories}
-        onChange={handleOnChange}
-      />
+        <CategoryAutocomplete
+          selectedValue={selectedCategory}
+          options={categories}
+          onChange={handleOnChange}
+        />
       </Box>
       <Box color={grey[400]}>
         <Box>

@@ -21,11 +21,23 @@ import {
 } from '@/models/paymentHistory';
 import DialogState from '@/types/DialogState';
 import getUrqlVariables from '@/util/getUrqlVariables';
-import { Box, Slide, TextField, Typography, createFilterOptions } from '@mui/material';
+import {
+  Box,
+  Slide,
+  TextField,
+  Typography,
+  createFilterOptions,
+} from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
-import React, { ChangeEvent, Suspense, useCallback, useMemo, useState } from 'react';
+import React, {
+  ChangeEvent,
+  Suspense,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 import { useMutation, useQuery } from 'urql';
 
 const createPaymentHistoryDialogCreatePaymentDocument = graphql(`
@@ -57,7 +69,8 @@ const createPaymentHistoryDialogDocument = graphql(`
 `);
 
 type LocalCategoryType = PaymentHistoriesPageQuery['listCategories'];
-type CategoryLabel = CreatePaymentHistoryDialogQuery['listCategoryLabelsByCategoryId'][number]
+type CategoryLabel =
+  CreatePaymentHistoryDialogQuery['listCategoryLabelsByCategoryId'][number];
 type Props = {
   dialogState: DialogState;
   listCategories: LocalCategoryType;
@@ -85,7 +98,7 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
       createPaymentHistoryDialogDocument,
       { categoryId: category?.id ?? 0 },
       false,
-      category?.id == null
+      category?.id == null,
     );
   }, [category]);
   const [{ data }] = useQuery(val);
@@ -254,20 +267,21 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
       </FormContentsBlock>
 
       <FormContentsBlock label="ラベル" hasMargin>
-        {category == null
-          ? <Typography variant="body1" color={grey[500]}>費目を選択してください</Typography>
-          : (
-            <FetchErrorBoundary>
-              <Suspense fallback={<InlineLoading height={40}/>}>
-                <CategoryLabelsAutocompleteWithSuspense
-                  selectedValues={labels}
-                  categoryId={category.id}
-                  onChange={handleChange}
-                />
-              </Suspense>
-            </FetchErrorBoundary>
-          )
-        }
+        {category == null ? (
+          <Typography variant="body1" color={grey[500]}>
+            費目を選択してください
+          </Typography>
+        ) : (
+          <FetchErrorBoundary>
+            <Suspense fallback={<InlineLoading height={40} />}>
+              <CategoryLabelsAutocompleteWithSuspense
+                selectedValues={labels}
+                categoryId={category.id}
+                onChange={handleChange}
+              />
+            </Suspense>
+          </FetchErrorBoundary>
+        )}
       </FormContentsBlock>
 
       <FormContentsBlock label="メモ" hasMargin>

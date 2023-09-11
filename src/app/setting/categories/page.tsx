@@ -35,7 +35,7 @@ const categoryLabelsSchema = z.array(
   z.object({
     id: z.number(),
     name: nameType,
-    categoryId: z.number().nullable()
+    categoryId: z.number().nullable(),
   }),
 );
 
@@ -51,7 +51,7 @@ export default async function page() {
     }
     const categories = categoriesSchema.parse(result.data?.listCategories);
     const labels = categoryLabelsSchema.parse(result.data?.listCategoryLabels);
-    console.log({ topLabels: labels })
+    console.log({ topLabels: labels });
     return <SettingCategoriesMain categories={categories} labels={labels} />;
   } catch (error) {
     console.error({ error });

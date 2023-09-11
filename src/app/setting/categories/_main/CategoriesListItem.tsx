@@ -33,9 +33,9 @@ const CategoriesListItem: React.FC<Props> = ({
 }) => {
   const filteredLabelList = labels.filter((l) => {
     // console.log({ categoryId: l.categoryId, n: l.name, id })
-    if (l.categoryId == null) return l
-    return l.categoryId === id
-  })
+    if (l.categoryId == null) return l;
+    return l.categoryId === id;
+  });
   const handleClick = useCallback(() => {
     onRowClick(id);
   }, [onRowClick, id]);

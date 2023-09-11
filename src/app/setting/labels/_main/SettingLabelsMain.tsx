@@ -20,7 +20,7 @@ type Label = SettingLabelsPageQuery['listCategoryLabels'][number];
 type Category = SettingLabelsPageQuery['listCategories'][number];
 type Props = {
   labels: Label[];
-  categories: Category[]
+  categories: Category[];
 };
 const SettingLabelsMain: React.FC<Props> = ({ labels, categories }) => {
   const [createDialogState, setCreateDialogState] =
@@ -37,15 +37,15 @@ const SettingLabelsMain: React.FC<Props> = ({ labels, categories }) => {
       if (b.categoryId == null) return -1;
       if (a.categoryId === b.categoryId) return 0;
       return a.categoryId < b.categoryId ? -1 : 1;
-    })
+    });
     const map: Map<string, Label[]> = new Map();
     sortedList.forEach((l) => {
       const categoryId = l.categoryId;
       const histories = labels.flatMap((l2) =>
         l2.categoryId === categoryId ? [l2] : [],
       );
-      const target = categories.find((c) => c.id === categoryId)
-      map.set(target?.name ?? "", histories);
+      const target = categories.find((c) => c.id === categoryId);
+      map.set(target?.name ?? '', histories);
     });
     return map;
   }, [labels, categories]);
@@ -119,7 +119,12 @@ const SettingLabelsMain: React.FC<Props> = ({ labels, categories }) => {
         processingMessage="ラベルを削除中..."
         onClose={setDeleteNone}
       />
-      <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1.5}>
+      <Box
+        display="flex"
+        justifyContent="flex-end"
+        alignItems="center"
+        mb={1.5}
+      >
         <SecondaryButton
           label="ラベルを追加"
           size="small"
@@ -129,28 +134,33 @@ const SettingLabelsMain: React.FC<Props> = ({ labels, categories }) => {
       </Box>
 
       {[...listLabelsWithCategoryId].map(([key, values]: [string, Label[]]) => (
-          <>
-            {values.length === 0
-              ? <></>
-              : (
-                <List sx={{ p: 0 }}>
-                  <ListItem divider disablePadding sx={{ backgroundColor: grey[50] }}>
-                    <ListItemText sx={{ pl: 1.5, pr: 0, py: 0.5 }}>
-                      <Typography variant="body1">{key || '未設定（全ての費目で表示）'}</Typography>
-                    </ListItemText>
-                  </ListItem>
-                  {values.map((p) => (
-                    <LabelListItem
-                      key={p.name}
-                      {...p}
-                      onRowClick={updateDialogOpen}
-                      onDeleteClick={deleteDialogOpen}
-                    />
-                  ))}
-                </List>
-              )
-            }
-          </>
+        <>
+          {values.length === 0 ? (
+            <></>
+          ) : (
+            <List sx={{ p: 0 }}>
+              <ListItem
+                divider
+                disablePadding
+                sx={{ backgroundColor: grey[50] }}
+              >
+                <ListItemText sx={{ pl: 1.5, pr: 0, py: 0.5 }}>
+                  <Typography variant="body1">
+                    {key || '未設定（全ての費目で表示）'}
+                  </Typography>
+                </ListItemText>
+              </ListItem>
+              {values.map((p) => (
+                <LabelListItem
+                  key={p.name}
+                  {...p}
+                  onRowClick={updateDialogOpen}
+                  onDeleteClick={deleteDialogOpen}
+                />
+              ))}
+            </List>
+          )}
+        </>
       ))}
 
       <CreateLabelDialog

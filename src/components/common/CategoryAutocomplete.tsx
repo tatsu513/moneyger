@@ -6,8 +6,8 @@ import { SyntheticEvent, useCallback } from 'react';
 
 type Category = {
   id: number;
-  name: string,
-}
+  name: string;
+};
 type Props = {
   options: { id: number; name: string }[] | null;
   selectedValue: Category | null;
@@ -31,21 +31,21 @@ const CategoryAutocomplete: React.FC<Props> = ({
       onChange(values);
     },
     [onChange],
-  )
+  );
 
   return (
     <MoneygerAutocomplete
-        id="payment-history-category"
-        value={selectedValue}
-        options={options ?? []}
-        noOptionsText="費目がありません"
-        ariaLabel="費目の設定"
-        getOptionLabel={getOptionLabel}
-        filterOptions={filterOptions}
-        onChange={handlePaymentChange}
-        size="small"
-        placeholder="費目を選択"
-      />
+      id="payment-history-category"
+      value={selectedValue}
+      options={options ?? []}
+      noOptionsText="費目がありません"
+      ariaLabel="費目の設定"
+      getOptionLabel={getOptionLabel}
+      filterOptions={filterOptions}
+      onChange={handlePaymentChange}
+      size="small"
+      placeholder="費目を選択"
+    />
   );
 };
 export default CategoryAutocomplete;

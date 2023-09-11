@@ -20,16 +20,17 @@ const updateLabelDialogUpdateCategoryLabelDocument = graphql(`
     $categoryId: Int
   ) {
     updateCategoryLabel(
-      categoryLabelId: $categoryLabelId,
-      name: $name,
-      categoryId: $categoryId)
+      categoryLabelId: $categoryLabelId
+      name: $name
+      categoryId: $categoryId
+    )
   }
 `);
 
 const updateSchema = z.object({
   categoryLabelId: z.number(),
   name: z.string(),
-  categoryId: z.number().nullable()
+  categoryId: z.number().nullable(),
 });
 
 type Label = SettingLabelsPageQuery['listCategoryLabels'][number];
@@ -55,12 +56,12 @@ const UpdateLabelDialog: React.FC<Props> = ({
 }) => {
   const router = useRouter();
   const [name, setName] = useState(label.name);
-  const [category, setCategory] = useState<Category | null>(null)
+  const [category, setCategory] = useState<Category | null>(null);
 
   const safeParseResult = updateSchema.safeParse({
     categoryLabelId: label.id,
     name,
-    categoryId: category?.id ?? null
+    categoryId: category?.id ?? null,
   });
 
   const handleChangeName = useCallback(
@@ -72,7 +73,7 @@ const UpdateLabelDialog: React.FC<Props> = ({
 
   const handleChangeCategory = useCallback((value: Category | null) => {
     setCategory(value);
-  }, [])
+  }, []);
 
   const handleClose = useCallback(() => {
     onClose();
@@ -91,7 +92,7 @@ const UpdateLabelDialog: React.FC<Props> = ({
       const result = await submit({
         categoryLabelId: safeParseResult.data.categoryLabelId,
         name: safeParseResult.data.name,
-        categoryId: safeParseResult.data.categoryId
+        categoryId: safeParseResult.data.categoryId,
       });
       if (result.error) {
         throw new Error('費目の更新に失敗しました');

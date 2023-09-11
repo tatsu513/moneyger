@@ -192,17 +192,23 @@ const resolvers: Resolvers = {
     },
     listCategoryLabels: async (_, _args) => {
       const labels = await prisma.categoryLabel.findMany().catch((e) => {
-        throw new GraphQLError('listCategoryLabels error', { originalError: e });
+        throw new GraphQLError('listCategoryLabels error', {
+          originalError: e,
+        });
       });
-      console.log({ labels })
+      console.log({ labels });
       return labels;
     },
     listCategoryLabelsByCategoryId: async (_, { categoryId }) => {
-      const labels = await prisma.categoryLabel.findMany({
-        where: { categoryId }
-      }).catch((e) => {
-        throw new GraphQLError('listCategoryLabelsByCategoryId error', { originalError: e });
-      });
+      const labels = await prisma.categoryLabel
+        .findMany({
+          where: { categoryId },
+        })
+        .catch((e) => {
+          throw new GraphQLError('listCategoryLabelsByCategoryId error', {
+            originalError: e,
+          });
+        });
       return labels;
     },
   },
@@ -300,14 +306,14 @@ const resolvers: Resolvers = {
         .catch((err) => {
           console.error('カテゴリラベルの登録に失敗しました', {
             err,
-            ...input
+            ...input,
           });
           throw new GraphQLError('カテゴリラベルの登録に失敗しました');
         });
       return target.count;
     },
     updateCategoryLabel: async (_, { categoryLabelId, name, categoryId }) => {
-      console.log({ categoryId })
+      console.log({ categoryId });
       const target = await prisma.categoryLabel
         .update({
           where: { id: categoryLabelId },

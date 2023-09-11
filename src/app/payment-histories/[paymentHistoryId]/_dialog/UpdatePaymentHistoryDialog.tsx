@@ -265,20 +265,21 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
           </FormContentsBlock>
 
           <FormContentsBlock label="ラベル" hasMargin>
-            {category == null
-              ? <Typography variant="body1" color={grey[500]}>費目を選択してください</Typography>
-              : (
-                <FetchErrorBoundary>
-                  <Suspense fallback={<InlineLoading height={40}/>}>
-                    <CategoryLabelsAutocompleteWithSuspense
-                      selectedValues={labels}
-                      categoryId={category.id}
-                      onChange={handleChange}
-                    />
-                  </Suspense>
-                </FetchErrorBoundary>
-              )
-            }
+            {category == null ? (
+              <Typography variant="body1" color={grey[500]}>
+                費目を選択してください
+              </Typography>
+            ) : (
+              <FetchErrorBoundary>
+                <Suspense fallback={<InlineLoading height={40} />}>
+                  <CategoryLabelsAutocompleteWithSuspense
+                    selectedValues={labels}
+                    categoryId={category.id}
+                    onChange={handleChange}
+                  />
+                </Suspense>
+              </FetchErrorBoundary>
+            )}
           </FormContentsBlock>
 
           <FormContentsBlock label="メモ">

@@ -25,7 +25,7 @@ const settingLabelsSchema = z.object({
     z.object({
       id: z.number(),
       name: nameType,
-      categoryId: z.number().nullable()
+      categoryId: z.number().nullable(),
     }),
   ),
   listCategories: z.array(
@@ -33,8 +33,8 @@ const settingLabelsSchema = z.object({
       id: z.number(),
       name: nameType,
     }),
-  )
-})
+  ),
+});
 
 export default async function page() {
   const { cookie } = await checkSessionOnServer('/categories');
@@ -42,7 +42,7 @@ export default async function page() {
   try {
     const result = await getClient().query(settingLabelsPageDocument, {});
     if (result.error) {
-      console.error('ここですね')
+      console.error('ここですね');
       throw result.error;
     }
     const parseResult = settingLabelsSchema.parse(result.data);
@@ -51,9 +51,9 @@ export default async function page() {
         labels={parseResult.listCategoryLabels}
         categories={parseResult.listCategories}
       />
-    )
+    );
   } catch (error) {
-    console.error('ここでエラーが出ているよ')
+    console.error('ここでエラーが出ているよ');
     console.error({ error });
     notFound();
   }
