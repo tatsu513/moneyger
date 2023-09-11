@@ -399,13 +399,6 @@ export type CreatePaymentHistoryDialog_CreatePaymentHistoryMutationVariables = E
 
 export type CreatePaymentHistoryDialog_CreatePaymentHistoryMutation = { createPaymentHistory: number };
 
-export type CreatePaymentHistoryDialogQueryVariables = Exact<{
-  categoryId: Scalars['Int']['input'];
-}>;
-
-
-export type CreatePaymentHistoryDialogQuery = { listCategoryLabelsByCategoryId: Array<{ id: number, name: string, categoryId?: number | null }> };
-
 export type DeletePaymentHistoryDialog_DeletePaymentHistoryMutationVariables = Exact<{
   id: Scalars['Int']['input'];
 }>;
@@ -573,15 +566,6 @@ export const CreatePaymentHistoryDialog_CreatePaymentHistoryDocument = gql`
   )
 }
     `;
-export const CreatePaymentHistoryDialogDocument = gql`
-    query createPaymentHistoryDialog($categoryId: Int!) {
-  listCategoryLabelsByCategoryId(categoryId: $categoryId) {
-    id
-    name
-    categoryId
-  }
-}
-    `;
 export const DeletePaymentHistoryDialog_DeletePaymentHistoryDocument = gql`
     mutation deletePaymentHistoryDialog_DeletePaymentHistory($id: Int!) {
   deletePaymentHistory(id: $id)
@@ -708,9 +692,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     createPaymentHistoryDialog_CreatePaymentHistory(variables: CreatePaymentHistoryDialog_CreatePaymentHistoryMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<CreatePaymentHistoryDialog_CreatePaymentHistoryMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreatePaymentHistoryDialog_CreatePaymentHistoryMutation>(CreatePaymentHistoryDialog_CreatePaymentHistoryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createPaymentHistoryDialog_CreatePaymentHistory', 'mutation');
-    },
-    createPaymentHistoryDialog(variables: CreatePaymentHistoryDialogQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<CreatePaymentHistoryDialogQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<CreatePaymentHistoryDialogQuery>(CreatePaymentHistoryDialogDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createPaymentHistoryDialog', 'query');
     },
     deletePaymentHistoryDialog_DeletePaymentHistory(variables: DeletePaymentHistoryDialog_DeletePaymentHistoryMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<DeletePaymentHistoryDialog_DeletePaymentHistoryMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<DeletePaymentHistoryDialog_DeletePaymentHistoryMutation>(DeletePaymentHistoryDialog_DeletePaymentHistoryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deletePaymentHistoryDialog_DeletePaymentHistory', 'mutation');

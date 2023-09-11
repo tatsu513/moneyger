@@ -10,7 +10,7 @@ import TextButton from '@/components/common/buttons/TextButton';
 import FormContentsBlock from '@/components/common/forms/FormContentsBlock';
 import { graphql } from '@/dao/generated/preset';
 import {
-  CreatePaymentHistoryDialogQuery,
+  CategoryLabel,
   PaymentHistoriesPageQuery,
 } from '@/dao/generated/preset/graphql';
 import {
@@ -56,8 +56,6 @@ const createPaymentHistoryDialogCreatePaymentDocument = graphql(`
 `);
 
 type LocalCategoryType = PaymentHistoriesPageQuery['listCategories'];
-type CategoryLabel =
-  CreatePaymentHistoryDialogQuery['listCategoryLabelsByCategoryId'][number];
 type Props = {
   dialogState: DialogState;
   listCategories: LocalCategoryType;
