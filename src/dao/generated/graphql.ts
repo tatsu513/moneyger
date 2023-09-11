@@ -104,6 +104,7 @@ export type MutationUpdateCategoryArgs = {
 
 
 export type MutationUpdateCategoryLabelArgs = {
+  categoryId?: InputMaybe<Scalars['Int']['input']>;
   categoryLabelId: Scalars['Int']['input'];
   name: Scalars['String']['input'];
 };
@@ -455,6 +456,7 @@ export type DeleteCategoryDialog_DeleteCategoryLabelMutation = { deleteCategoryL
 export type CreateLabelDialog_UpdateCategoryLabelMutationVariables = Exact<{
   categoryLabelId: Scalars['Int']['input'];
   name: Scalars['String']['input'];
+  categoryId?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
@@ -618,8 +620,12 @@ export const DeleteCategoryDialog_DeleteCategoryLabelDocument = gql`
 }
     `;
 export const CreateLabelDialog_UpdateCategoryLabelDocument = gql`
-    mutation createLabelDialog_UpdateCategoryLabel($categoryLabelId: Int!, $name: String!) {
-  updateCategoryLabel(categoryLabelId: $categoryLabelId, name: $name)
+    mutation createLabelDialog_UpdateCategoryLabel($categoryLabelId: Int!, $name: String!, $categoryId: Int) {
+  updateCategoryLabel(
+    categoryLabelId: $categoryLabelId
+    name: $name
+    categoryId: $categoryId
+  )
 }
     `;
 export const SettingLabelsPageDocument = gql`

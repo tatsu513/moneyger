@@ -102,7 +102,7 @@ type Mutation {
   # カテゴリラベルを登録
   createCategoryLabel(input: [CreateCategoryLabelInput!]!): Int!
   # カテゴリラベルを編集
-  updateCategoryLabel(categoryLabelId: Int!, name: String!): Int!
+  updateCategoryLabel(categoryLabelId: Int!, name: String!, categoryId: Int): Int!
   # カテゴリラベルを削除
   deleteCategoryLabel(categoryLabelId: Int!): Int!
 }

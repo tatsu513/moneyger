@@ -44,10 +44,11 @@ const SettingLabelsMain: React.FC<Props> = ({ labels, categories }) => {
       const histories = labels.flatMap((l2) =>
         l2.categoryId === categoryId ? [l2] : [],
       );
-      map.set(categoryId?.toString() ?? "", histories);
+      const target = categories.find((c) => c.id === categoryId)
+      map.set(target?.name ?? "", histories);
     });
     return map;
-  }, [labels]);
+  }, [labels, categories]);
 
   const {
     alertType: createAlertType,
@@ -167,6 +168,7 @@ const SettingLabelsMain: React.FC<Props> = ({ labels, categories }) => {
           <UpdateLabelDialog
             dialogState={updateDialogState}
             label={selectedLabel}
+            categories={categories}
             onClose={dialogClose}
             events={{
               onSuccess: setUpdateSuccess,

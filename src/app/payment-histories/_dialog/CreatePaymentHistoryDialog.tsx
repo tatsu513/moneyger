@@ -1,4 +1,4 @@
-import CategoryLabelsAutocomplate from '@/components/common/CategoryLabelsAutocomplate';
+import CategoryLabelsAutocomplate from '@/components/common/CategoryLabelsAutocomplete';
 import MoneygerAutocomplete from '@/components/common/MoneygerAutocomplete';
 import MoneygerDatePicker from '@/components/common/MoneygerDatePicker';
 import MoneygerDialog from '@/components/common/MoneygerDialog';

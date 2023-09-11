@@ -298,11 +298,12 @@ const resolvers: Resolvers = {
         });
       return target.count;
     },
-    updateCategoryLabel: async (_, { categoryLabelId, name }) => {
+    updateCategoryLabel: async (_, { categoryLabelId, name, categoryId }) => {
+      console.log({ categoryId })
       const target = await prisma.categoryLabel
         .update({
           where: { id: categoryLabelId },
-          data: { name },
+          data: { name, categoryId },
         })
         .catch((err) => {
           console.error('カテゴリラベルの更新に失敗しました', {
