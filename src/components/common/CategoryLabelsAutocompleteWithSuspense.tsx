@@ -1,3 +1,4 @@
+"use client"
 import CategoryLabelsAutocomplete from '@/components/common/CategoryLabelsAutocomplete';
 import { graphql } from '@/dao/generated/preset/gql';
 import { CategoryLabel } from '@/dao/generated/preset/graphql';
