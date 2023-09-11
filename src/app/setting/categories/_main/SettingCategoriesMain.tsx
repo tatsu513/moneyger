@@ -116,7 +116,7 @@ const SettingCategoriesMain: React.FC<Props> = ({ categories, labels }) => {
               id={p.id}
               name={p.name}
               maxAmount={p.maxAmount}
-              labels={p.labels.flatMap((l) => (l ? [l] : [])) ?? []}
+              labels={labels.filter((l) => l.categoryId === p.id)}
               onRowClick={updateDialogOpen}
               onDeleteClick={deleteDialogOpen}
             />
@@ -126,7 +126,6 @@ const SettingCategoriesMain: React.FC<Props> = ({ categories, labels }) => {
       <CreateCategoryDialog
         dialogState={dialogState}
         onClose={dialogClose}
-        labels={labels}
         events={{
           onSuccess: setSuccess,
           onError: setError,

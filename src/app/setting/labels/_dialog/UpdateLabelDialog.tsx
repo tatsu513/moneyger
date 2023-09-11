@@ -1,11 +1,13 @@
+import CategoryAutocomplete from '@/components/common/CategoryAutocomplete';
 import CommonLoading from '@/components/common/CommonLoading';
 import MoneygerDialog from '@/components/common/MoneygerDialog';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';
 import TextButton from '@/components/common/buttons/TextButton';
+import FormContentsBlock from '@/components/common/forms/FormContentsBlock';
 import { graphql } from '@/dao/generated/preset';
 import { SettingLabelsPageQuery } from '@/dao/generated/preset/graphql';
 import DialogState from '@/types/DialogState';
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useCallback, useState } from 'react';
 import { useMutation } from 'urql';
@@ -15,20 +17,29 @@ const updateLabelDialogUpdateCategoryLabelDocument = graphql(`
   mutation createLabelDialog_UpdateCategoryLabel(
     $categoryLabelId: Int!
     $name: String!
+    $categoryId: Int
   ) {
-    updateCaregoryLabel(categoryLabelId: $categoryLabelId, name: $name)
+    updateCategoryLabel(
+      categoryLabelId: $categoryLabelId
+      name: $name
+      categoryId: $categoryId
+    )
   }
 `);
 
 const updateSchema = z.object({
   categoryLabelId: z.number(),
   name: z.string(),
+  categoryId: z.number().nullable(),
 });
 
 type Label = SettingLabelsPageQuery['listCategoryLabels'][number];
+type Category = SettingLabelsPageQuery['listCategories'][number];
+
 type Props = {
   dialogState: DialogState;
   label: Label;
+  categories: Category[];
   onClose: () => void;
   events: {
     onSuccess: () => void;
@@ -39,15 +50,18 @@ type Props = {
 const UpdateLabelDialog: React.FC<Props> = ({
   dialogState,
   label,
+  categories,
   onClose,
   events,
 }) => {
   const router = useRouter();
   const [name, setName] = useState(label.name);
+  const [category, setCategory] = useState<Category | null>(null);
 
   const safeParseResult = updateSchema.safeParse({
     categoryLabelId: label.id,
     name,
+    categoryId: category?.id ?? null,
   });
 
   const handleChangeName = useCallback(
@@ -56,6 +70,10 @@ const UpdateLabelDialog: React.FC<Props> = ({
     },
     [],
   );
+
+  const handleChangeCategory = useCallback((value: Category | null) => {
+    setCategory(value);
+  }, []);
 
   const handleClose = useCallback(() => {
     onClose();
@@ -74,6 +92,7 @@ const UpdateLabelDialog: React.FC<Props> = ({
       const result = await submit({
         categoryLabelId: safeParseResult.data.categoryLabelId,
         name: safeParseResult.data.name,
+        categoryId: safeParseResult.data.categoryId,
       });
       if (result.error) {
         throw new Error('費目の更新に失敗しました');
@@ -110,10 +129,7 @@ const UpdateLabelDialog: React.FC<Props> = ({
         <CommonLoading />
       ) : (
         <>
-          <Box mb={3}>
-            <Typography variant="body1" mb={1}>
-              名称
-            </Typography>
+          <FormContentsBlock label="名称" required hasMargin>
             <TextField
               value={name}
               fullWidth
@@ -121,7 +137,15 @@ const UpdateLabelDialog: React.FC<Props> = ({
               placeholder="ラベル名を入力"
               size="small"
             />
-          </Box>
+          </FormContentsBlock>
+
+          <FormContentsBlock label="費目ラベル" required hasMargin>
+            <CategoryAutocomplete
+              options={categories}
+              selectedValue={category}
+              onChange={handleChangeCategory}
+            />
+          </FormContentsBlock>
         </>
       )}
     </MoneygerDialog>

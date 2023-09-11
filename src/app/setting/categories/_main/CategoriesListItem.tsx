@@ -31,6 +31,11 @@ const CategoriesListItem: React.FC<Props> = ({
   onRowClick,
   onDeleteClick,
 }) => {
+  const filteredLabelList = labels.filter((l) => {
+    // console.log({ categoryId: l.categoryId, n: l.name, id })
+    if (l.categoryId == null) return l;
+    return l.categoryId === id;
+  });
   const handleClick = useCallback(() => {
     onRowClick(id);
   }, [onRowClick, id]);
@@ -82,7 +87,7 @@ const CategoriesListItem: React.FC<Props> = ({
             </Box>
           </Box>
         </Box>
-        <DisplayCategoryLabelsList labels={labels} />
+        <DisplayCategoryLabelsList labels={filteredLabelList} />
       </ListItemButton>
       <Divider />
     </ListItem>

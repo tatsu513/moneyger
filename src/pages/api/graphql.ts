@@ -191,7 +191,24 @@ const resolvers: Resolvers = {
       };
     },
     listCategoryLabels: async (_, _args) => {
-      const labels = await prisma.categoryLabel.findMany();
+      const labels = await prisma.categoryLabel.findMany().catch((e) => {
+        throw new GraphQLError('listCategoryLabels error', {
+          originalError: e,
+        });
+      });
+      console.log({ labels });
+      return labels;
+    },
+    listCategoryLabelsByCategoryId: async (_, { categoryId }) => {
+      const labels = await prisma.categoryLabel
+        .findMany({
+          where: { categoryId },
+        })
+        .catch((e) => {
+          throw new GraphQLError('listCategoryLabelsByCategoryId error', {
+            originalError: e,
+          });
+        });
       return labels;
     },
   },
@@ -281,27 +298,26 @@ const resolvers: Resolvers = {
       });
       return target.id;
     },
-    createCategoryLabel: async (_, { categoryId, labels }) => {
+    createCategoryLabel: async (_, { input }) => {
       const target = await prisma.categoryLabel
         .createMany({
-          data: labels.map((l) => ({ name: l })),
-          skipDuplicates: true,
+          data: input.map((d) => ({ name: d.label, categoryId: d.categoryId })),
         })
         .catch((err) => {
           console.error('カテゴリラベルの登録に失敗しました', {
             err,
-            categoryId,
-            labels,
+            ...input,
           });
           throw new GraphQLError('カテゴリラベルの登録に失敗しました');
         });
       return target.count;
     },
-    updateCaregoryLabel: async (_, { categoryLabelId, name }) => {
+    updateCategoryLabel: async (_, { categoryLabelId, name, categoryId }) => {
+      console.log({ categoryId });
       const target = await prisma.categoryLabel
         .update({
           where: { id: categoryLabelId },
-          data: { name },
+          data: { name, categoryId },
         })
         .catch((err) => {
           console.error('カテゴリラベルの更新に失敗しました', {
@@ -313,7 +329,7 @@ const resolvers: Resolvers = {
         });
       return target.id;
     },
-    deleteCaregoryLabel: async (_, { categoryLabelId }) => {
+    deleteCategoryLabel: async (_, { categoryLabelId }) => {
       const target = await prisma.categoryLabel
         .delete({
           where: { id: categoryLabelId },
