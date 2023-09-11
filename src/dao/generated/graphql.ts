@@ -34,16 +34,21 @@ export type CategoryLabel = {
   name: Scalars['String']['output'];
 };
 
+export type CreateCategoryLabelInput = {
+  categoryId?: InputMaybe<Scalars['Int']['input']>;
+  label: Scalars['String']['input'];
+};
+
 export type Mutation = {
   createCategory: Scalars['Int']['output'];
   createCategoryLabel: Scalars['Int']['output'];
   createPaymentHistory: Scalars['Int']['output'];
-  deleteCaregoryLabel: Scalars['Int']['output'];
-  deleteCaregoryLabelFromCategory: Scalars['Int']['output'];
   deleteCategory: Scalars['Int']['output'];
+  deleteCategoryLabel: Scalars['Int']['output'];
+  deleteCategoryLabelFromCategory: Scalars['Int']['output'];
   deletePaymentHistory: Scalars['Int']['output'];
-  updateCaregoryLabel: Scalars['Int']['output'];
   updateCategory: Scalars['Int']['output'];
+  updateCategoryLabel: Scalars['Int']['output'];
   updatePaymentHistory: Scalars['Int']['output'];
 };
 
@@ -56,8 +61,7 @@ export type MutationCreateCategoryArgs = {
 
 
 export type MutationCreateCategoryLabelArgs = {
-  categoryId?: InputMaybe<Scalars['Int']['input']>;
-  labels: Array<Scalars['String']['input']>;
+  input: Array<CreateCategoryLabelInput>;
 };
 
 
@@ -70,19 +74,19 @@ export type MutationCreatePaymentHistoryArgs = {
 };
 
 
-export type MutationDeleteCaregoryLabelArgs = {
+export type MutationDeleteCategoryArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteCategoryLabelArgs = {
   categoryLabelId: Scalars['Int']['input'];
 };
 
 
-export type MutationDeleteCaregoryLabelFromCategoryArgs = {
+export type MutationDeleteCategoryLabelFromCategoryArgs = {
   categoryId: Scalars['Int']['input'];
   categoryLabelIds: Array<Scalars['Int']['input']>;
-};
-
-
-export type MutationDeleteCategoryArgs = {
-  id: Scalars['Int']['input'];
 };
 
 
@@ -91,16 +95,16 @@ export type MutationDeletePaymentHistoryArgs = {
 };
 
 
-export type MutationUpdateCaregoryLabelArgs = {
-  categoryLabelId: Scalars['Int']['input'];
-  name: Scalars['String']['input'];
-};
-
-
 export type MutationUpdateCategoryArgs = {
   id: Scalars['Int']['input'];
   labelIds: Array<Scalars['Int']['input']>;
   maxAmount: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationUpdateCategoryLabelArgs = {
+  categoryLabelId: Scalars['Int']['input'];
   name: Scalars['String']['input'];
 };
 
@@ -238,6 +242,7 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Category: ResolverTypeWrapper<Category>;
   CategoryLabel: ResolverTypeWrapper<CategoryLabel>;
+  CreateCategoryLabelInput: CreateCategoryLabelInput;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -252,6 +257,7 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   Category: Category;
   CategoryLabel: CategoryLabel;
+  CreateCategoryLabelInput: CreateCategoryLabelInput;
   Float: Scalars['Float']['output'];
   Int: Scalars['Int']['output'];
   Mutation: {};
@@ -279,14 +285,14 @@ export type CategoryLabelResolvers<ContextType = Context, ParentType extends Res
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createCategory?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationCreateCategoryArgs, 'labelIds' | 'maxAmount' | 'name'>>;
-  createCategoryLabel?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationCreateCategoryLabelArgs, 'labels'>>;
+  createCategoryLabel?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationCreateCategoryLabelArgs, 'input'>>;
   createPaymentHistory?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationCreatePaymentHistoryArgs, 'categoryId' | 'categoryLabelIds' | 'paymentDate' | 'price'>>;
-  deleteCaregoryLabel?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationDeleteCaregoryLabelArgs, 'categoryLabelId'>>;
-  deleteCaregoryLabelFromCategory?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationDeleteCaregoryLabelFromCategoryArgs, 'categoryId' | 'categoryLabelIds'>>;
   deleteCategory?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationDeleteCategoryArgs, 'id'>>;
+  deleteCategoryLabel?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationDeleteCategoryLabelArgs, 'categoryLabelId'>>;
+  deleteCategoryLabelFromCategory?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationDeleteCategoryLabelFromCategoryArgs, 'categoryId' | 'categoryLabelIds'>>;
   deletePaymentHistory?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationDeletePaymentHistoryArgs, 'id'>>;
-  updateCaregoryLabel?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationUpdateCaregoryLabelArgs, 'categoryLabelId' | 'name'>>;
   updateCategory?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationUpdateCategoryArgs, 'id' | 'labelIds' | 'maxAmount' | 'name'>>;
+  updateCategoryLabel?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationUpdateCategoryLabelArgs, 'categoryLabelId' | 'name'>>;
   updatePaymentHistory?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationUpdatePaymentHistoryArgs, 'categoryId' | 'id' | 'labelIds' | 'paymentDate' | 'price'>>;
 };
 
@@ -433,8 +439,7 @@ export type SettingCategoriesPageQueryVariables = Exact<{
 export type SettingCategoriesPageQuery = { listCategories: Array<{ id: number, name: string, maxAmount: number, labels: Array<{ id: number, name: string }> }>, listCategoryLabels: Array<{ id: number, name: string }> };
 
 export type CreateLabelDialog_CreateLabelMutationVariables = Exact<{
-  categoryId?: InputMaybe<Scalars['Int']['input']>;
-  labels: Array<Scalars['String']['input']>;
+  input: Array<CreateCategoryLabelInput>;
 }>;
 
 
@@ -445,7 +450,7 @@ export type DeleteCategoryDialog_DeleteCategoryLabelMutationVariables = Exact<{
 }>;
 
 
-export type DeleteCategoryDialog_DeleteCategoryLabelMutation = { deleteCaregoryLabel: number };
+export type DeleteCategoryDialog_DeleteCategoryLabelMutation = { deleteCategoryLabel: number };
 
 export type CreateLabelDialog_UpdateCategoryLabelMutationVariables = Exact<{
   categoryLabelId: Scalars['Int']['input'];
@@ -453,12 +458,12 @@ export type CreateLabelDialog_UpdateCategoryLabelMutationVariables = Exact<{
 }>;
 
 
-export type CreateLabelDialog_UpdateCategoryLabelMutation = { updateCaregoryLabel: number };
+export type CreateLabelDialog_UpdateCategoryLabelMutation = { updateCategoryLabel: number };
 
 export type SettingLabelsPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SettingLabelsPageQuery = { listCategoryLabels: Array<{ id: number, name: string }> };
+export type SettingLabelsPageQuery = { listCategoryLabels: Array<{ id: number, name: string, categoryId?: number | null }>, listCategories: Array<{ id: number, name: string }> };
 
 
 export const TopPageCategoriesDocument = gql`
@@ -606,23 +611,28 @@ export const SettingCategoriesPageDocument = gql`
 }
     `;
 export const CreateLabelDialog_CreateLabelDocument = gql`
-    mutation createLabelDialog_CreateLabel($categoryId: Int, $labels: [String!]!) {
-  createCategoryLabel(categoryId: $categoryId, labels: $labels)
+    mutation createLabelDialog_CreateLabel($input: [CreateCategoryLabelInput!]!) {
+  createCategoryLabel(input: $input)
 }
     `;
 export const DeleteCategoryDialog_DeleteCategoryLabelDocument = gql`
     mutation deleteCategoryDialog_DeleteCategoryLabel($categoryLabelId: Int!) {
-  deleteCaregoryLabel(categoryLabelId: $categoryLabelId)
+  deleteCategoryLabel(categoryLabelId: $categoryLabelId)
 }
     `;
 export const CreateLabelDialog_UpdateCategoryLabelDocument = gql`
     mutation createLabelDialog_UpdateCategoryLabel($categoryLabelId: Int!, $name: String!) {
-  updateCaregoryLabel(categoryLabelId: $categoryLabelId, name: $name)
+  updateCategoryLabel(categoryLabelId: $categoryLabelId, name: $name)
 }
     `;
 export const SettingLabelsPageDocument = gql`
     query settingLabelsPage {
   listCategoryLabels {
+    id
+    name
+    categoryId
+  }
+  listCategories {
     id
     name
   }

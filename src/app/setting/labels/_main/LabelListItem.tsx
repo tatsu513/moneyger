@@ -40,8 +40,8 @@ const LabelListItem: React.FC<Props> = ({
     <ListItem divider disablePadding>
       <ListItemButton
         sx={{
-          pl: 1,
-          pr: 0,
+          pl: 2,
+          pr: 1,
           py: 1,
           display: 'flex',
           justifyContent: 'space-between',

@@ -30,16 +30,21 @@ export type CategoryLabel = {
   name: Scalars['String']['output'];
 };
 
+export type CreateCategoryLabelInput = {
+  categoryId?: InputMaybe<Scalars['Int']['input']>;
+  label: Scalars['String']['input'];
+};
+
 export type Mutation = {
   createCategory: Scalars['Int']['output'];
   createCategoryLabel: Scalars['Int']['output'];
   createPaymentHistory: Scalars['Int']['output'];
-  deleteCaregoryLabel: Scalars['Int']['output'];
-  deleteCaregoryLabelFromCategory: Scalars['Int']['output'];
   deleteCategory: Scalars['Int']['output'];
+  deleteCategoryLabel: Scalars['Int']['output'];
+  deleteCategoryLabelFromCategory: Scalars['Int']['output'];
   deletePaymentHistory: Scalars['Int']['output'];
-  updateCaregoryLabel: Scalars['Int']['output'];
   updateCategory: Scalars['Int']['output'];
+  updateCategoryLabel: Scalars['Int']['output'];
   updatePaymentHistory: Scalars['Int']['output'];
 };
 
@@ -52,8 +57,7 @@ export type MutationCreateCategoryArgs = {
 
 
 export type MutationCreateCategoryLabelArgs = {
-  categoryId?: InputMaybe<Scalars['Int']['input']>;
-  labels: Array<Scalars['String']['input']>;
+  input: Array<CreateCategoryLabelInput>;
 };
 
 
@@ -66,19 +70,19 @@ export type MutationCreatePaymentHistoryArgs = {
 };
 
 
-export type MutationDeleteCaregoryLabelArgs = {
+export type MutationDeleteCategoryArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteCategoryLabelArgs = {
   categoryLabelId: Scalars['Int']['input'];
 };
 
 
-export type MutationDeleteCaregoryLabelFromCategoryArgs = {
+export type MutationDeleteCategoryLabelFromCategoryArgs = {
   categoryId: Scalars['Int']['input'];
   categoryLabelIds: Array<Scalars['Int']['input']>;
-};
-
-
-export type MutationDeleteCategoryArgs = {
-  id: Scalars['Int']['input'];
 };
 
 
@@ -87,16 +91,16 @@ export type MutationDeletePaymentHistoryArgs = {
 };
 
 
-export type MutationUpdateCaregoryLabelArgs = {
-  categoryLabelId: Scalars['Int']['input'];
-  name: Scalars['String']['input'];
-};
-
-
 export type MutationUpdateCategoryArgs = {
   id: Scalars['Int']['input'];
   labelIds: Array<Scalars['Int']['input']>;
   maxAmount: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationUpdateCategoryLabelArgs = {
+  categoryLabelId: Scalars['Int']['input'];
   name: Scalars['String']['input'];
 };
 
@@ -266,8 +270,7 @@ export type SettingCategoriesPageQueryVariables = Exact<{
 export type SettingCategoriesPageQuery = { listCategories: Array<{ id: number, name: string, maxAmount: number, labels: Array<{ id: number, name: string }> }>, listCategoryLabels: Array<{ id: number, name: string }> };
 
 export type CreateLabelDialog_CreateLabelMutationVariables = Exact<{
-  categoryId?: InputMaybe<Scalars['Int']['input']>;
-  labels: Array<Scalars['String']['input']>;
+  input: Array<CreateCategoryLabelInput>;
 }>;
 
 
@@ -278,7 +281,7 @@ export type DeleteCategoryDialog_DeleteCategoryLabelMutationVariables = Exact<{
 }>;
 
 
-export type DeleteCategoryDialog_DeleteCategoryLabelMutation = { deleteCaregoryLabel: number };
+export type DeleteCategoryDialog_DeleteCategoryLabelMutation = { deleteCategoryLabel: number };
 
 export type CreateLabelDialog_UpdateCategoryLabelMutationVariables = Exact<{
   categoryLabelId: Scalars['Int']['input'];
@@ -286,12 +289,12 @@ export type CreateLabelDialog_UpdateCategoryLabelMutationVariables = Exact<{
 }>;
 
 
-export type CreateLabelDialog_UpdateCategoryLabelMutation = { updateCaregoryLabel: number };
+export type CreateLabelDialog_UpdateCategoryLabelMutation = { updateCategoryLabel: number };
 
 export type SettingLabelsPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SettingLabelsPageQuery = { listCategoryLabels: Array<{ id: number, name: string }> };
+export type SettingLabelsPageQuery = { listCategoryLabels: Array<{ id: number, name: string, categoryId?: number | null }>, listCategories: Array<{ id: number, name: string }> };
 
 
 export const TopPageCategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"topPageCategories"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"targetDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"listCategories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"targetDate"},"value":{"kind":"Variable","name":{"kind":"Name","value":"targetDate"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"maxAmount"}},{"kind":"Field","name":{"kind":"Name","value":"currentAmount"}}]}}]}}]} as unknown as DocumentNode<TopPageCategoriesQuery, TopPageCategoriesQueryVariables>;
@@ -307,7 +310,7 @@ export const CreateCategoryDialog_CreateCategoryDocument = {"kind":"Document","d
 export const DeleteCategoryDialog_DeleteCategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"deleteCategoryDialog_DeleteCategory"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteCategory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}]}}]} as unknown as DocumentNode<DeleteCategoryDialog_DeleteCategoryMutation, DeleteCategoryDialog_DeleteCategoryMutationVariables>;
 export const UpdateCategoryDialog_UpdateCategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateCategoryDialog_UpdateCategory"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"maxAmount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"labelIds"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateCategory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"Argument","name":{"kind":"Name","value":"maxAmount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"maxAmount"}}},{"kind":"Argument","name":{"kind":"Name","value":"labelIds"},"value":{"kind":"Variable","name":{"kind":"Name","value":"labelIds"}}}]}]}}]} as unknown as DocumentNode<UpdateCategoryDialog_UpdateCategoryMutation, UpdateCategoryDialog_UpdateCategoryMutationVariables>;
 export const SettingCategoriesPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"settingCategoriesPage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"targetDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"listCategories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"targetDate"},"value":{"kind":"Variable","name":{"kind":"Name","value":"targetDate"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"maxAmount"}},{"kind":"Field","name":{"kind":"Name","value":"labels"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"listCategoryLabels"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<SettingCategoriesPageQuery, SettingCategoriesPageQueryVariables>;
-export const CreateLabelDialog_CreateLabelDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createLabelDialog_CreateLabel"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"labels"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createCategoryLabel"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"categoryId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryId"}}},{"kind":"Argument","name":{"kind":"Name","value":"labels"},"value":{"kind":"Variable","name":{"kind":"Name","value":"labels"}}}]}]}}]} as unknown as DocumentNode<CreateLabelDialog_CreateLabelMutation, CreateLabelDialog_CreateLabelMutationVariables>;
-export const DeleteCategoryDialog_DeleteCategoryLabelDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"deleteCategoryDialog_DeleteCategoryLabel"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryLabelId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteCaregoryLabel"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"categoryLabelId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryLabelId"}}}]}]}}]} as unknown as DocumentNode<DeleteCategoryDialog_DeleteCategoryLabelMutation, DeleteCategoryDialog_DeleteCategoryLabelMutationVariables>;
-export const CreateLabelDialog_UpdateCategoryLabelDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createLabelDialog_UpdateCategoryLabel"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryLabelId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateCaregoryLabel"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"categoryLabelId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryLabelId"}}},{"kind":"Argument","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}}]}]}}]} as unknown as DocumentNode<CreateLabelDialog_UpdateCategoryLabelMutation, CreateLabelDialog_UpdateCategoryLabelMutationVariables>;
-export const SettingLabelsPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"settingLabelsPage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"listCategoryLabels"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<SettingLabelsPageQuery, SettingLabelsPageQueryVariables>;
+export const CreateLabelDialog_CreateLabelDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createLabelDialog_CreateLabel"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateCategoryLabelInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createCategoryLabel"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}]}]}}]} as unknown as DocumentNode<CreateLabelDialog_CreateLabelMutation, CreateLabelDialog_CreateLabelMutationVariables>;
+export const DeleteCategoryDialog_DeleteCategoryLabelDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"deleteCategoryDialog_DeleteCategoryLabel"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryLabelId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteCategoryLabel"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"categoryLabelId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryLabelId"}}}]}]}}]} as unknown as DocumentNode<DeleteCategoryDialog_DeleteCategoryLabelMutation, DeleteCategoryDialog_DeleteCategoryLabelMutationVariables>;
+export const CreateLabelDialog_UpdateCategoryLabelDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createLabelDialog_UpdateCategoryLabel"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"categoryLabelId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateCategoryLabel"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"categoryLabelId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"categoryLabelId"}}},{"kind":"Argument","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}}]}]}}]} as unknown as DocumentNode<CreateLabelDialog_UpdateCategoryLabelMutation, CreateLabelDialog_UpdateCategoryLabelMutationVariables>;
+export const SettingLabelsPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"settingLabelsPage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"listCategoryLabels"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}}]}},{"kind":"Field","name":{"kind":"Name","value":"listCategories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<SettingLabelsPageQuery, SettingLabelsPageQueryVariables>;

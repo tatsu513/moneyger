@@ -16,7 +16,7 @@ const updateLabelDialogUpdateCategoryLabelDocument = graphql(`
     $categoryLabelId: Int!
     $name: String!
   ) {
-    updateCaregoryLabel(categoryLabelId: $categoryLabelId, name: $name)
+    updateCategoryLabel(categoryLabelId: $categoryLabelId, name: $name)
   }
 `);
 

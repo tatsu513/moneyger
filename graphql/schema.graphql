@@ -76,7 +76,7 @@ type Mutation {
   # 費目の削除
   deleteCategory(id: Int!): Int!
   # カテゴリからラベルを削除
-  deleteCaregoryLabelFromCategory(
+  deleteCategoryLabelFromCategory(
     categoryId: Int!
     categoryLabelIds: [Int!]!
   ): Int!
@@ -100,9 +100,14 @@ type Mutation {
   # 支払履歴を削除
   deletePaymentHistory(id: Int!): Int!
   # カテゴリラベルを登録
-  createCategoryLabel(categoryId: Int, labels: [String!]!): Int!
+  createCategoryLabel(input: [CreateCategoryLabelInput!]!): Int!
   # カテゴリラベルを編集
-  updateCaregoryLabel(categoryLabelId: Int!, name: String!): Int!
+  updateCategoryLabel(categoryLabelId: Int!, name: String!): Int!
   # カテゴリラベルを削除
-  deleteCaregoryLabel(categoryLabelId: Int!): Int!
+  deleteCategoryLabel(categoryLabelId: Int!): Int!
+}
+
+input CreateCategoryLabelInput {
+  label: String!
+  categoryId: Int
 }

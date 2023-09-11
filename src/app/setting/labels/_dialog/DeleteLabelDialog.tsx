@@ -18,7 +18,7 @@ import { useMutation } from 'urql';
 
 const deleteCategoryDialogDeleteCategoryLabelDocument = graphql(`
   mutation deleteCategoryDialog_DeleteCategoryLabel($categoryLabelId: Int!) {
-    deleteCaregoryLabel(categoryLabelId: $categoryLabelId)
+    deleteCategoryLabel(categoryLabelId: $categoryLabelId)
   }
 `);
 
