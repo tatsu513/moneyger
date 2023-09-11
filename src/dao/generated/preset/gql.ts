@@ -31,6 +31,7 @@ const documents = {
     "\n  mutation deleteCategoryDialog_DeleteCategoryLabel($categoryLabelId: Int!) {\n    deleteCategoryLabel(categoryLabelId: $categoryLabelId)\n  }\n": types.DeleteCategoryDialog_DeleteCategoryLabelDocument,
     "\n  mutation createLabelDialog_UpdateCategoryLabel(\n    $categoryLabelId: Int!\n    $name: String!\n    $categoryId: Int\n  ) {\n    updateCategoryLabel(\n      categoryLabelId: $categoryLabelId\n      name: $name\n      categoryId: $categoryId\n    )\n  }\n": types.CreateLabelDialog_UpdateCategoryLabelDocument,
     "\n  query settingLabelsPage {\n    listCategoryLabels {\n      id\n      name\n      categoryId\n    }\n    listCategories {\n      id\n      name\n    }\n  }\n": types.SettingLabelsPageDocument,
+    "\n  query categoryLabelsAutocompleteWithSuspense($categoryId: Int!) {\n    listCategoryLabelsByCategoryId(categoryId: $categoryId) {\n      id\n      name\n      categoryId\n    }\n  }\n": types.CategoryLabelsAutocompleteWithSuspenseDocument,
 };
 
 /**
@@ -119,6 +120,10 @@ export function graphql(source: "\n  mutation createLabelDialog_UpdateCategoryLa
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query settingLabelsPage {\n    listCategoryLabels {\n      id\n      name\n      categoryId\n    }\n    listCategories {\n      id\n      name\n    }\n  }\n"): (typeof documents)["\n  query settingLabelsPage {\n    listCategoryLabels {\n      id\n      name\n      categoryId\n    }\n    listCategories {\n      id\n      name\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query categoryLabelsAutocompleteWithSuspense($categoryId: Int!) {\n    listCategoryLabelsByCategoryId(categoryId: $categoryId) {\n      id\n      name\n      categoryId\n    }\n  }\n"): (typeof documents)["\n  query categoryLabelsAutocompleteWithSuspense($categoryId: Int!) {\n    listCategoryLabelsByCategoryId(categoryId: $categoryId) {\n      id\n      name\n      categoryId\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

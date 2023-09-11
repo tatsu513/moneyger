@@ -481,6 +481,13 @@ export type SettingLabelsPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type SettingLabelsPageQuery = { listCategoryLabels: Array<{ id: number, name: string, categoryId?: number | null }>, listCategories: Array<{ id: number, name: string }> };
 
+export type CategoryLabelsAutocompleteWithSuspenseQueryVariables = Exact<{
+  categoryId: Scalars['Int']['input'];
+}>;
+
+
+export type CategoryLabelsAutocompleteWithSuspenseQuery = { listCategoryLabelsByCategoryId: Array<{ id: number, name: string, categoryId?: number | null }> };
+
 
 export const TopPageCategoriesDocument = gql`
     query topPageCategories($targetDate: String!) {
@@ -664,6 +671,15 @@ export const SettingLabelsPageDocument = gql`
   }
 }
     `;
+export const CategoryLabelsAutocompleteWithSuspenseDocument = gql`
+    query categoryLabelsAutocompleteWithSuspense($categoryId: Int!) {
+  listCategoryLabelsByCategoryId(categoryId: $categoryId) {
+    id
+    name
+    categoryId
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -725,6 +741,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     settingLabelsPage(variables?: SettingLabelsPageQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<SettingLabelsPageQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<SettingLabelsPageQuery>(SettingLabelsPageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'settingLabelsPage', 'query');
+    },
+    categoryLabelsAutocompleteWithSuspense(variables: CategoryLabelsAutocompleteWithSuspenseQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<CategoryLabelsAutocompleteWithSuspenseQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CategoryLabelsAutocompleteWithSuspenseQuery>(CategoryLabelsAutocompleteWithSuspenseDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'categoryLabelsAutocompleteWithSuspense', 'query');
     }
   };
 }

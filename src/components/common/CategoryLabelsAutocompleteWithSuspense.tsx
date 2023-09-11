@@ -7,8 +7,8 @@ import { useQuery } from '@urql/next';
 import { useMemo } from 'react';
 import { z } from 'zod';
 
-const updatePaymentHistoryDialogDocument = graphql(`
-  query updatePaymentHistoryDialog($categoryId: Int!) {
+const categoryLabelsAutocompleteWithSuspenseDocument = graphql(`
+  query categoryLabelsAutocompleteWithSuspense($categoryId: Int!) {
     listCategoryLabelsByCategoryId(categoryId: $categoryId) {
       id
       name
@@ -36,9 +36,10 @@ const CategoryLabelsAutocompleteWithSuspense: React.FC<Prop> = ({
 }) => {
   const val = useMemo(() => {
     return getUrqlVariables(
-      updatePaymentHistoryDialogDocument,
+      categoryLabelsAutocompleteWithSuspenseDocument,
       { categoryId },
       true,
+      categoryId === null
     );
   }, [categoryId]);
   const [{ data }] = useQuery(val);
