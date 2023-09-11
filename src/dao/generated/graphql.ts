@@ -374,13 +374,6 @@ export type UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables = E
 
 export type UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutation = { updatePaymentHistory: number };
 
-export type UpdatePaymentHistoryDialogQueryVariables = Exact<{
-  categoryId: Scalars['Int']['input'];
-}>;
-
-
-export type UpdatePaymentHistoryDialogQuery = { listCategoryLabelsByCategoryId: Array<{ id: number, name: string, categoryId?: number | null }> };
-
 export type PaymentHistoryPageQueryVariables = Exact<{
   paymentHistoryId: Scalars['Int']['input'];
 }>;
@@ -533,15 +526,6 @@ export const UpdatePaymentHistoryDialog_UpdateHistoryPaymentDocument = gql`
     note: $note
     labelIds: $labelIds
   )
-}
-    `;
-export const UpdatePaymentHistoryDialogDocument = gql`
-    query updatePaymentHistoryDialog($categoryId: Int!) {
-  listCategoryLabelsByCategoryId(categoryId: $categoryId) {
-    id
-    name
-    categoryId
-  }
 }
     `;
 export const PaymentHistoryPageDocument = gql`
@@ -699,9 +683,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     updatePaymentHistoryDialog_UpdateHistoryPayment(variables: UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutation>(UpdatePaymentHistoryDialog_UpdateHistoryPaymentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updatePaymentHistoryDialog_UpdateHistoryPayment', 'mutation');
-    },
-    updatePaymentHistoryDialog(variables: UpdatePaymentHistoryDialogQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdatePaymentHistoryDialogQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<UpdatePaymentHistoryDialogQuery>(UpdatePaymentHistoryDialogDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updatePaymentHistoryDialog', 'query');
     },
     paymentHistoryPage(variables: PaymentHistoryPageQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PaymentHistoryPageQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<PaymentHistoryPageQuery>(PaymentHistoryPageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'paymentHistoryPage', 'query');
