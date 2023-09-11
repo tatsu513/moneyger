@@ -1,4 +1,8 @@
-import CategoryLabelsAutocomplate from '@/components/common/CategoryLabelsAutocomplete';
+import { grey } from '@/color';
+import CategoryLabelsAutocomplete from '@/components/common/CategoryLabelsAutocomplete';
+import CategoryLabelsAutocompleteWithSuspense from '@/components/common/CategoryLabelsAutocompleteWithSuspense';
+import FetchErrorBoundary from '@/components/common/FetchErrorBoundary';
+import InlineLoading from '@/components/common/InlineLoading';
 import MoneygerAutocomplete from '@/components/common/MoneygerAutocomplete';
 import MoneygerDatePicker from '@/components/common/MoneygerDatePicker';
 import MoneygerDialog from '@/components/common/MoneygerDialog';
@@ -7,7 +11,7 @@ import TextButton from '@/components/common/buttons/TextButton';
 import FormContentsBlock from '@/components/common/forms/FormContentsBlock';
 import { graphql } from '@/dao/generated/preset';
 import {
-  CategoryLabel,
+  CreatePaymentHistoryDialogQuery,
   PaymentHistoriesPageQuery,
 } from '@/dao/generated/preset/graphql';
 import {
@@ -16,12 +20,13 @@ import {
   priceType,
 } from '@/models/paymentHistory';
 import DialogState from '@/types/DialogState';
-import { Box, Slide, TextField, createFilterOptions } from '@mui/material';
+import getUrqlVariables from '@/util/getUrqlVariables';
+import { Box, Slide, TextField, Typography, createFilterOptions } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
-import React, { ChangeEvent, useCallback, useState } from 'react';
-import { useMutation } from 'urql';
+import React, { ChangeEvent, Suspense, useCallback, useMemo, useState } from 'react';
+import { useMutation, useQuery } from 'urql';
 
 const createPaymentHistoryDialogCreatePaymentDocument = graphql(`
   mutation createPaymentHistoryDialog_CreatePaymentHistory(
@@ -41,7 +46,18 @@ const createPaymentHistoryDialogCreatePaymentDocument = graphql(`
   }
 `);
 
+const createPaymentHistoryDialogDocument = graphql(`
+  query createPaymentHistoryDialog($categoryId: Int!) {
+    listCategoryLabelsByCategoryId(categoryId: $categoryId) {
+      id
+      name
+      categoryId
+    }
+  }
+`);
+
 type LocalCategoryType = PaymentHistoriesPageQuery['listCategories'];
+type CategoryLabel = CreatePaymentHistoryDialogQuery['listCategoryLabelsByCategoryId'][number]
 type Props = {
   dialogState: DialogState;
   listCategories: LocalCategoryType;
@@ -63,6 +79,17 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
   const [category, setCategory] = useState<LocalCategoryType[number] | null>(
     null,
   );
+
+  const val = useMemo(() => {
+    return getUrqlVariables(
+      createPaymentHistoryDialogDocument,
+      { categoryId: category?.id ?? 0 },
+      false,
+      category?.id == null
+    );
+  }, [category]);
+  const [{ data }] = useQuery(val);
+
   const [paymentDate, setPaymentDate] = useState<DateTime | null>(null);
   const [price, setPrice] = useState<string>('');
   const [note, setNote] = useState<string>('');
@@ -219,11 +246,28 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
       </FormContentsBlock>
 
       <FormContentsBlock label="ラベル" hasMargin>
-        <CategoryLabelsAutocomplate
+        <CategoryLabelsAutocomplete
           selectedValues={labels}
-          options={category?.labels ?? []}
+          options={data?.listCategoryLabelsByCategoryId ?? []}
           onChange={handleChange}
         />
+      </FormContentsBlock>
+
+      <FormContentsBlock label="ラベル" hasMargin>
+        {category == null
+          ? <Typography variant="body1" color={grey[500]}>費目を選択してください</Typography>
+          : (
+            <FetchErrorBoundary>
+              <Suspense fallback={<InlineLoading height={40}/>}>
+                <CategoryLabelsAutocompleteWithSuspense
+                  selectedValues={labels}
+                  categoryId={category.id}
+                  onChange={handleChange}
+                />
+              </Suspense>
+            </FetchErrorBoundary>
+          )
+        }
       </FormContentsBlock>
 
       <FormContentsBlock label="メモ" hasMargin>

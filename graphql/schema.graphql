@@ -13,6 +13,8 @@ type Query {
   paymentSummary(targetDate: String!): PaymentSummary!
   # カテゴリラベル一覧を取得
   listCategoryLabels: [CategoryLabel!]!
+  # 費目ごとのカテゴリラベルを取得
+  listCategoryLabelsByCategoryId(categoryId: Int!): [CategoryLabel!]!
 }
 
 # 支払の概要

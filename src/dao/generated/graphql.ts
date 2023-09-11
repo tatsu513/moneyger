@@ -138,6 +138,7 @@ export type Query = {
   category?: Maybe<Category>;
   listCategories: Array<Category>;
   listCategoryLabels: Array<CategoryLabel>;
+  listCategoryLabelsByCategoryId: Array<CategoryLabel>;
   listPaymentHistories: Array<PaymentHistory>;
   listPaymentHistoriesByCategoryId: Array<PaymentHistory>;
   paymentHistory?: Maybe<PaymentHistory>;
@@ -152,6 +153,11 @@ export type QueryCategoryArgs = {
 
 export type QueryListCategoriesArgs = {
   targetDate?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryListCategoryLabelsByCategoryIdArgs = {
+  categoryId: Scalars['Int']['input'];
 };
 
 
@@ -318,6 +324,7 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, RequireFields<QueryCategoryArgs, 'categoryId'>>;
   listCategories?: Resolver<Array<ResolversTypes['Category']>, ParentType, ContextType, Partial<QueryListCategoriesArgs>>;
   listCategoryLabels?: Resolver<Array<ResolversTypes['CategoryLabel']>, ParentType, ContextType>;
+  listCategoryLabelsByCategoryId?: Resolver<Array<ResolversTypes['CategoryLabel']>, ParentType, ContextType, RequireFields<QueryListCategoryLabelsByCategoryIdArgs, 'categoryId'>>;
   listPaymentHistories?: Resolver<Array<ResolversTypes['PaymentHistory']>, ParentType, ContextType>;
   listPaymentHistoriesByCategoryId?: Resolver<Array<ResolversTypes['PaymentHistory']>, ParentType, ContextType, RequireFields<QueryListPaymentHistoriesByCategoryIdArgs, 'categoryId'>>;
   paymentHistory?: Resolver<Maybe<ResolversTypes['PaymentHistory']>, ParentType, ContextType, RequireFields<QueryPaymentHistoryArgs, 'paymentHistoryId'>>;
@@ -367,6 +374,13 @@ export type UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables = E
 
 export type UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutation = { updatePaymentHistory: number };
 
+export type UpdatePaymentHistoryDialogQueryVariables = Exact<{
+  categoryId: Scalars['Int']['input'];
+}>;
+
+
+export type UpdatePaymentHistoryDialogQuery = { listCategoryLabelsByCategoryId: Array<{ id: number, name: string, categoryId?: number | null }> };
+
 export type PaymentHistoryPageQueryVariables = Exact<{
   paymentHistoryId: Scalars['Int']['input'];
 }>;
@@ -391,6 +405,13 @@ export type CreatePaymentHistoryDialog_CreatePaymentHistoryMutationVariables = E
 
 
 export type CreatePaymentHistoryDialog_CreatePaymentHistoryMutation = { createPaymentHistory: number };
+
+export type CreatePaymentHistoryDialogQueryVariables = Exact<{
+  categoryId: Scalars['Int']['input'];
+}>;
+
+
+export type CreatePaymentHistoryDialogQuery = { listCategoryLabelsByCategoryId: Array<{ id: number, name: string, categoryId?: number | null }> };
 
 export type DeletePaymentHistoryDialog_DeletePaymentHistoryMutationVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -514,6 +535,15 @@ export const UpdatePaymentHistoryDialog_UpdateHistoryPaymentDocument = gql`
   )
 }
     `;
+export const UpdatePaymentHistoryDialogDocument = gql`
+    query updatePaymentHistoryDialog($categoryId: Int!) {
+  listCategoryLabelsByCategoryId(categoryId: $categoryId) {
+    id
+    name
+    categoryId
+  }
+}
+    `;
 export const PaymentHistoryPageDocument = gql`
     query paymentHistoryPage($paymentHistoryId: Int!) {
   paymentHistory(paymentHistoryId: $paymentHistoryId) {
@@ -550,6 +580,15 @@ export const CreatePaymentHistoryDialog_CreatePaymentHistoryDocument = gql`
     note: $note
     categoryLabelIds: $categoryLabelIds
   )
+}
+    `;
+export const CreatePaymentHistoryDialogDocument = gql`
+    query createPaymentHistoryDialog($categoryId: Int!) {
+  listCategoryLabelsByCategoryId(categoryId: $categoryId) {
+    id
+    name
+    categoryId
+  }
 }
     `;
 export const DeletePaymentHistoryDialog_DeletePaymentHistoryDocument = gql`
@@ -661,6 +700,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     updatePaymentHistoryDialog_UpdateHistoryPayment(variables: UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdatePaymentHistoryDialog_UpdateHistoryPaymentMutation>(UpdatePaymentHistoryDialog_UpdateHistoryPaymentDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updatePaymentHistoryDialog_UpdateHistoryPayment', 'mutation');
     },
+    updatePaymentHistoryDialog(variables: UpdatePaymentHistoryDialogQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdatePaymentHistoryDialogQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdatePaymentHistoryDialogQuery>(UpdatePaymentHistoryDialogDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updatePaymentHistoryDialog', 'query');
+    },
     paymentHistoryPage(variables: PaymentHistoryPageQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PaymentHistoryPageQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<PaymentHistoryPageQuery>(PaymentHistoryPageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'paymentHistoryPage', 'query');
     },
@@ -669,6 +711,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     createPaymentHistoryDialog_CreatePaymentHistory(variables: CreatePaymentHistoryDialog_CreatePaymentHistoryMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<CreatePaymentHistoryDialog_CreatePaymentHistoryMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreatePaymentHistoryDialog_CreatePaymentHistoryMutation>(CreatePaymentHistoryDialog_CreatePaymentHistoryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createPaymentHistoryDialog_CreatePaymentHistory', 'mutation');
+    },
+    createPaymentHistoryDialog(variables: CreatePaymentHistoryDialogQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<CreatePaymentHistoryDialogQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreatePaymentHistoryDialogQuery>(CreatePaymentHistoryDialogDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createPaymentHistoryDialog', 'query');
     },
     deletePaymentHistoryDialog_DeletePaymentHistory(variables: DeletePaymentHistoryDialog_DeletePaymentHistoryMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<DeletePaymentHistoryDialog_DeletePaymentHistoryMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<DeletePaymentHistoryDialog_DeletePaymentHistoryMutation>(DeletePaymentHistoryDialog_DeletePaymentHistoryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deletePaymentHistoryDialog_DeletePaymentHistory', 'mutation');

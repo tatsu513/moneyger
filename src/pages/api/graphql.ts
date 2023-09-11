@@ -197,6 +197,14 @@ const resolvers: Resolvers = {
       console.log({ labels })
       return labels;
     },
+    listCategoryLabelsByCategoryId: async (_, { categoryId }) => {
+      const labels = await prisma.categoryLabel.findMany({
+        where: { categoryId }
+      }).catch((e) => {
+        throw new GraphQLError('listCategoryLabelsByCategoryId error', { originalError: e });
+      });
+      return labels;
+    },
   },
   Mutation: {
     createCategory: async (_, { name, maxAmount, labelIds }, { user }) => {
