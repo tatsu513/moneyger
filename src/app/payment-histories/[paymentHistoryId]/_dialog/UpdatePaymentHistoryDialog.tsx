@@ -1,5 +1,5 @@
 import { grey } from '@/color';
-import CategoryLabelsAutocompleteWithSuspense from '@/components/common/CategoryLabelsAutocompleteWithSuspense';
+import CategoryLabelsAutocompleteWithSuspense from '@/components/CategoryLabelsAutocompleteWithSuspense';
 import CommonLoading from '@/components/common/CommonLoading';
 import FetchErrorBoundary from '@/components/common/FetchErrorBoundary';
 import InlineLoading from '@/components/common/InlineLoading';
@@ -211,6 +211,10 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
     setLabels(values);
   }, []);
 
+  if (paymentHistory == null) {
+    return <CommonLoading />
+  }
+
   return (
     <MoneygerDialog
       open={dialogState === 'open'}
@@ -228,72 +232,66 @@ const UpdatePaymentHistoryDialog: React.FC<Props> = ({
         </Box>
       }
     >
-      {paymentHistory == null ? (
-        <CommonLoading />
-      ) : (
-        <>
-          <FormContentsBlock label="費目" required hasMargin>
-            <MoneygerAutocomplete
-              id="payment-history-category"
-              value={category}
-              options={listCategories}
-              noOptionsText="費目がありません"
-              ariaLabel="費目の設定"
-              getOptionLabel={getOptionLabel}
-              filterOptions={filterOptions}
-              onChange={handlePaymentChange}
-              size="small"
-              placeholder="費目を選択"
-            />
-          </FormContentsBlock>
+      <FormContentsBlock label="費目" required hasMargin>
+        <MoneygerAutocomplete
+          id="payment-history-category"
+          value={category}
+          options={listCategories}
+          noOptionsText="費目がありません"
+          ariaLabel="費目の設定"
+          getOptionLabel={getOptionLabel}
+          filterOptions={filterOptions}
+          onChange={handlePaymentChange}
+          size="small"
+          placeholder="費目を選択"
+        />
+      </FormContentsBlock>
 
-          <FormContentsBlock label="支払日" required hasMargin>
-            <MoneygerDatePicker
-              value={paymentDate}
-              onChange={handleChangeDate}
-            />
-          </FormContentsBlock>
+      <FormContentsBlock label="支払日" required hasMargin>
+        <MoneygerDatePicker
+          value={paymentDate}
+          onChange={handleChangeDate}
+        />
+      </FormContentsBlock>
 
-          <FormContentsBlock label="支払金額" required hasMargin>
-            <TextField
-              value={price}
-              fullWidth
-              onChange={handleChangePrice}
-              placeholder="10000"
-              size="small"
-            />
-          </FormContentsBlock>
+      <FormContentsBlock label="支払金額" required hasMargin>
+        <TextField
+          value={price}
+          fullWidth
+          onChange={handleChangePrice}
+          placeholder="10000"
+          size="small"
+        />
+      </FormContentsBlock>
 
-          <FormContentsBlock label="ラベル" hasMargin>
-            {category == null ? (
-              <Typography variant="body1" color={grey[500]}>
-                費目を選択してください
-              </Typography>
-            ) : (
-              <FetchErrorBoundary>
-                <Suspense fallback={<InlineLoading height={40} />}>
-                  <CategoryLabelsAutocompleteWithSuspense
-                    selectedValues={labels}
-                    categoryId={category.id}
-                    onChange={handleChange}
-                  />
-                </Suspense>
-              </FetchErrorBoundary>
-            )}
-          </FormContentsBlock>
+      <FormContentsBlock label="ラベル" hasMargin>
+        {category == null ? (
+          <Typography variant="body1" color={grey[500]}>
+            費目を選択してください
+          </Typography>
+        ) : (
+          <FetchErrorBoundary>
+            <Suspense fallback={<InlineLoading height={40} />}>
+              <CategoryLabelsAutocompleteWithSuspense
+                selectedValues={labels}
+                categoryId={category.id}
+                onChange={handleChange}
+              />
+            </Suspense>
+          </FetchErrorBoundary>
+        )}
+      </FormContentsBlock>
 
-          <FormContentsBlock label="メモ">
-            <TextField
-              value={note}
-              fullWidth
-              onChange={handleChangeNote}
-              multiline
-              rows={3}
-              placeholder="メモ"
-            />
-          </FormContentsBlock>
-        </>
-      )}
+      <FormContentsBlock label="メモ">
+        <TextField
+          value={note}
+          fullWidth
+          onChange={handleChangeNote}
+          multiline
+          rows={3}
+          placeholder="メモ"
+        />
+      </FormContentsBlock>
     </MoneygerDialog>
   );
 };

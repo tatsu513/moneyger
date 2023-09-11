@@ -14,7 +14,7 @@ import DeletePaymentHistoryDialog from '@/app/payment-histories/_dialog/DeletePa
 import DialogState from '@/types/DialogState';
 import useAlert from '@/hooks/useAlert';
 import MoneygerSnackBar from '@/components/common/MoneygerSnackBar';
-import DisplayCategoryLabelsList from '@/components/common/DisplayCategoryLabelsList';
+import DisplayCategoryLabelsList from '@/components/DisplayCategoryLabelsList';
 import { CategoryLabel } from '@/dao/generated/preset/graphql';
 
 type Props = {
