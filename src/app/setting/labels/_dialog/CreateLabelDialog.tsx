@@ -21,7 +21,7 @@ import * as AddIcon from '@mui/icons-material/Add';
 import * as CloseIcon from '@mui/icons-material/Close';
 import { grey } from '@/color';
 import { SettingLabelsPageQuery } from '@/dao/generated/preset/graphql';
-import CategoryAutocomplete from '@/components/common/CategoryAutocomplete';
+import CategoryAutocomplete from '@/components/CategoryAutocomplete';
 
 const createLabelDialogCreateLabelDocument = graphql(`
   mutation createLabelDialog_CreateLabel($input: [CreateCategoryLabelInput!]!) {

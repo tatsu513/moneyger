@@ -1,4 +1,4 @@
-import CategoryAutocomplete from '@/components/common/CategoryAutocomplete';
+import CategoryAutocomplete from '@/components/CategoryAutocomplete';
 import CommonLoading from '@/components/common/CommonLoading';
 import MoneygerDialog from '@/components/common/MoneygerDialog';
 import PrimaryButton from '@/components/common/buttons/PrimaryButton';

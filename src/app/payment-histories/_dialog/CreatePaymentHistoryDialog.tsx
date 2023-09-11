@@ -1,6 +1,5 @@
 import { grey } from '@/color';
-import CategoryLabelsAutocomplete from '@/components/common/CategoryLabelsAutocomplete';
-import CategoryLabelsAutocompleteWithSuspense from '@/components/common/CategoryLabelsAutocompleteWithSuspense';
+import CategoryLabelsAutocompleteWithSuspense from '@/components/CategoryLabelsAutocompleteWithSuspense';
 import FetchErrorBoundary from '@/components/common/FetchErrorBoundary';
 import InlineLoading from '@/components/common/InlineLoading';
 import MoneygerAutocomplete from '@/components/common/MoneygerAutocomplete';
@@ -20,7 +19,6 @@ import {
   priceType,
 } from '@/models/paymentHistory';
 import DialogState from '@/types/DialogState';
-import getUrqlVariables from '@/util/getUrqlVariables';
 import {
   Box,
   Slide,
@@ -35,10 +33,9 @@ import React, {
   ChangeEvent,
   Suspense,
   useCallback,
-  useMemo,
   useState,
 } from 'react';
-import { useMutation, useQuery } from 'urql';
+import { useMutation } from 'urql';
 
 const createPaymentHistoryDialogCreatePaymentDocument = graphql(`
   mutation createPaymentHistoryDialog_CreatePaymentHistory(
@@ -55,16 +52,6 @@ const createPaymentHistoryDialogCreatePaymentDocument = graphql(`
       note: $note
       categoryLabelIds: $categoryLabelIds
     )
-  }
-`);
-
-const createPaymentHistoryDialogDocument = graphql(`
-  query createPaymentHistoryDialog($categoryId: Int!) {
-    listCategoryLabelsByCategoryId(categoryId: $categoryId) {
-      id
-      name
-      categoryId
-    }
   }
 `);
 
@@ -92,17 +79,6 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
   const [category, setCategory] = useState<LocalCategoryType[number] | null>(
     null,
   );
-
-  const val = useMemo(() => {
-    return getUrqlVariables(
-      createPaymentHistoryDialogDocument,
-      { categoryId: category?.id ?? 0 },
-      false,
-      category?.id == null,
-    );
-  }, [category]);
-  const [{ data }] = useQuery(val);
-
   const [paymentDate, setPaymentDate] = useState<DateTime | null>(null);
   const [price, setPrice] = useState<string>('');
   const [note, setNote] = useState<string>('');
@@ -255,14 +231,6 @@ const CreatePaymentHistoryDialog: React.FC<Props> = ({
           onChange={handleChangePrice}
           placeholder="10000"
           size="small"
-        />
-      </FormContentsBlock>
-
-      <FormContentsBlock label="ラベル" hasMargin>
-        <CategoryLabelsAutocomplete
-          selectedValues={labels}
-          options={data?.listCategoryLabelsByCategoryId ?? []}
-          onChange={handleChange}
         />
       </FormContentsBlock>
 

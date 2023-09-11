@@ -12,7 +12,7 @@ import React, { useCallback } from 'react';
 import * as CloseIcon from '@mui/icons-material/Close';
 import { grey } from '@/color';
 import { SettingCategoriesPageQuery } from '@/dao/generated/preset/graphql';
-import DisplayCategoryLabelsList from '@/components/common/DisplayCategoryLabelsList';
+import DisplayCategoryLabelsList from '@/components/DisplayCategoryLabelsList';
 
 type Props = {
   id: number;
