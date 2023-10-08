@@ -48,7 +48,6 @@
     "prisma": "^5.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "string-width": "^6.1.0",
     "styled-components": "^6.0.3",
     "typescript": "5.1.6",
     "urql": "^4.0.4",
@@ -72,8 +71,7 @@
     "type-fest": "^4.0.0"
   },
   "resolutions": {
-    "jackspeak": "2.3.3",
-    "string-width": "4.2.3"
+    "jackspeak": "2.3.3"
   },
   "volta": {
     "node": "18.17.1",
