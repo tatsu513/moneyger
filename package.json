@@ -9,7 +9,6 @@
     "lint": "next lint",
     "format": "yarn prettier --write src",
     "codegen": "graphql-codegen --config codegen.ts"
-    
   },
   "dependencies": {
     "@apollo/server": "^4.7.5",
@@ -37,7 +36,6 @@
     "@vercel/postgres": "^0.4.0",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",
-    "glob": "^10.3.3",
     "graphql": "^16.7.1",
     "graphql-tag": "^2.12.6",
     "graphql-yoga": "^4.0.3",
@@ -69,9 +67,6 @@
     "eslint-plugin-unused-imports": "^3.0.0",
     "prettier": "^3.0.0",
     "type-fest": "^4.0.0"
-  },
-  "resolutions": {
-    "jackspeak": "2.3.3"
   },
   "volta": {
     "node": "18.17.1",
