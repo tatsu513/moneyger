@@ -1,4 +1,4 @@
-const withTM = require('next-transpile-modules')(['string-width', 'strip-ansi']);
+const withTM = require('next-transpile-modules')(['string-width', 'strip-ansi', 'build']);
 
 /* eslint-disable */
 /** @type {import('next').NextConfig} */
