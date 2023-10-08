@@ -2245,10 +2245,10 @@
     prop-types "^15.8.1"
     react-transition-group "^4.4.5"
 
-"@neondatabase/serverless@0.5.6":
-  version "0.5.6"
-  resolved "https://registry.yarnpkg.com/@neondatabase/serverless/-/serverless-0.5.6.tgz#e79b58f8ccd8995e4b6f94d86cbe2622172dd563"
-  integrity sha512-Ru0lG6W/nQtHRkDFVQFF+1PJYx8wd3jereln0Ep0YkiHey50hjTLVUycQoE4X977605pXMuFWORweuktzph+Xg==
+"@neondatabase/serverless@0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@neondatabase/serverless/-/serverless-0.6.0.tgz#efe001f571e85af79c8042601ec694f96ca8fb17"
+  integrity sha512-qXxBRYN0m2v8kVQBfMxbzNGn2xFAhTXFibzQlE++NfJ56Shz3m7+MyBBtXDlEH+3Wfa6lToDXf1MElocY4sJ3w==
   dependencies:
     "@types/pg" "8.6.6"
 
@@ -2783,15 +2783,15 @@
   resolved "https://registry.yarnpkg.com/@urql/next/-/next-1.0.0.tgz#694317946891e6ee2e3eb4606c1b3854377a756b"
   integrity sha512-t3c3eBccmbAzi1Y2vH8ZubSwFgJ3yA2rc4427oYfnJdLl0o7Zh4LrPxUCz1yVdCz4N/MebrnLzDiM5tAeDd9yA==
 
-"@vercel/postgres@^0.4.0":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@vercel/postgres/-/postgres-0.4.2.tgz#33d671ab826e0dd104c3673246cba412fcaf67db"
-  integrity sha512-jwGBhozSPQBuFVgiXLunpW8iys3qMGyXhTSp7xKVrZjD3hJHunO+i1J6Yq2VP2FNSw36lSg1J2vDzkdOE3303g==
+"@vercel/postgres@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@vercel/postgres/-/postgres-0.5.0.tgz#b057cfe464b504d163657f4dde697424a6da923c"
+  integrity sha512-MFWp9SZmADqBe2x2mzEvwmGLiwOd8PVkUxYeBZx/RqdHl0bd8/1BH0zBR+zSimGyi9P/MVtZoJLdf5dkWw9m5Q==
   dependencies:
-    "@neondatabase/serverless" "0.5.6"
+    "@neondatabase/serverless" "0.6.0"
     bufferutil "4.0.7"
     utf-8-validate "6.0.3"
-    ws "8.14.1"
+    ws "8.14.2"
 
 "@whatwg-node/events@^0.0.3":
   version "0.0.3"
@@ -7139,7 +7139,7 @@ ws@8.14.1:
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.14.1.tgz#4b9586b4f70f9e6534c7bb1d3dc0baa8b8cf01e0"
   integrity sha512-4OOseMUq8AzRBI/7SLMUwO+FEDnguetSk7KMb1sHwvF2w2Wv5Hoj0nlifx8vtGsftE/jWHojPy8sMMzYLJ2G/A==
 
-ws@^8.12.0, ws@^8.13.0:
+ws@8.14.2, ws@^8.12.0, ws@^8.13.0:
   version "8.14.2"
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.14.2.tgz#6c249a806eb2db7a20d26d51e7709eab7b2e6c7f"
   integrity sha512-wEBG1ftX4jcglPxgFCMJmZ2PLtSbJ2Peg6TmpJFTbe9GZYOQCDPdMYu/Tm0/bGZkw8paZnJY45J4K2PZrLYq8g==
